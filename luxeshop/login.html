@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Create Account — LuxeShop</title>
+<title>Sign In — LuxeShop</title>
 <style>
   :root{
     --ink:#1a1a2e; --ink-muted:#6b6b80; --ink-light:#a5a5b5;
@@ -19,7 +19,7 @@
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     display:flex; align-items:center; justify-content:center; padding:2rem 1rem;
   }
-  .box{ width:100%; max-width:440px; background:var(--panel); border:1px solid var(--line);
+  .box{ width:100%; max-width:420px; background:var(--panel); border:1px solid var(--line);
         border-radius:var(--radius-lg); padding:2.5rem; }
   .brand{ display:flex; align-items:center; justify-content:center; gap:0.5rem; margin-bottom:1.5rem; }
   .logo-mark{ width:34px; height:34px; border-radius:50%; background:var(--accent); color:#fff;
@@ -40,11 +40,13 @@
   .msg{ padding:0.75rem 1rem; border-radius:var(--radius-md); font-size:0.85rem; margin-bottom:1.25rem; display:none; gap:0.5rem; align-items:center; }
   .msg.error{ display:flex; background:var(--error-soft); border:1px solid rgba(229,72,77,0.25); color:var(--error); }
   .msg.success{ display:flex; background:var(--success-soft); border:1px solid rgba(44,182,125,0.25); color:var(--success); }
+  .row{ display:flex; justify-content:space-between; align-items:center; font-size:0.85rem; margin-bottom:1.5rem; }
+  .row a{ color:var(--accent); text-decoration:none; font-weight:600; }
+  .row label{ display:flex; align-items:center; gap:0.4rem; color:var(--ink-muted); cursor:pointer; margin:0; font-weight:400; }
+  .row input{ width:auto; accent-color:var(--accent); }
   .foot{ text-align:center; margin-top:1.5rem; font-size:0.875rem; color:var(--ink-muted); }
   .foot a{ color:var(--accent); font-weight:700; text-decoration:none; }
   .foot a:hover{ text-decoration:underline; }
-  .checkrow{ display:flex; gap:0.6rem; align-items:flex-start; margin-bottom:1.25rem; font-size:0.8rem; color:var(--ink-muted); }
-  .checkrow input{ width:auto; margin-top:2px; accent-color:var(--accent); }
   .spinner{ width:16px; height:16px; border:2px solid rgba(255,255,255,0.4); border-top-color:#fff;
             border-radius:50%; animation:spin 0.7s linear infinite; display:none; }
   @keyframes spin{ to{ transform:rotate(360deg); } }
@@ -56,55 +58,46 @@
     <div class="logo-mark">✦</div>
     <span class="logo-text">Luxe<span>Shop</span></span>
   </div>
-  <h1>Create your account</h1>
-  <p class="sub">Save addresses, track orders, checkout faster</p>
+  <h1>Welcome back</h1>
+  <p class="sub">Sign in to view your orders and account</p>
 
   <div class="msg" id="msg"><span id="msgText"></span></div>
 
-  <form id="signupForm" novalidate>
-    <div class="field">
-      <label for="name">Full Name</label>
-      <input type="text" id="name" required>
-    </div>
+  <form id="loginForm" novalidate>
     <div class="field">
       <label for="email">Email Address</label>
-      <input type="email" id="email" required>
-    </div>
-    <div class="field">
-      <label for="phone">Phone <span style="font-weight:400;color:var(--ink-light)">(optional)</span></label>
-      <input type="tel" id="phone">
+      <input type="email" id="email" autocomplete="email" required>
     </div>
     <div class="field">
       <label for="password">Password</label>
-      <input type="password" id="password" placeholder="Min. 6 characters" autocomplete="new-password" required>
+      <input type="password" id="password" autocomplete="current-password" required>
     </div>
-    <div class="field">
-      <label for="confirm">Confirm Password</label>
-      <input type="password" id="confirm" autocomplete="new-password" required>
-    </div>
-    <div class="checkrow">
-      <input type="checkbox" id="agree">
-      <label for="agree" style="margin:0;cursor:pointer;">I agree to the Terms of Service and Privacy Policy.</label>
+    <div class="row">
+      <label><input type="checkbox" id="remember"> Remember me</label>
+      <a href="forgot-password.html">Forgot password?</a>
     </div>
     <button type="submit" class="btn" id="submitBtn">
       <div class="spinner" id="spinner"></div>
-      <span id="btnText">Create Free Account</span>
+      <span id="btnText">Sign In</span>
     </button>
   </form>
 
-  <div class="foot">Already have an account? <a href="login.html">Sign in →</a></div>
+  <div class="foot">Don't have an account? <a href="signup.html">Create one free →</a></div>
 </div>
 
 <script type="module">
-  import { auth } from './firebase-config.js';
+  import { auth, db } from './assets/js/firebase-config.js';
   import {
-    createUserWithEmailAndPassword,
-    updateProfile,
-    onAuthStateChanged
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    setPersistence,
+    browserLocalPersistence,
+    browserSessionPersistence
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { splitName, createLuxeAccount, syncProfileToLocal } from './luxe-auth.js';
+  import { doc, getDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { syncProfileToLocal } from './assets/js/luxe-auth.js';
 
-  const form      = document.getElementById('signupForm');
+  const form      = document.getElementById('loginForm');
   const submitBtn = document.getElementById('submitBtn');
   const spinner   = document.getElementById('spinner');
   const btnText   = document.getElementById('btnText');
@@ -118,59 +111,56 @@
   function setLoading(on) {
     submitBtn.disabled = on;
     spinner.style.display = on ? 'inline-block' : 'none';
-    btnText.textContent = on ? 'Creating account…' : 'Create Free Account';
+    btnText.textContent = on ? 'Signing in…' : 'Sign In';
   }
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) window.location.href = 'account.html';
+  // Already signed in? Skip straight to the account page.
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) return;
+    window.location.href = 'account.html';
   });
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const name     = document.getElementById('name').value.trim();
     const email    = document.getElementById('email').value.trim();
-    const phone    = document.getElementById('phone').value.trim();
     const password = document.getElementById('password').value;
-    const confirm  = document.getElementById('confirm').value;
-    const agreed   = document.getElementById('agree').checked;
+    const remember = document.getElementById('remember').checked;
 
-    if (!name)                          return showMsg('Please enter your full name.');
-    if (!/^\S+@\S+\.\S+$/.test(email))  return showMsg('Please enter a valid email address.');
-    if (password.length < 6)            return showMsg('Password must be at least 6 characters.');
-    if (password !== confirm)           return showMsg('Passwords do not match.');
-    if (!agreed)                        return showMsg('Please agree to the Terms of Service.');
+    if (!email || !password) return showMsg('Please fill in all fields.');
 
     setLoading(true);
 
     try {
-      const { user } = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(user, { displayName: name });
+      await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
 
-      const { firstName, lastName } = splitName(name);
+      const { user } = await signInWithEmailAndPassword(auth, email, password);
 
-      // Save the account doc in Firestore...
-      const fsProfile = await createLuxeAccount(user.uid, { firstName, lastName, email, phone });
+      const ref = doc(db, 'luxeshop_users', user.uid);
+      const snap = await getDoc(ref);
+      const fsProfile = snap.exists() ? snap.data() : { email: user.email, displayName: user.displayName };
 
-      // ...and mirror it straight into the localStorage shape that
-      // account.html's Orders / Profile / Addresses tabs already read,
-      // so the new account shows up fully populated on first load.
+      updateDoc(ref, { lastLogin: serverTimestamp() }).catch(() => {});
+
+      // Pre-populate account.html's localStorage profile so the
+      // account page renders the signed-in user immediately.
       syncProfileToLocal(fsProfile, user.uid);
 
-      showMsg('Account created! Redirecting…', 'success');
-      setTimeout(() => { window.location.href = 'account.html'; }, 700);
+      showMsg('Login successful! Redirecting…', 'success');
+      setTimeout(() => { window.location.href = 'account.html'; }, 500);
 
     } catch (err) {
-      console.error('[signup] ERROR:', err.code, err.message);
+      console.error('[login] ERROR:', err.code, err.message);
       setLoading(false);
       const msgs = {
-        'auth/email-already-in-use':   'An account with this email already exists. Try signing in.',
+        'auth/user-not-found':         'No account found with this email.',
+        'auth/wrong-password':         'Incorrect password. Please try again.',
         'auth/invalid-email':          'Please enter a valid email address.',
-        'auth/weak-password':          'Password must be at least 6 characters.',
+        'auth/too-many-requests':      'Too many attempts. Please try again later.',
+        'auth/invalid-credential':     'Invalid email or password.',
         'auth/network-request-failed': 'Network error. Check your connection and try again.',
-        'auth/operation-not-allowed':  'Email/Password sign-in is not enabled for this project in Firebase Console.',
       };
-      showMsg(msgs[err.code] || `Account creation failed: ${err.message}`);
+      showMsg(msgs[err.code] || `Login failed: ${err.message}`);
     }
   });
 </script>
