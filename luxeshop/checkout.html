@@ -1,0 +1,1296 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Secure checkout — LuxeShop">
+  <title>Checkout — LuxeShop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    /* ── PROGRESS BAR ── */
+    .prog-wrap { background:#f8f7f4; border-bottom:1px solid #e4e1db; padding:16px 0; }
+    .prog-inner { display:flex; align-items:center; justify-content:center; gap:8px; }
+    .prog-step  { display:flex; align-items:center; gap:8px; font-size:13px; }
+    .prog-dot {
+      width:30px; height:30px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:800; font-size:12px;
+      background:#e4e1db; color:#a09dae;
+      transition:all .3s;
+    }
+    .prog-dot.active { background:#e94560; color:#fff; }
+    .prog-dot.done   { background:#2cb67d; color:#fff; }
+    .prog-dot.done::after { content:'✓'; }
+    .prog-label { color:#a09dae; font-weight:500; transition:color .3s; }
+    .prog-label.active { color:#e94560; font-weight:700; }
+    .prog-label.done   { color:#2cb67d; font-weight:600; }
+    .prog-line { width:44px; height:2px; background:#e4e1db; transition:background .3s; }
+    .prog-line.done { background:#2cb67d; }
+
+    /* ── CHECKOUT LAYOUT ── */
+    .co-layout {
+      display:grid; grid-template-columns:1fr 400px;
+      gap:40px; align-items:start;
+      padding:40px 0 80px;
+    }
+
+    /* ── STEP PANELS ── */
+    .co-panel { display:none; }
+    .co-panel.visible { display:block; }
+
+    /* ── SECTION CARD ── */
+    .co-card {
+      background:#fff; border:1px solid #e4e1db;
+      border-radius:14px; padding:28px 32px;
+      margin-bottom:16px;
+    }
+    .co-card-title {
+      display:flex; align-items:center; gap:12px;
+      font-family:'Playfair Display',serif;
+      font-size:18px; font-weight:700; color:#1a1a2e;
+      margin-bottom:22px; padding-bottom:16px;
+      border-bottom:1px solid #f0eee9;
+    }
+    .co-card-num {
+      width:28px; height:28px; border-radius:50%;
+      background:#e94560; color:#fff;
+      font-size:12px; font-weight:800;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
+    }
+
+    /* ── FORM ELEMENTS ── */
+    .fg { display:flex; flex-direction:column; gap:6px; }
+    .fl { font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#1a1a2e; }
+    .fl .opt { font-weight:400; color:#a09dae; text-transform:none; letter-spacing:0; }
+    .fl .req { color:#e94560; }
+    .fi {
+      width:100%; padding:12px 14px;
+      border:1.5px solid #e4e1db; border-radius:8px;
+      font-size:14px; color:#1a1a2e; background:#fff;
+      transition:border-color .2s, box-shadow .2s;
+      font-family:inherit;
+    }
+    .fi:focus { outline:none; border-color:#e94560; box-shadow:0 0 0 3px rgba(233,69,96,.1); }
+    .fi::placeholder { color:#c0bcca; }
+    .fi.err { border-color:#e94560; background:#fdf8f9; }
+    .err-msg { font-size:11px; color:#e94560; display:none; }
+    .err-msg.show { display:block; }
+
+    /* Autocomplete dropdown */
+    .ac-wrap { position:relative; }
+    .ac-list {
+      position:absolute; top:100%; left:0; right:0; z-index:200;
+      background:#fff; border:1.5px solid #e94560; border-top:none;
+      border-radius:0 0 8px 8px;
+      max-height:200px; overflow-y:auto;
+      box-shadow:0 8px 24px rgba(26,26,46,.12);
+      display:none;
+    }
+    .ac-list.open { display:block; }
+    .ac-item {
+      padding:10px 14px; font-size:13px; color:#1a1a2e;
+      cursor:pointer; transition:background .12s;
+      border-bottom:1px solid #f0eee9;
+    }
+    .ac-item:last-child { border:none; }
+    .ac-item:hover, .ac-item.highlighted { background:#fdf1f3; color:#e94560; }
+
+    /* Form grid */
+    .form-2col { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .form-3col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+
+    /* ── ORDER ITEMS TABLE ── */
+    .items-table { width:100%; border-collapse:collapse; }
+    .items-table th {
+      font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+      color:#a09dae; padding:0 10px 10px; text-align:left;
+      border-bottom:1.5px solid #e4e1db;
+    }
+    .items-table th:last-child { text-align:right; }
+    .items-table td { padding:12px 10px; vertical-align:middle; border-bottom:1px solid #f0eee9; }
+    .items-table tr:last-child td { border:none; }
+    .item-num-cell { width:32px; text-align:center; }
+    .item-num {
+      width:24px; height:24px; border-radius:50%;
+      background:#f0eee9; color:#a09dae;
+      font-size:11px; font-weight:700;
+      display:flex; align-items:center; justify-content:center;
+      margin:0 auto;
+    }
+    .item-name-input { font-weight:600; }
+    .item-price-cell, .item-qty-cell, .item-total-cell { width:90px; }
+    .item-total-cell { text-align:right; font-weight:700; color:#1a1a2e; }
+    .item-del-btn {
+      width:28px; height:28px; border-radius:50%;
+      background:#fff; border:1.5px solid #e4e1db;
+      color:#a09dae; font-size:14px; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      transition:all .15s; margin:0 auto;
+    }
+    .item-del-btn:hover { background:#e94560; border-color:#e94560; color:#fff; }
+    .add-item-btn {
+      display:flex; align-items:center; gap:8px;
+      font-size:13px; font-weight:600; color:#e94560;
+      margin-top:14px; padding:10px 0;
+      border:none; background:none; cursor:pointer;
+      transition:opacity .15s;
+    }
+    .add-item-btn:hover { opacity:.75; }
+    .add-item-btn::before { content:'+'; font-size:18px; font-weight:900; }
+    .items-totals {
+      display:flex; flex-direction:column; gap:0;
+      margin-top:12px; border-top:1.5px solid #e4e1db;
+      padding-top:12px;
+    }
+    .itrow {
+      display:flex; justify-content:space-between;
+      padding:6px 10px; font-size:13px; color:#6b6878;
+    }
+    .itrow.grand { font-size:16px; font-weight:800; color:#1a1a2e; background:#f8f7f4; border-radius:8px; margin-top:4px; }
+    .itrow.disc { color:#2cb67d; }
+
+    /* ── SHIPPING OPTIONS ── */
+    .ship-opts { display:flex; flex-direction:column; gap:10px; }
+    .ship-opt {
+      display:flex; align-items:center; gap:14px;
+      padding:14px 16px; border:1.5px solid #e4e1db;
+      border-radius:10px; cursor:pointer;
+      transition:border-color .15s, background .15s;
+    }
+    .ship-opt:hover { border-color:#1a1a2e; }
+    .ship-opt.active { border-color:#e94560; background:#fdf8f9; }
+    .ship-opt input[type=radio] { accent-color:#e94560; width:16px; height:16px; flex-shrink:0; }
+    .ship-icon { font-size:1.3rem; }
+    .ship-name { font-size:14px; font-weight:600; color:#1a1a2e; }
+    .ship-sub  { font-size:11px; color:#a09dae; margin-top:2px; }
+    .ship-price { margin-left:auto; font-weight:800; font-size:14px; color:#1a1a2e; }
+    .ship-price.free { color:#2cb67d; }
+
+    /* ── PAYMENT ── */
+    .pay-opts { display:flex; gap:10px; margin-bottom:20px; }
+    .pay-opt {
+      flex:1; padding:14px 10px;
+      display:flex; flex-direction:column; align-items:center; gap:5px;
+      border:1.5px solid #e4e1db; border-radius:10px;
+      cursor:pointer; transition:all .15s; text-align:center;
+    }
+    .pay-opt:hover { border-color:#1a1a2e; }
+    .pay-opt.active { border-color:#e94560; background:#fdf8f9; }
+    .pay-opt input { display:none; }
+    .pay-opt-icon { font-size:1.5rem; }
+    .pay-opt-label { font-size:11px; font-weight:700; color:#1a1a2e; }
+
+    /* ── REVIEW BLOCKS ── */
+    .rev-block {
+      background:#f8f7f4; border-radius:10px;
+      padding:14px 16px; margin-bottom:12px;
+    }
+    .rev-block-head {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:8px;
+    }
+    .rev-block-title { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#a09dae; }
+    .rev-block-edit { font-size:12px; font-weight:600; color:#e94560; text-decoration:none; }
+    .rev-block-edit:hover { text-decoration:underline; }
+    .rev-block-body { font-size:13px; color:#1a1a2e; line-height:1.65; }
+
+    /* ── ORDER SUMMARY PANEL ── */
+    .sum-panel {
+      background:#fff; border:1px solid #e4e1db;
+      border-radius:14px; overflow:hidden;
+      position:sticky; top:calc(72px + 24px);
+    }
+    .sum-header {
+      background:#1a1a2e; padding:20px 24px;
+      font-family:'Playfair Display',serif;
+      font-size:16px; font-weight:700; color:#fff;
+    }
+    .sum-body { padding:20px 24px; }
+    .sum-placeholder {
+      text-align:center; padding:32px 16px; color:#a09dae;
+    }
+    .sum-placeholder-icon { font-size:2.5rem; margin-bottom:12px; }
+    .sum-placeholder p { font-size:13px; line-height:1.6; }
+    .sum-items { display:flex; flex-direction:column; gap:14px; margin-bottom:20px; }
+    .sum-item { display:flex; gap:12px; align-items:center; }
+    .sum-item-img {
+      width:52px; height:52px; border-radius:8px;
+      background:#f0eee9; overflow:hidden; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.2rem; position:relative;
+    }
+    .sum-item-img img { width:100%; height:100%; object-fit:cover; }
+    .sum-item-qty {
+      position:absolute; top:-5px; right:-5px;
+      width:18px; height:18px; border-radius:50%;
+      background:#6b6878; color:#fff;
+      font-size:9px; font-weight:700;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .sum-item-name { font-size:13px; font-weight:600; color:#1a1a2e; line-height:1.3; }
+    .sum-item-variant { font-size:11px; color:#a09dae; margin-top:2px; }
+    .sum-item-price { font-size:13px; font-weight:700; color:#1a1a2e; margin-left:auto; white-space:nowrap; }
+    .sum-divider { height:1px; background:#f0eee9; margin:16px 0; }
+
+    /* Coupon */
+    .coupon-wrap { display:flex; gap:8px; margin-bottom:16px; }
+    .coupon-wrap .fi { flex:1; font-size:13px; padding:10px 12px; }
+    .btn-coupon {
+      padding:10px 18px; border-radius:8px;
+      background:#1a1a2e; color:#fff;
+      font-size:12px; font-weight:700; border:none; cursor:pointer;
+      white-space:nowrap; transition:background .15s;
+    }
+    .btn-coupon:hover { background:#e94560; }
+
+    /* Sum rows */
+    .sum-row { display:flex; justify-content:space-between; padding:5px 0; font-size:13px; color:#6b6878; }
+    .sum-row.disc { color:#2cb67d; }
+    .sum-row.total { font-size:16px; font-weight:800; color:#1a1a2e; padding-top:12px; margin-top:6px; border-top:1.5px solid #e4e1db; }
+    .sum-footer { padding:16px 24px; background:#f8f7f4; border-top:1px solid #e4e1db; }
+
+    /* ── BUTTONS ── */
+    .btn-next {
+      width:100%; padding:16px; border-radius:10px;
+      background:#e94560; color:#fff; border:none; cursor:pointer;
+      font-size:14px; font-weight:800; letter-spacing:.05em; text-transform:uppercase;
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      transition:background .15s, box-shadow .15s;
+      font-family:inherit;
+    }
+    .btn-next:hover { background:#c73652; box-shadow:0 6px 24px rgba(233,69,96,.35); }
+    .btn-next:disabled { opacity:.5; cursor:not-allowed; }
+    .btn-spinner { display:none; width:16px; height:16px; border:2px solid rgba(255,255,255,.4); border-top-color:#fff; border-radius:50%; animation:spin .6s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .btn-next.loading .btn-spinner { display:block; }
+    .btn-next.loading .btn-text { opacity:.7; }
+
+    /* ── TRUST STRIP ── */
+    .trust-row { display:flex; gap:16px; flex-wrap:wrap; margin-top:16px; }
+    .trust-item { font-size:11px; color:#a09dae; display:flex; align-items:center; gap:5px; }
+    .trust-item strong { color:#1a1a2e; }
+
+    /* ── CONFIRMATION MODAL ── */
+    .confirm-overlay {
+      position:fixed; inset:0; z-index:1000;
+      background:rgba(13,12,26,.8); backdrop-filter:blur(8px);
+      display:none; align-items:center; justify-content:center;
+      padding:24px;
+    }
+    .confirm-overlay.show { display:flex; }
+    .confirm-box {
+      background:#fff; border-radius:20px;
+      padding:48px 40px; max-width:480px; width:100%;
+      text-align:center; box-shadow:0 24px 80px rgba(13,12,26,.3);
+    }
+    .confirm-icon { font-size:3.5rem; margin-bottom:16px; }
+    .confirm-title { font-family:'Playfair Display',serif; font-size:2rem; font-weight:900; color:#1a1a2e; margin-bottom:10px; }
+    .confirm-sub { font-size:14px; color:#6b6878; line-height:1.7; margin-bottom:8px; }
+    .confirm-order-num { font-size:14px; color:#6b6878; margin-bottom:32px; }
+    .confirm-order-num strong { color:#1a1a2e; font-size:16px; }
+    .confirm-actions { display:flex; gap:12px; justify-content:center; }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:900px) {
+      .co-layout { grid-template-columns:1fr; }
+      .sum-panel { position:static; }
+      .co-order-summary { order:-1; }
+    }
+    @media(max-width:640px) {
+      .form-2col, .form-3col { grid-template-columns:1fr; }
+      .co-card { padding:20px 18px; }
+      .pay-opts { flex-wrap:wrap; }
+      .pay-opt { min-width:calc(50% - 5px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── EmailJS Config ── -->
+  <script>
+    const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
+    const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+    const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+  </script>
+
+  <!-- ── HEADER ── -->
+  <header class="site-header" id="siteHeader" style="border-bottom:1px solid #e4e1db">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="site-logo">
+          <div class="logo-mark">✦</div>
+          <span class="logo-text">Luxe<span>Shop</span></span>
+        </a>
+        <div style="display:flex;align-items:center;gap:12px;margin-left:auto">
+          <span style="font-size:12px;color:#6b6878;display:flex;align-items:center;gap:5px">🔒 Secure Checkout</span>
+          <a href="cart.html" style="font-size:13px;font-weight:600;color:#6b6878;display:flex;align-items:center;gap:4px;text-decoration:none;transition:color .15s" onmouseover="this.style.color='#e94560'" onmouseout="this.style.color='#6b6878'">← Back to Cart</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── PROGRESS BAR ── -->
+  <div class="prog-wrap">
+    <div class="container">
+      <div class="prog-inner">
+        <div class="prog-step">
+          <div class="prog-dot active" id="pd1">1</div>
+          <span class="prog-label active" id="pl1">Order Details</span>
+        </div>
+        <div class="prog-line" id="pline1"></div>
+        <div class="prog-step">
+          <div class="prog-dot" id="pd2">2</div>
+          <span class="prog-label" id="pl2">Shipping</span>
+        </div>
+        <div class="prog-line" id="pline2"></div>
+        <div class="prog-step">
+          <div class="prog-dot" id="pd3">3</div>
+          <span class="prog-label" id="pl3">Payment</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="container">
+      <div class="co-layout">
+
+        <!-- ══════════════════════════════════════
+             LEFT COLUMN — STEPS
+        ══════════════════════════════════════ -->
+        <div>
+
+          <!-- ─── STEP 1: Contact + Items + Address ─── -->
+          <div class="co-panel visible" id="step1">
+
+            <!-- Contact Info -->
+            <div class="co-card">
+              <div class="co-card-title">
+                <div class="co-card-num">1</div>
+                Contact Information
+              </div>
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <div class="form-2col">
+                  <div class="fg">
+                    <label class="fl" for="firstName">First Name <span class="req">*</span></label>
+                    <input class="fi" type="text" id="firstName" placeholder="Jane" autocomplete="given-name">
+                    <span class="err-msg" id="err-firstName">Please enter your first name</span>
+                  </div>
+                  <div class="fg">
+                    <label class="fl" for="lastName">Last Name <span class="req">*</span></label>
+                    <input class="fi" type="text" id="lastName" placeholder="Smith" autocomplete="family-name">
+                    <span class="err-msg" id="err-lastName">Please enter your last name</span>
+                  </div>
+                </div>
+                <div class="form-2col">
+                  <div class="fg">
+                    <label class="fl" for="email">Email Address <span class="req">*</span></label>
+                    <input class="fi" type="email" id="email" placeholder="you@example.com" autocomplete="email">
+                    <span class="err-msg" id="err-email">Please enter a valid email</span>
+                  </div>
+                  <div class="fg">
+                    <label class="fl" for="phone">Phone <span class="opt">(optional)</span></label>
+                    <input class="fi" type="tel" id="phone" placeholder="+1 (555) 000-0000" autocomplete="tel">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ORDER ITEMS -->
+            <div class="co-card">
+              <div class="co-card-title">
+                <div class="co-card-num">2</div>
+                Items You Are Ordering
+              </div>
+              <p style="font-size:13px;color:#6b6878;margin-bottom:16px">List each item you'd like to order — enter the name, unit price and quantity.</p>
+
+              <table class="items-table" id="itemsTable">
+                <thead>
+                  <tr>
+                    <th class="item-num-cell">#</th>
+                    <th>Item Name / Description</th>
+                    <th class="item-price-cell">Unit Price ($)</th>
+                    <th class="item-qty-cell">Qty</th>
+                    <th class="item-total-cell">Total</th>
+                    <th style="width:36px"></th>
+                  </tr>
+                </thead>
+                <tbody id="itemsBody">
+                  <!-- rows injected by JS -->
+                </tbody>
+              </table>
+
+              <button class="add-item-btn" onclick="addItemRow()">Add Another Item</button>
+
+              <div class="items-totals" id="itemsTotals">
+                <div class="itrow"><span>Subtotal</span><span id="it-subtotal">$0.00</span></div>
+                <div class="itrow"><span>Tax (8%)</span><span id="it-tax">$0.00</span></div>
+                <div class="itrow disc" id="it-disc-row" style="display:none"><span>Discount</span><span id="it-disc">—</span></div>
+                <div class="itrow"><span>Shipping</span><span id="it-ship">TBD</span></div>
+                <div class="itrow grand"><span>Estimated Total</span><span id="it-grand">$0.00</span></div>
+              </div>
+            </div>
+
+            <!-- SHIPPING ADDRESS -->
+            <div class="co-card">
+              <div class="co-card-title">
+                <div class="co-card-num">3</div>
+                Shipping Address
+              </div>
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <div class="fg">
+                  <label class="fl" for="address">Street Address <span class="req">*</span></label>
+                  <input class="fi" type="text" id="address" placeholder="123 Main Street" autocomplete="street-address">
+                  <span class="err-msg" id="err-address">Please enter your street address</span>
+                </div>
+                <div class="fg">
+                  <label class="fl" for="apartment">Apartment, Suite, Unit <span class="opt">(optional)</span></label>
+                  <input class="fi" type="text" id="apartment" placeholder="Apt 4B, Floor 2…" autocomplete="address-line2">
+                </div>
+                <div class="form-2col">
+                  <div class="fg">
+                    <label class="fl" for="city">City <span class="req">*</span></label>
+                    <input class="fi" type="text" id="city" placeholder="New York" autocomplete="address-level2">
+                    <span class="err-msg" id="err-city">Please enter your city</span>
+                  </div>
+                  <div class="fg">
+                    <label class="fl" for="zip">ZIP / Postal Code <span class="req">*</span></label>
+                    <input class="fi" type="text" id="zip" placeholder="10001" autocomplete="postal-code">
+                    <span class="err-msg" id="err-zip">Please enter your postal code</span>
+                  </div>
+                </div>
+                <div class="form-2col">
+                  <!-- State/Province — free-type with suggestions -->
+                  <div class="fg">
+                    <label class="fl" for="state">State / Province <span class="req">*</span></label>
+                    <div class="ac-wrap">
+                      <input class="fi" type="text" id="state" placeholder="Type state or province…" autocomplete="off" oninput="acFilter('state','stateList',STATES)" onfocus="acFilter('state','stateList',STATES)" onblur="setTimeout(()=>acClose('stateList'),180)">
+                      <div class="ac-list" id="stateList"></div>
+                    </div>
+                    <span class="err-msg" id="err-state">Please enter your state or province</span>
+                  </div>
+                  <!-- Country — free-type with suggestions -->
+                  <div class="fg">
+                    <label class="fl" for="country">Country <span class="req">*</span></label>
+                    <div class="ac-wrap">
+                      <input class="fi" type="text" id="country" placeholder="Type your country…" autocomplete="off" oninput="acFilter('country','countryList',COUNTRIES)" onfocus="acFilter('country','countryList',COUNTRIES)" onblur="setTimeout(()=>acClose('countryList'),180)">
+                      <div class="ac-list" id="countryList"></div>
+                    </div>
+                    <span class="err-msg" id="err-country">Please enter your country</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Marketing opt-in -->
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;padding:0 4px">
+              <input type="checkbox" id="emailOffers" style="accent-color:#e94560;width:16px;height:16px;flex-shrink:0">
+              <label for="emailOffers" style="font-size:13px;color:#6b6878;cursor:pointer">Email me with exclusive offers, new arrivals and style inspiration</label>
+            </div>
+
+            <button class="btn-next" onclick="proceedToShipping()">
+              <span class="btn-text">Continue to Shipping →</span>
+              <span class="btn-spinner"></span>
+            </button>
+          </div><!-- /step1 -->
+
+          <!-- ─── STEP 2: Shipping Method ─── -->
+          <div class="co-panel" id="step2">
+
+            <!-- Review: Contact -->
+            <div class="rev-block">
+              <div class="rev-block-head">
+                <span class="rev-block-title">Contact & Address</span>
+                <a href="#" class="rev-block-edit" onclick="goToStep(1);return false">Edit</a>
+              </div>
+              <div class="rev-block-body" id="rev-contact"></div>
+            </div>
+            <!-- Review: Items summary -->
+            <div class="rev-block">
+              <div class="rev-block-head">
+                <span class="rev-block-title">Order Items</span>
+                <a href="#" class="rev-block-edit" onclick="goToStep(1);return false">Edit</a>
+              </div>
+              <div class="rev-block-body" id="rev-items"></div>
+            </div>
+
+            <div class="co-card">
+              <div class="co-card-title">
+                <div class="co-card-num">4</div>
+                Shipping Method
+              </div>
+              <div class="ship-opts">
+                <label class="ship-opt active" id="ship-free">
+                  <input type="radio" name="shipping" value="0" data-label="Standard Shipping (3–5 days)" checked onchange="onShipChange(this)">
+                  <span class="ship-icon">🚚</span>
+                  <div>
+                    <div class="ship-name">Standard Shipping</div>
+                    <div class="ship-sub">3–5 business days</div>
+                  </div>
+                  <span class="ship-price free">Free</span>
+                </label>
+                <label class="ship-opt" id="ship-express">
+                  <input type="radio" name="shipping" value="12" data-label="Express Shipping (1–2 days)" onchange="onShipChange(this)">
+                  <span class="ship-icon">⚡</span>
+                  <div>
+                    <div class="ship-name">Express Shipping</div>
+                    <div class="ship-sub">1–2 business days</div>
+                  </div>
+                  <span class="ship-price">$12.00</span>
+                </label>
+                <label class="ship-opt" id="ship-overnight">
+                  <input type="radio" name="shipping" value="24" data-label="Overnight (Next business day)" onchange="onShipChange(this)">
+                  <span class="ship-icon">🌙</span>
+                  <div>
+                    <div class="ship-name">Overnight</div>
+                    <div class="ship-sub">Next business day · Order before 2pm</div>
+                  </div>
+                  <span class="ship-price">$24.00</span>
+                </label>
+              </div>
+            </div>
+
+            <button class="btn-next" onclick="proceedToPayment()">
+              <span class="btn-text">Continue to Payment →</span>
+              <span class="btn-spinner"></span>
+            </button>
+          </div><!-- /step2 -->
+
+          <!-- ─── STEP 3: Payment ─── -->
+          <div class="co-panel" id="step3">
+
+            <div class="rev-block">
+              <div class="rev-block-head">
+                <span class="rev-block-title">Contact & Address</span>
+                <a href="#" class="rev-block-edit" onclick="goToStep(1);return false">Edit</a>
+              </div>
+              <div class="rev-block-body" id="rev-contact2"></div>
+            </div>
+            <div class="rev-block">
+              <div class="rev-block-head">
+                <span class="rev-block-title">Order Items</span>
+                <a href="#" class="rev-block-edit" onclick="goToStep(1);return false">Edit</a>
+              </div>
+              <div class="rev-block-body" id="rev-items2"></div>
+            </div>
+            <div class="rev-block">
+              <div class="rev-block-head">
+                <span class="rev-block-title">Shipping Method</span>
+                <a href="#" class="rev-block-edit" onclick="goToStep(2);return false">Edit</a>
+              </div>
+              <div class="rev-block-body" id="rev-shipping"></div>
+            </div>
+
+            <div class="co-card">
+              <div class="co-card-title">
+                <div class="co-card-num">5</div>
+                Payment Method
+              </div>
+
+              <p style="font-size:12px;color:#6b6878;margin-bottom:16px;display:flex;align-items:center;gap:6px">🔒 All transactions are 256-bit SSL encrypted</p>
+
+              <div class="pay-opts" id="payOpts">
+                <label class="pay-opt active">
+                  <input type="radio" name="payment" value="card" checked onchange="onPayChange(this)">
+                  <span class="pay-opt-icon">💳</span>
+                  <span class="pay-opt-label">Card</span>
+                </label>
+                <label class="pay-opt">
+                  <input type="radio" name="payment" value="paypal" onchange="onPayChange(this)">
+                  <span class="pay-opt-icon">🅿️</span>
+                  <span class="pay-opt-label">PayPal</span>
+                </label>
+                <label class="pay-opt">
+                  <input type="radio" name="payment" value="applepay" onchange="onPayChange(this)">
+                  <span class="pay-opt-icon">📱</span>
+                  <span class="pay-opt-label">Apple Pay</span>
+                </label>
+                <label class="pay-opt">
+                  <input type="radio" name="payment" value="googlepay" onchange="onPayChange(this)">
+                  <span class="pay-opt-icon">G</span>
+                  <span class="pay-opt-label">Google Pay</span>
+                </label>
+              </div>
+
+              <!-- Card fields -->
+              <div id="cardFields" style="display:flex;flex-direction:column;gap:14px">
+                <div class="fg">
+                  <label class="fl" for="cardNumber">Card Number <span class="req">*</span></label>
+                  <input class="fi" type="text" id="cardNumber" placeholder="1234  5678  9012  3456" maxlength="19" autocomplete="cc-number" oninput="fmtCard(this)">
+                  <span class="err-msg" id="err-card">Please enter a valid 16-digit card number</span>
+                </div>
+                <div class="form-3col">
+                  <div class="fg" style="grid-column:span 1">
+                    <label class="fl" for="cardExpiry">Expiry <span class="req">*</span></label>
+                    <input class="fi" type="text" id="cardExpiry" placeholder="MM / YY" maxlength="7" autocomplete="cc-exp" oninput="fmtExpiry(this)">
+                    <span class="err-msg" id="err-expiry">Required</span>
+                  </div>
+                  <div class="fg" style="grid-column:span 1">
+                    <label class="fl" for="cardCvc">CVC <span class="req">*</span></label>
+                    <input class="fi" type="text" id="cardCvc" placeholder="123" maxlength="4" autocomplete="cc-csc">
+                    <span class="err-msg" id="err-cvc">Required</span>
+                  </div>
+                  <div class="fg" style="grid-column:span 1">
+                    <label class="fl" for="cardName">Name on Card <span class="req">*</span></label>
+                    <input class="fi" type="text" id="cardName" placeholder="Jane Smith" autocomplete="cc-name">
+                    <span class="err-msg" id="err-cardname">Required</span>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px">
+                  <input type="checkbox" id="sameBilling" checked style="accent-color:#e94560;width:16px;height:16px">
+                  <label for="sameBilling" style="font-size:13px;color:#6b6878;cursor:pointer">Billing address same as shipping address</label>
+                </div>
+              </div>
+
+              <!-- Alt-pay message -->
+              <div id="altPayMsg" style="display:none;padding:20px;background:#f8f7f4;border-radius:10px;text-align:center;color:#6b6878;font-size:13px">
+                You'll be redirected to complete payment securely after placing your order.
+              </div>
+
+              <div style="margin-top:20px">
+                <button class="btn-next" id="placeOrderBtn" onclick="placeOrder()">
+                  <span class="btn-text">🔒 Place Order — <strong id="finalTotal">$0.00</strong></span>
+                  <span class="btn-spinner"></span>
+                </button>
+              </div>
+
+              <p style="font-size:11px;color:#a09dae;text-align:center;margin-top:12px">
+                By placing your order you agree to our <a href="terms.html" style="color:#e94560">Terms of Service</a> and <a href="privacy.html" style="color:#e94560">Privacy Policy</a>.
+              </p>
+
+              <div class="trust-row">
+                <div class="trust-item">🚚 <strong>Free</strong> shipping over $75</div>
+                <div class="trust-item">↩️ <strong>30-day</strong> returns</div>
+                <div class="trust-item">📦 Ships within <strong>24h</strong></div>
+              </div>
+            </div>
+          </div><!-- /step3 -->
+
+        </div><!-- /left -->
+
+        <!-- ══════════════════════════════════════
+             RIGHT COLUMN — ORDER SUMMARY
+        ══════════════════════════════════════ -->
+        <div class="co-order-summary">
+          <div class="sum-panel">
+            <div class="sum-header">Order Summary</div>
+            <div class="sum-body">
+
+              <!-- Placeholder -->
+              <div class="sum-placeholder" id="sumPlaceholder">
+                <div class="sum-placeholder-icon">🛍️</div>
+                <p>Fill in your details and add items above — your order summary will appear here once everything looks good.</p>
+              </div>
+
+              <!-- Real summary (shown when step 1 complete) -->
+              <div id="sumReal" style="display:none">
+                <div class="sum-items" id="sumItems"></div>
+                <div class="sum-divider"></div>
+
+                <div class="coupon-wrap">
+                  <input class="fi" type="text" id="couponInput" placeholder="Promo code…" style="font-size:13px;padding:10px 12px">
+                  <button class="btn-coupon" onclick="applyCoupon()">Apply</button>
+                </div>
+
+                <div class="sum-row"><span>Subtotal</span><span id="sumSubtotal">$0.00</span></div>
+                <div class="sum-row"><span>Shipping</span><span id="sumShipping" style="color:#2cb67d">TBD</span></div>
+                <div class="sum-row"><span>Tax (8%)</span><span id="sumTax">$0.00</span></div>
+                <div class="sum-row disc" id="sumDiscRow" style="display:none"><span>Promo Discount</span><span id="sumDisc"></span></div>
+                <div class="sum-row total"><span>Total</span><span id="sumTotal">$0.00</span></div>
+              </div>
+            </div>
+            <div class="sum-footer">
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:#6b6878">🔒 Secure 256-bit SSL checkout</div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <span style="background:#f0eee9;border-radius:4px;padding:3px 8px;font-size:11px;color:#6b6878">💳 Visa</span>
+                  <span style="background:#f0eee9;border-radius:4px;padding:3px 8px;font-size:11px;color:#6b6878">💳 Mastercard</span>
+                  <span style="background:#f0eee9;border-radius:4px;padding:3px 8px;font-size:11px;color:#6b6878">📱 Apple Pay</span>
+                  <span style="background:#f0eee9;border-radius:4px;padding:3px 8px;font-size:11px;color:#6b6878">🅿️ PayPal</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- CONFIRMATION MODAL -->
+  <div class="confirm-overlay" id="confirmModal">
+    <div class="confirm-box">
+      <div class="confirm-icon">🎉</div>
+      <div class="confirm-title">Order Confirmed!</div>
+      <p class="confirm-sub">Thank you for your order. A confirmation email has been sent to <strong id="confirmEmail"></strong></p>
+      <p class="confirm-order-num">Order number: <strong id="confirmOrderNum"></strong></p>
+      <div class="confirm-actions">
+        <a href="account.html" class="btn btn-primary">Track Order</a>
+        <a href="shop.html" class="btn btn-outline">Continue Shopping</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+  /* ════════════════════════════════════════════════════════
+     AUTOCOMPLETE DATA
+  ════════════════════════════════════════════════════════ */
+  const STATES = [
+    'Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut',
+    'Delaware','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa',
+    'Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan',
+    'Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada',
+    'New Hampshire','New Jersey','New Mexico','New York','North Carolina',
+    'North Dakota','Ohio','Oklahoma','Oregon','Pennsylvania','Rhode Island',
+    'South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont',
+    'Virginia','Washington','West Virginia','Wisconsin','Wyoming',
+    // Canadian provinces
+    'Alberta','British Columbia','Manitoba','New Brunswick',
+    'Newfoundland and Labrador','Nova Scotia','Ontario',
+    'Prince Edward Island','Quebec','Saskatchewan',
+    // UK regions
+    'England','Scotland','Wales','Northern Ireland',
+    // Other common
+    'New South Wales','Victoria','Queensland','Western Australia',
+    'South Australia','Tasmania','Île-de-France','Bavaria','Catalonia','Other'
+  ];
+
+  const COUNTRIES = [
+    'United States','United Kingdom','Canada','Australia','Germany','France',
+    'Italy','Spain','Netherlands','Belgium','Switzerland','Sweden','Norway',
+    'Denmark','Finland','Ireland','Portugal','Austria','Poland','Czech Republic',
+    'Hungary','Romania','Greece','Turkey','Israel','UAE','Saudi Arabia','Qatar',
+    'Kuwait','South Africa','Nigeria','Ghana','Kenya','Egypt','Morocco',
+    'Brazil','Argentina','Chile','Colombia','Mexico','Peru','Venezuela',
+    'India','China','Japan','South Korea','Singapore','Malaysia','Thailand',
+    'Indonesia','Philippines','Vietnam','Bangladesh','Pakistan','Sri Lanka',
+    'New Zealand','Other'
+  ];
+
+  function acFilter(inputId, listId, data) {
+    const val = document.getElementById(inputId).value.toLowerCase();
+    const list = document.getElementById(listId);
+    const filtered = val ? data.filter(d => d.toLowerCase().includes(val)) : data;
+    if (!filtered.length) { list.classList.remove('open'); return; }
+    list.innerHTML = filtered.slice(0,10).map(d =>
+      `<div class="ac-item" onmousedown="acSelect('${inputId}','${listId}','${d.replace(/'/g,"\\'")}')">
+        ${d.replace(new RegExp('('+val+')', 'gi'), '<strong>$1</strong>')}
+      </div>`
+    ).join('');
+    list.classList.add('open');
+  }
+  function acSelect(inputId, listId, val) {
+    document.getElementById(inputId).value = val;
+    acClose(listId);
+  }
+  function acClose(listId) {
+    document.getElementById(listId).classList.remove('open');
+  }
+
+  /* ════════════════════════════════════════════════════════
+     ORDER STATE
+  ════════════════════════════════════════════════════════ */
+  const ORDER = {
+    items: [], subtotal:0, tax:0,
+    shippingCost:0, shippingLabel:'Standard Shipping (3–5 days)',
+    discount:0, promoCode:'', total:0, number:''
+  };
+  const TAX = 0.08;
+  const PROMOS = { 'WELCOME15':0.15, 'LUXE10':0.10, 'SAVE20':0.20 };
+
+  let rowCount = 0;
+
+  /* ════════════════════════════════════════════════════════
+     ITEM ROWS
+  ════════════════════════════════════════════════════════ */
+  function addItemRow(name='', price='', qty=1) {
+    rowCount++;
+    const id = rowCount;
+    const tbody = document.getElementById('itemsBody');
+    const tr = document.createElement('tr');
+    tr.id = 'item-row-' + id;
+    tr.innerHTML = `
+      <td class="item-num-cell"><div class="item-num">${tbody.children.length + 1}</div></td>
+      <td>
+        <input class="fi item-name-input" type="text" placeholder="e.g. Merino Wool Blazer — Ivory / L"
+          value="${name}" oninput="recalcItems()"
+          style="font-size:13px;padding:10px 12px">
+      </td>
+      <td class="item-price-cell">
+        <input class="fi" type="number" min="0" step="0.01" placeholder="0.00"
+          value="${price}" oninput="recalcItems()"
+          style="font-size:13px;padding:10px 12px;text-align:right">
+      </td>
+      <td class="item-qty-cell">
+        <input class="fi" type="number" min="1" max="99" value="${qty}" oninput="recalcItems()"
+          style="font-size:13px;padding:10px 12px;text-align:center">
+      </td>
+      <td class="item-total-cell" id="item-total-${id}">$0.00</td>
+      <td><button class="item-del-btn" onclick="removeItemRow(${id})" title="Remove item">✕</button></td>
+    `;
+    tbody.appendChild(tr);
+    recalcItems();
+  }
+
+  function removeItemRow(id) {
+    const tr = document.getElementById('item-row-' + id);
+    if (tr) tr.remove();
+    renumberRows();
+    recalcItems();
+  }
+
+  function renumberRows() {
+    document.querySelectorAll('#itemsBody tr').forEach((tr, i) => {
+      const numEl = tr.querySelector('.item-num');
+      if (numEl) numEl.textContent = i + 1;
+    });
+  }
+
+  function getItemRows() {
+    const rows = [];
+    document.querySelectorAll('#itemsBody tr').forEach(tr => {
+      const inputs = tr.querySelectorAll('input');
+      if (inputs.length < 3) return;
+      const name  = inputs[0].value.trim();
+      const price = parseFloat(inputs[1].value) || 0;
+      const qty   = parseInt(inputs[2].value) || 1;
+      if (name || price) rows.push({ name, price, qty });
+      // update row total display
+      const totalId = tr.id.replace('item-row-', 'item-total-');
+      const totalEl = document.getElementById(totalId);
+      if (totalEl) totalEl.textContent = '$' + (price * qty).toFixed(2);
+    });
+    return rows;
+  }
+
+  function recalcItems() {
+    ORDER.items = getItemRows();
+    ORDER.subtotal = ORDER.items.reduce((s,i) => s + i.price * i.qty, 0);
+    ORDER.tax      = ORDER.subtotal * TAX;
+    ORDER.discount = ORDER.promoCode ? ORDER.subtotal * (PROMOS[ORDER.promoCode] || 0) : 0;
+    ORDER.total    = ORDER.subtotal + ORDER.tax + ORDER.shippingCost - ORDER.discount;
+
+    const fmt = n => '$' + n.toFixed(2);
+    document.getElementById('it-subtotal').textContent = fmt(ORDER.subtotal);
+    document.getElementById('it-tax').textContent      = fmt(ORDER.tax);
+    document.getElementById('it-ship').textContent     = ORDER.shippingCost === 0 ? 'Free' : fmt(ORDER.shippingCost);
+    document.getElementById('it-grand').textContent    = fmt(ORDER.total);
+
+    if (ORDER.discount > 0) {
+      document.getElementById('it-disc-row').style.display = '';
+      document.getElementById('it-disc').textContent = '−' + fmt(ORDER.discount);
+    } else {
+      document.getElementById('it-disc-row').style.display = 'none';
+    }
+
+    updateSummaryPanel();
+  }
+
+  /* ════════════════════════════════════════════════════════
+     RIGHT PANEL — ORDER SUMMARY
+  ════════════════════════════════════════════════════════ */
+  function updateSummaryPanel() {
+    const hasItems = ORDER.items.some(i => i.name && i.price > 0);
+    document.getElementById('sumPlaceholder').style.display = hasItems ? 'none' : '';
+    document.getElementById('sumReal').style.display        = hasItems ? '' : 'none';
+    if (!hasItems) return;
+
+    const fmt = n => '$' + n.toFixed(2);
+
+    // Items list
+    document.getElementById('sumItems').innerHTML = ORDER.items.filter(i=>i.name||i.price).map(i => `
+      <div class="sum-item">
+        <div class="sum-item-img">
+          <span style="font-size:1.1rem">👕</span>
+          <div class="sum-item-qty">${i.qty}</div>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div class="sum-item-name">${i.name || 'Item'}</div>
+          <div class="sum-item-variant">Unit price: ${fmt(i.price)}</div>
+        </div>
+        <div class="sum-item-price">${fmt(i.price * i.qty)}</div>
+      </div>
+    `).join('');
+
+    document.getElementById('sumSubtotal').textContent = fmt(ORDER.subtotal);
+    document.getElementById('sumTax').textContent      = fmt(ORDER.tax);
+    document.getElementById('finalTotal').textContent  = fmt(ORDER.total);
+
+    const shipEl = document.getElementById('sumShipping');
+    if (ORDER.shippingCost === 0) { shipEl.textContent = 'Free'; shipEl.style.color = '#2cb67d'; }
+    else { shipEl.textContent = fmt(ORDER.shippingCost); shipEl.style.color = ''; }
+
+    document.getElementById('sumTotal').textContent = fmt(ORDER.total);
+
+    if (ORDER.discount > 0) {
+      document.getElementById('sumDiscRow').style.display = '';
+      document.getElementById('sumDisc').textContent = '−' + fmt(ORDER.discount);
+    } else {
+      document.getElementById('sumDiscRow').style.display = 'none';
+    }
+  }
+
+  /* ════════════════════════════════════════════════════════
+     PROMO CODE
+  ════════════════════════════════════════════════════════ */
+  function applyCoupon() {
+    const code = (document.getElementById('couponInput').value || '').trim().toUpperCase();
+    if (!code) { showToast('Please enter a promo code', 'warning'); return; }
+    if (PROMOS[code]) {
+      ORDER.promoCode = code;
+      recalcItems();
+      showToast(`✓ Code "${code}" applied — ${Math.round(PROMOS[code]*100)}% off!`, 'success');
+    } else {
+      showToast('Invalid promo code. Try WELCOME15', 'error');
+    }
+  }
+
+  /* ════════════════════════════════════════════════════════
+     SHIPPING RADIO
+  ════════════════════════════════════════════════════════ */
+  function onShipChange(radio) {
+    ORDER.shippingCost  = parseFloat(radio.value) || 0;
+    ORDER.shippingLabel = radio.dataset.label;
+    document.querySelectorAll('.ship-opt').forEach(o => o.classList.remove('active'));
+    radio.closest('.ship-opt').classList.add('active');
+    recalcItems();
+  }
+
+  /* ════════════════════════════════════════════════════════
+     PAYMENT RADIO
+  ════════════════════════════════════════════════════════ */
+  function onPayChange(radio) {
+    document.querySelectorAll('.pay-opt').forEach(o => o.classList.remove('active'));
+    radio.closest('.pay-opt').classList.add('active');
+    const isCard = radio.value === 'card';
+    document.getElementById('cardFields').style.display = isCard ? 'flex' : 'none';
+    document.getElementById('altPayMsg').style.display  = isCard ? 'none' : '';
+  }
+
+  /* ════════════════════════════════════════════════════════
+     VALIDATION HELPERS
+  ════════════════════════════════════════════════════════ */
+  function setErr(id, msg, show) {
+    const field = document.getElementById(id);
+    const errEl = document.getElementById('err-' + id);
+    if (field) field.classList.toggle('err', show);
+    if (errEl) { errEl.textContent = msg || errEl.textContent; errEl.classList.toggle('show', show); }
+    return show;
+  }
+  function clearErr(id) { setErr(id, '', false); }
+  function v(id)        { return (document.getElementById(id)?.value || '').trim(); }
+
+  /* ════════════════════════════════════════════════════════
+     PROGRESS BAR
+  ════════════════════════════════════════════════════════ */
+  function setProgress(step) {
+    for (let s = 1; s <= 3; s++) {
+      const dot    = document.getElementById('pd' + s);
+      const label  = document.getElementById('pl' + s);
+      const line   = document.getElementById('pline' + s);
+      dot.classList.remove('active','done');
+      label.classList.remove('active','done');
+      if (line) line.classList.remove('done');
+      if (s < step)  { dot.classList.add('done');   label.classList.add('done');   if (line) line.classList.add('done'); dot.textContent=''; }
+      if (s === step){ dot.classList.add('active');  label.classList.add('active'); dot.textContent=s; }
+      if (s > step)  { dot.textContent = s; }
+    }
+  }
+
+  function goToStep(n) {
+    document.querySelectorAll('.co-panel').forEach(p => p.classList.remove('visible'));
+    document.getElementById('step' + n).classList.add('visible');
+    setProgress(n);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ════════════════════════════════════════════════════════
+     STEP 1 → STEP 2
+  ════════════════════════════════════════════════════════ */
+  function proceedToShipping() {
+    let ok = true;
+
+    // Contact
+    if (!v('firstName'))              ok = setErr('firstName','Please enter your first name',true)  && false; else clearErr('firstName');
+    if (!v('lastName'))               ok = setErr('lastName','Please enter your last name',true)    && false; else clearErr('lastName');
+    const em = v('email');
+    if (!em || !em.includes('@'))     ok = setErr('email','Please enter a valid email',true)        && false; else clearErr('email');
+
+    // Items — at least one valid item
+    const validItems = ORDER.items.filter(i => i.name && i.price > 0);
+    if (validItems.length === 0) {
+      showToast('Please add at least one item with a name and price', 'warning');
+      ok = false;
+    }
+
+    // Address
+    if (!v('address'))  ok = setErr('address','Please enter your street address',true)  && false; else clearErr('address');
+    if (!v('city'))     ok = setErr('city','Please enter your city',true)                && false; else clearErr('city');
+    if (!v('zip'))      ok = setErr('zip','Please enter your postal code',true)          && false; else clearErr('zip');
+    if (!v('state'))    ok = setErr('state','Please enter your state or province',true)  && false; else clearErr('state');
+    if (!v('country'))  ok = setErr('country','Please enter your country',true)          && false; else clearErr('country');
+
+    if (!ok) { showToast('Please fill in all required fields', 'warning'); return; }
+
+    // Build review text
+    const apt      = v('apartment');
+    const addrLine = [v('address'), apt].filter(Boolean).join(', ');
+    const contact  = `
+      <strong>${v('firstName')} ${v('lastName')}</strong><br>
+      ${v('email')}${v('phone') ? ' · ' + v('phone') : ''}<br>
+      ${addrLine}, ${v('city')}, ${v('state')} ${v('zip')}<br>
+      ${v('country')}
+    `;
+    document.getElementById('rev-contact').innerHTML  = contact;
+    document.getElementById('rev-contact2').innerHTML = contact;
+
+    const itemsSummary = ORDER.items.filter(i=>i.name||i.price).map(i =>
+      `<span style="display:block;padding:2px 0">• ${i.name || 'Item'} × ${i.qty} = <strong>$${(i.price*i.qty).toFixed(2)}</strong></span>`
+    ).join('') + `<span style="display:block;margin-top:6px;font-weight:700;color:#1a1a2e">Subtotal: $${ORDER.subtotal.toFixed(2)}</span>`;
+    document.getElementById('rev-items').innerHTML  = itemsSummary;
+    document.getElementById('rev-items2').innerHTML = itemsSummary;
+
+    updateSummaryPanel();
+    goToStep(2);
+  }
+
+  /* ════════════════════════════════════════════════════════
+     STEP 2 → STEP 3
+  ════════════════════════════════════════════════════════ */
+  function proceedToPayment() {
+    const radio = document.querySelector('input[name="shipping"]:checked');
+    ORDER.shippingCost  = parseFloat(radio.value) || 0;
+    ORDER.shippingLabel = radio.dataset.label;
+    recalcItems();
+
+    document.getElementById('rev-shipping').innerHTML =
+      `<strong>${ORDER.shippingLabel}</strong> — ${ORDER.shippingCost === 0 ? '<span style="color:#2cb67d">Free</span>' : '$' + ORDER.shippingCost.toFixed(2)}`;
+
+    goToStep(3);
+  }
+
+  /* ════════════════════════════════════════════════════════
+     SAVE ORDER TO ACCOUNT (localStorage)
+     ------------------------------------------------------------
+     Writes a full, detailed order record into the SAME
+     localStorage key ("luxeshop_orders") that account.html
+     reads from. This is how every order placed here shows up
+     on the "My Orders" tab of account.html — with items,
+     shipping address, shipping method, payment method and the
+     full cost summary all preserved.
+  ════════════════════════════════════════════════════════ */
+  function saveOrderToAccount(paymentMethod) {
+    const LS_ORDERS_KEY = 'luxeshop_orders';
+
+    let orders = [];
+    try {
+      const raw = localStorage.getItem(LS_ORDERS_KEY);
+      orders = raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      orders = [];
+    }
+
+    const cleanItems = ORDER.items
+      .filter(i => i.name || i.price)
+      .map(i => ({ name: i.name || 'Item', price: i.price, qty: i.qty }));
+
+    const cardLast4 = paymentMethod === 'card'
+      ? v('cardNumber').replace(/\D/g, '').slice(-4)
+      : null;
+
+    const orderRecord = {
+      id: ORDER.number,
+      date: new Date().toISOString(),
+      status: 'processing',
+
+      // Contact
+      contact: {
+        firstName: v('firstName'),
+        lastName:  v('lastName'),
+        email:     v('email'),
+        phone:     v('phone')
+      },
+
+      // Shipping address
+      address: {
+        line1:     v('address'),
+        apartment: v('apartment'),
+        city:      v('city'),
+        state:     v('state'),
+        zip:       v('zip'),
+        country:   v('country')
+      },
+
+      // Items ordered
+      items: cleanItems,
+
+      // Shipping method
+      shipping: {
+        label: ORDER.shippingLabel,
+        cost:  ORDER.shippingCost
+      },
+
+      // Payment method
+      payment: {
+        method: paymentMethod,
+        cardLast4: cardLast4
+      },
+
+      // Cost breakdown
+      promoCode: ORDER.promoCode || null,
+      subtotal:  ORDER.subtotal,
+      tax:       ORDER.tax,
+      discount:  ORDER.discount,
+      total:     ORDER.total
+    };
+
+    orders.unshift(orderRecord);
+
+    try {
+      localStorage.setItem(LS_ORDERS_KEY, JSON.stringify(orders));
+    } catch (e) {
+      console.warn('Could not save order to account:', e);
+    }
+  }
+
+  /* ════════════════════════════════════════════════════════
+     PLACE ORDER
+  ════════════════════════════════════════════════════════ */
+  function placeOrder() {
+    const payMethod = document.querySelector('input[name="payment"]:checked').value;
+    let ok = true;
+
+    if (payMethod === 'card') {
+      const cn = v('cardNumber').replace(/\s/g,'');
+      if (cn.length < 15) ok = setErr('card','Please enter a valid card number',true) && false; else clearErr('card');
+      if (!v('cardExpiry')) ok = setErr('expiry','Required',true) && false; else clearErr('expiry');
+      if (v('cardCvc').length < 3) ok = setErr('cvc','Required',true) && false; else clearErr('cvc');
+      if (!v('cardName')) ok = setErr('cardname','Required',true) && false; else clearErr('cardname');
+    }
+    if (!ok) { showToast('Please complete your payment details', 'warning'); return; }
+
+    ORDER.number = 'LX-' + new Date().getFullYear() + '-' + Math.floor(1000 + Math.random()*9000);
+
+    const btn = document.getElementById('placeOrderBtn');
+    btn.classList.add('loading'); btn.disabled = true;
+
+    // Persist the full order to localStorage so it appears on account.html
+    saveOrderToAccount(payMethod);
+
+    sendOrderEmail()
+      .finally(() => {
+        btn.classList.remove('loading'); btn.disabled = false;
+        document.getElementById('confirmEmail').textContent    = v('email');
+        document.getElementById('confirmOrderNum').textContent = '#' + ORDER.number;
+        document.getElementById('confirmModal').classList.add('show');
+        try { localStorage.removeItem('luxeCart'); } catch(e) {}
+      });
+  }
+
+  /* ════════════════════════════════════════════════════════
+     EMAILJS
+  ════════════════════════════════════════════════════════ */
+  function sendOrderEmail() {
+    const apt       = v('apartment');
+    const addrLine  = [v('address'), apt].filter(Boolean).join(', ');
+    const fullAddr  = `${v('firstName')} ${v('lastName')}\n${addrLine}\n${v('city')}, ${v('state')} ${v('zip')}\n${v('country')}${v('phone') ? '\n'+v('phone') : ''}`;
+    const itemsText = ORDER.items.filter(i=>i.name||i.price).map(i =>
+      `  • ${i.name || 'Item'} × ${i.qty}  =  $${(i.price*i.qty).toFixed(2)}`
+    ).join('\n');
+    const fmt = n => '$' + n.toFixed(2);
+    const orderDate = new Date().toLocaleString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' });
+
+    return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      order_number    : ORDER.number,
+      order_date      : orderDate,
+      customer_name   : `${v('firstName')} ${v('lastName')}`,
+      customer_email  : v('email'),
+      customer_phone  : v('phone') || 'Not provided',
+      shipping_address: fullAddr,
+      shipping_method : ORDER.shippingLabel + (ORDER.shippingCost > 0 ? ` — ${fmt(ORDER.shippingCost)}` : ' — Free'),
+      payment_method  : document.querySelector('input[name="payment"]:checked').value,
+      order_items     : itemsText,
+      subtotal        : fmt(ORDER.subtotal),
+      shipping_cost   : ORDER.shippingCost === 0 ? 'Free' : fmt(ORDER.shippingCost),
+      tax             : fmt(ORDER.tax),
+      promo_code      : ORDER.promoCode || 'None',
+      discount        : ORDER.discount > 0 ? '−' + fmt(ORDER.discount) : 'None',
+      total           : fmt(ORDER.total),
+    }).catch(err => console.warn('EmailJS:', err));
+  }
+
+  /* ════════════════════════════════════════════════════════
+     CARD FORMATTERS
+  ════════════════════════════════════════════════════════ */
+  function fmtCard(el) {
+    let v = el.value.replace(/\D/g,'').substring(0,16);
+    el.value = v.replace(/(.{4})/g,'$1 ').trim();
+  }
+  function fmtExpiry(el) {
+    let v = el.value.replace(/\D/g,'').substring(0,4);
+    if (v.length >= 2) v = v.substring(0,2) + ' / ' + v.substring(2);
+    el.value = v;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     TOAST (fallback if main.js not loaded)
+  ════════════════════════════════════════════════════════ */
+  if (typeof showToast === 'undefined') {
+    window.showToast = function(msg, type) {
+      const tc = document.getElementById('toastContainer');
+      const t = document.createElement('div');
+      t.className = 'toast' + (type === 'success' ? ' success' : type === 'error' ? ' error' : type === 'warning' ? ' warning' : '');
+      t.textContent = msg;
+      tc.appendChild(t);
+      setTimeout(() => t.remove(), 3500);
+    };
+  }
+
+  /* ════════════════════════════════════════════════════════
+     INIT
+  ════════════════════════════════════════════════════════ */
+  // Load cart from localStorage or start with blank rows
+  (function initCart() {
+    try {
+      const raw  = localStorage.getItem('luxeCart');
+      const cart = raw ? JSON.parse(raw) : [];
+
+      if (cart.length > 0) {
+        // Pre-fill rows from cart items
+        cart.forEach(item => {
+          const label = item.name + (item.variant ? ' — ' + item.variant : '');
+          addItemRow(label, item.price || 0, item.qty || 1);
+        });
+
+        // Show a success banner above the items table
+        const banner = document.createElement('div');
+        banner.style.cssText = 'background:#f0fdf4;border:1.5px solid #2cb67d;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#166534;display:flex;align-items:center;gap:10px;';
+        banner.innerHTML = '<span style="font-size:1.2rem">\u2713</span> <strong>' + cart.length + ' item' + (cart.length > 1 ? 's' : '') + ' loaded from your cart.</strong> Review the details below, adjust quantities or add more items.';
+        const tableEl = document.getElementById('itemsTable');
+        if (tableEl && tableEl.parentNode) tableEl.parentNode.insertBefore(banner, tableEl);
+      } else {
+        // Empty cart — start with 2 blank rows
+        addItemRow();
+        addItemRow();
+      }
+    } catch(e) {
+      addItemRow();
+      addItemRow();
+    }
+  })();
+
+  setProgress(1);
+  </script>
+</body>
+</html>

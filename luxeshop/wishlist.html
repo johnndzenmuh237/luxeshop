@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wishlist — LuxeShop</title>
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body>
+  <div class="announcement-bar">🚚 Free shipping on orders over $75 — <a href="shop.html">Shop Now</a></div>
+  <header class="site-header" id="siteHeader">
+    <div class="container"><div class="header-inner">
+      <a href="index.html" class="site-logo"><div class="logo-mark">✦</div><span class="logo-text">Luxe<span>Shop</span></span></a>
+      <nav class="main-nav"><ul class="nav-list">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="shop.html" class="nav-link">Shop <span style="font-size:0.7em">▾</span></a>
+          <div class="nav-dropdown"><a href="shop.html?cat=new">New Arrivals</a><a href="shop.html?cat=women">Women</a><a href="shop.html?cat=men">Men</a><a href="shop.html?cat=sale">Sale</a></div>
+        </li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul></nav>
+      <div class="header-search"><span class="header-search-icon">⌕</span><input type="search" placeholder="Search…" readonly onclick="openSearch()"></div>
+      <div class="header-actions">
+        <button class="header-icon-btn" onclick="openSearch()">⌕</button>
+        <a href="account.html" class="header-icon-btn">◉</a>
+        <a href="wishlist.html" class="header-icon-btn" style="color:var(--clr-accent)">♥<span class="badge-count" id="wishlistCount">3</span></a>
+        <button class="header-icon-btn" id="cartToggle">⊡<span class="badge-count" id="cartCount">0</span></button>
+        <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+      </div>
+    </div></div>
+  </header>
+
+  <main>
+    <div class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb"><a href="index.html">Home</a><span class="breadcrumb-sep">›</span><span class="breadcrumb-current">Wishlist</span></nav>
+        <h1 class="page-hero-title">My Wishlist</h1>
+        <p class="page-hero-desc">Items you've saved — ready when you are.</p>
+      </div>
+    </div>
+
+    <section class="section--sm">
+      <div class="container">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--sp-6);flex-wrap:wrap;gap:var(--sp-4)">
+          <p style="font-size:var(--text-sm);color:var(--clr-text-muted)"><strong>3 items</strong> saved</p>
+          <div style="display:flex;gap:var(--sp-3)">
+            <button class="btn btn-outline btn-sm" onclick="addAllToCart()">Add All to Cart</button>
+            <button class="btn btn-ghost btn-sm" style="color:var(--clr-error)" onclick="clearWishlist()">Clear Wishlist</button>
+          </div>
+        </div>
+
+        <div class="product-grid" id="wishlistGrid">
+          <!-- Wishlist Item 1 -->
+          <div class="product-card">
+            <div class="product-card-img">
+              <img src="https://images.pexels.com/photos/7959652/pexels-photo-7959652.jpeg?auto=compress&cs=tinysrgb&h=800&w=800&fit=crop&dpr=1" alt="Merino Wool Blazer" loading="lazy">
+              <div class="product-badges"><span class="badge badge-sale">Sale</span></div>
+              <div class="product-actions-overlay">
+                <button class="product-action-btn" onclick="removeFromWishlist(1)" title="Remove from wishlist">♥</button>
+                <a href="product.html" class="product-action-btn" title="View product">⊕</a>
+              </div>
+            </div>
+            <div class="product-card-body">
+              <div class="product-category">Women / Blazers</div>
+              <a href="product.html" class="product-name">Merino Wool Blazer</a>
+              <div class="product-rating"><div class="stars">★★★★★</div><span class="rating-count">(142)</span></div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">$189.00</span>
+                  <span class="price-original">$240.00</span>
+                </div>
+                <button class="btn-add-to-cart" onclick="showToast('Added to cart','success')">+ Cart</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Wishlist Item 2 -->
+          <div class="product-card">
+            <div class="product-card-img">
+              <img src="https://images.pexels.com/photos/20332986/pexels-photo-20332986.jpeg?auto=compress&cs=tinysrgb&h=800&w=800&fit=crop&dpr=1" alt="Linen Slip Dress" loading="lazy">
+              <div class="product-badges"><span class="badge badge-new">New</span></div>
+              <div class="product-actions-overlay">
+                <button class="product-action-btn" onclick="removeFromWishlist(2)" title="Remove">♥</button>
+                <a href="product.html" class="product-action-btn" title="View">⊕</a>
+              </div>
+            </div>
+            <div class="product-card-body">
+              <div class="product-category">Women / Dresses</div>
+              <a href="product.html" class="product-name">Linen Slip Dress</a>
+              <div class="product-rating"><div class="stars">★★★★☆</div><span class="rating-count">(87)</span></div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">$129.00</span>
+                </div>
+                <button class="btn-add-to-cart" onclick="showToast('Added to cart','success')">+ Cart</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Wishlist Item 3 -->
+          <div class="product-card">
+            <div class="product-card-img">
+              <img src="https://images.pexels.com/photos/29359836/pexels-photo-29359836.jpeg?auto=compress&cs=tinysrgb&h=800&w=800&fit=crop&dpr=1" alt="Italian Leather Tote Bag" loading="lazy">
+              <div class="product-actions-overlay">
+                <button class="product-action-btn" onclick="removeFromWishlist(3)" title="Remove">♥</button>
+                <a href="product.html" class="product-action-btn" title="View">⊕</a>
+              </div>
+            </div>
+            <div class="product-card-body">
+              <div class="product-category">Accessories / Bags</div>
+              <a href="product.html" class="product-name">Italian Leather Tote Bag</a>
+              <div class="product-rating"><div class="stars">★★★★★</div><span class="rating-count">(203)</span></div>
+              <div class="product-footer">
+                <div class="product-price">
+                  <span class="price-current">$245.00</span>
+                </div>
+                <button class="btn-add-to-cart" onclick="showToast('Added to cart','success')">+ Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Empty state (hidden) -->
+        <div class="wishlist-empty" id="emptyWishlist" style="display:none">
+          <div class="wishlist-empty-icon">♡</div>
+          <h2>Your wishlist is empty</h2>
+          <p>Save items you love by clicking the heart icon on any product.</p>
+          <a href="shop.html" class="btn btn-primary btn-lg" style="margin-top:var(--sp-4)">Explore Products</a>
+        </div>
+
+        <!-- You May Also Like -->
+        <div style="margin-top:var(--sp-16)">
+          <div class="section-header">
+            <div>
+              <span class="section-label">Based on Your Saves</span>
+              <h2 class="section-title">You May Also Like</h2>
+            </div>
+          </div>
+          <div class="product-grid" id="wishlistSuggestions"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-main"><div class="container"><div class="footer-grid">
+      <div class="footer-brand"><a href="index.html" class="footer-logo">✦ Luxe<span>Shop</span></a><p class="footer-desc">Curated fashion essentials.</p></div>
+      <div><h4 class="footer-heading">Shop</h4><ul class="footer-links"><li><a href="shop.html">All Products</a></li><li><a href="shop.html?cat=new">New Arrivals</a></li><li><a href="shop.html?cat=sale">Sale</a></li></ul></div>
+      <div><h4 class="footer-heading">Help</h4><ul class="footer-links"><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div><h4 class="footer-heading">Legal</h4><ul class="footer-links"><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div>
+    </div></div></div>
+    <div class="container"><div class="footer-bottom"><span>© 2025 LuxeShop</span></div></div>
+  </footer>
+
+  <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="drawer-header"><h2 class="drawer-title">Your Cart</h2><button class="drawer-close" onclick="closeCart()">✕</button></div>
+    <div class="drawer-body" id="drawerBody"></div>
+    <div class="drawer-footer"><div class="summary-row total"><span>Total</span><span id="drawerTotal">$0.00</span></div><a href="checkout.html" class="btn btn-primary" style="width:100%;margin-top:var(--sp-4)">Checkout</a></div>
+  </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header"><a href="index.html" class="site-logo"><div class="logo-mark">✦</div><span>Luxe<span>Shop</span></span></a><button onclick="closeMobileNav()">✕</button></div>
+    <div class="mobile-nav-body"><ul class="mobile-nav-list"><li><a href="index.html" class="mobile-nav-link">Home</a></li><li><a href="shop.html" class="mobile-nav-link">Shop</a></li></ul></div>
+  </nav>
+  <div class="search-modal" id="searchModal">
+    <div class="search-modal-inner">
+      <div class="search-modal-input-wrap"><span class="search-modal-icon">⌕</span><input type="search" id="searchInput" placeholder="Search…"><button onclick="closeSearch()">✕</button></div>
+      <div id="searchResults" style="padding:var(--sp-4);color:var(--clr-text-muted);font-size:var(--text-sm)">Start typing…</div>
+    </div>
+  </div>
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    function removeFromWishlist(id) {
+      const card = document.querySelector(`#wishlistGrid .product-card:nth-child(${id})`);
+      if (card) { card.style.opacity='0'; card.style.transition='opacity 0.2s'; setTimeout(()=>card.remove(),200); }
+      showToast('Removed from wishlist');
+    }
+    function addAllToCart() { showToast('All items added to cart!', 'success'); }
+    function clearWishlist() {
+      if (confirm('Clear your entire wishlist?')) {
+        document.getElementById('wishlistGrid').style.display='none';
+        document.getElementById('emptyWishlist').style.display='';
+        showToast('Wishlist cleared');
+      }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('wishlistSuggestions');
+      if (grid && window.renderProductCards) grid.innerHTML = window.renderProductCards(PRODUCTS.slice(4,8));
+    });
+  </script>
+</body>
+</html>

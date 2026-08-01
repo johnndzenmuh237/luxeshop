@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account — LuxeShop</title>
+<style>
+  :root{
+    --ink:#1a1a2e; --ink-muted:#6b6b80; --ink-light:#a5a5b5;
+    --line:#e6e6ec; --panel:#ffffff; --panel-alt:#f6f6f9;
+    --accent:#e94560; --accent-soft:rgba(233,69,96,0.1);
+    --success:#2cb67d; --success-soft:rgba(44,182,125,0.1);
+    --error:#e5484d; --error-soft:rgba(229,72,77,0.1);
+    --radius-lg:16px; --radius-md:10px;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    margin:0; min-height:100vh; background:var(--panel-alt); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    display:flex; align-items:center; justify-content:center; padding:2rem 1rem;
+  }
+  .box{ width:100%; max-width:440px; background:var(--panel); border:1px solid var(--line);
+        border-radius:var(--radius-lg); padding:2.5rem; }
+  .brand{ display:flex; align-items:center; justify-content:center; gap:0.5rem; margin-bottom:1.5rem; }
+  .logo-mark{ width:34px; height:34px; border-radius:50%; background:var(--accent); color:#fff;
+              display:flex; align-items:center; justify-content:center; font-size:1.1rem; }
+  .logo-text{ font-weight:900; font-size:1.15rem; }
+  .logo-text span{ color:var(--accent); }
+  h1{ font-size:1.5rem; font-weight:900; text-align:center; margin:0 0 0.25rem; }
+  .sub{ text-align:center; color:var(--ink-muted); font-size:0.9rem; margin:0 0 1.75rem; }
+  label{ display:block; font-size:0.82rem; font-weight:600; margin-bottom:0.4rem; }
+  .field{ margin-bottom:1rem; }
+  input{ width:100%; padding:0.75em 0.9em; border-radius:var(--radius-md); border:1.5px solid var(--line);
+         background:var(--panel); color:var(--ink); font-size:0.95rem; font-family:inherit; }
+  input:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  .btn{ width:100%; padding:0.85em; border:none; border-radius:999px; background:var(--accent); color:#fff;
+        font-weight:700; font-size:0.9rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.5rem; }
+  .btn:disabled{ opacity:0.6; cursor:not-allowed; }
+  .btn:hover:not(:disabled){ filter:brightness(1.05); }
+  .msg{ padding:0.75rem 1rem; border-radius:var(--radius-md); font-size:0.85rem; margin-bottom:1.25rem; display:none; gap:0.5rem; align-items:center; }
+  .msg.error{ display:flex; background:var(--error-soft); border:1px solid rgba(229,72,77,0.25); color:var(--error); }
+  .msg.success{ display:flex; background:var(--success-soft); border:1px solid rgba(44,182,125,0.25); color:var(--success); }
+  .foot{ text-align:center; margin-top:1.5rem; font-size:0.875rem; color:var(--ink-muted); }
+  .foot a{ color:var(--accent); font-weight:700; text-decoration:none; }
+  .foot a:hover{ text-decoration:underline; }
+  .checkrow{ display:flex; gap:0.6rem; align-items:flex-start; margin-bottom:1.25rem; font-size:0.8rem; color:var(--ink-muted); }
+  .checkrow input{ width:auto; margin-top:2px; accent-color:var(--accent); }
+  .spinner{ width:16px; height:16px; border:2px solid rgba(255,255,255,0.4); border-top-color:#fff;
+            border-radius:50%; animation:spin 0.7s linear infinite; display:none; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="box">
+  <div class="brand">
+    <div class="logo-mark">✦</div>
+    <span class="logo-text">Luxe<span>Shop</span></span>
+  </div>
+  <h1>Create your account</h1>
+  <p class="sub">Save addresses, track orders, checkout faster</p>
+
+  <div class="msg" id="msg"><span id="msgText"></span></div>
+
+  <form id="signupForm" novalidate>
+    <div class="field">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" required>
+    </div>
+    <div class="field">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" required>
+    </div>
+    <div class="field">
+      <label for="phone">Phone <span style="font-weight:400;color:var(--ink-light)">(optional)</span></label>
+      <input type="tel" id="phone">
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Min. 6 characters" autocomplete="new-password" required>
+    </div>
+    <div class="field">
+      <label for="confirm">Confirm Password</label>
+      <input type="password" id="confirm" autocomplete="new-password" required>
+    </div>
+    <div class="checkrow">
+      <input type="checkbox" id="agree">
+      <label for="agree" style="margin:0;cursor:pointer;">I agree to the Terms of Service and Privacy Policy.</label>
+    </div>
+    <button type="submit" class="btn" id="submitBtn">
+      <div class="spinner" id="spinner"></div>
+      <span id="btnText">Create Free Account</span>
+    </button>
+  </form>
+
+  <div class="foot">Already have an account? <a href="login.html">Sign in →</a></div>
+</div>
+
+<script type="module">
+  import { auth } from './firebase-config.js';
+  import {
+    createUserWithEmailAndPassword,
+    updateProfile,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { splitName, createLuxeAccount, syncProfileToLocal } from './luxe-auth.js';
+
+  const form      = document.getElementById('signupForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const spinner   = document.getElementById('spinner');
+  const btnText   = document.getElementById('btnText');
+  const msg       = document.getElementById('msg');
+  const msgText   = document.getElementById('msgText');
+
+  function showMsg(text, type = 'error') {
+    msg.className = 'msg ' + type;
+    msgText.textContent = text;
+  }
+  function setLoading(on) {
+    submitBtn.disabled = on;
+    spinner.style.display = on ? 'inline-block' : 'none';
+    btnText.textContent = on ? 'Creating account…' : 'Create Free Account';
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) window.location.href = 'account.html';
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name     = document.getElementById('name').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const phone    = document.getElementById('phone').value.trim();
+    const password = document.getElementById('password').value;
+    const confirm  = document.getElementById('confirm').value;
+    const agreed   = document.getElementById('agree').checked;
+
+    if (!name)                          return showMsg('Please enter your full name.');
+    if (!/^\S+@\S+\.\S+$/.test(email))  return showMsg('Please enter a valid email address.');
+    if (password.length < 6)            return showMsg('Password must be at least 6 characters.');
+    if (password !== confirm)           return showMsg('Passwords do not match.');
+    if (!agreed)                        return showMsg('Please agree to the Terms of Service.');
+
+    setLoading(true);
+
+    try {
+      const { user } = await createUserWithEmailAndPassword(auth, email, password);
+      await updateProfile(user, { displayName: name });
+
+      const { firstName, lastName } = splitName(name);
+
+      // Save the account doc in Firestore...
+      const fsProfile = await createLuxeAccount(user.uid, { firstName, lastName, email, phone });
+
+      // ...and mirror it straight into the localStorage shape that
+      // account.html's Orders / Profile / Addresses tabs already read,
+      // so the new account shows up fully populated on first load.
+      syncProfileToLocal(fsProfile, user.uid);
+
+      showMsg('Account created! Redirecting…', 'success');
+      setTimeout(() => { window.location.href = 'account.html'; }, 700);
+
+    } catch (err) {
+      console.error('[signup] ERROR:', err.code, err.message);
+      setLoading(false);
+      const msgs = {
+        'auth/email-already-in-use':   'An account with this email already exists. Try signing in.',
+        'auth/invalid-email':          'Please enter a valid email address.',
+        'auth/weak-password':          'Password must be at least 6 characters.',
+        'auth/network-request-failed': 'Network error. Check your connection and try again.',
+        'auth/operation-not-allowed':  'Email/Password sign-in is not enabled for this project in Firebase Console.',
+      };
+      showMsg(msgs[err.code] || `Account creation failed: ${err.message}`);
+    }
+  });
+</script>
+</body>
+</html>

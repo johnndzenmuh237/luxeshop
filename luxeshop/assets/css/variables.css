@@ -1,0 +1,162 @@
+/* ============================================
+   ECOMMERCE PRO — CSS Variables
+   ============================================ */
+
+:root {
+  /* === BRAND COLORS === */
+  --clr-primary:        #1a1a2e;   /* Deep navy — base */
+  --clr-primary-light:  #16213e;   /* Slightly lighter navy */
+  --clr-accent:         #e94560;   /* Vivid crimson — signature */
+  --clr-accent-hover:   #c73652;
+  --clr-accent-soft:    rgba(233, 69, 96, 0.12);
+
+  --clr-surface:        #0f3460;   /* Mid blue surface */
+  --clr-surface-2:      #533483;   /* Purple tint cards */
+
+  /* === NEUTRAL PALETTE === */
+  --clr-bg:             #f8f7f4;   /* Warm off-white page bg */
+  --clr-bg-alt:         #f0eee9;   /* Subtle section contrast */
+  --clr-panel:          #ffffff;
+  --clr-border:         #e4e1db;
+  --clr-border-light:   #f0eee9;
+
+  --clr-text:           #1a1a2e;
+  --clr-text-muted:     #6b6878;
+  --clr-text-light:     #a09dae;
+  --clr-white:          #ffffff;
+
+  /* === SEMANTIC COLORS === */
+  --clr-success:        #2cb67d;
+  --clr-warning:        #f4a261;
+  --clr-error:          #e94560;
+  --clr-info:           #0ea5e9;
+
+  /* === STAR / RATING === */
+  --clr-star:           #f59e0b;
+
+  /* === TYPOGRAPHY === */
+  --font-display:       'Playfair Display', Georgia, serif;
+  --font-body:          'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:          'JetBrains Mono', monospace;
+
+  --text-xs:    0.75rem;    /* 12px */
+  --text-sm:    0.875rem;   /* 14px */
+  --text-base:  1rem;       /* 16px */
+  --text-md:    1.125rem;   /* 18px */
+  --text-lg:    1.25rem;    /* 20px */
+  --text-xl:    1.5rem;     /* 24px */
+  --text-2xl:   1.875rem;   /* 30px */
+  --text-3xl:   2.25rem;    /* 36px */
+  --text-4xl:   3rem;       /* 48px */
+  --text-5xl:   3.75rem;    /* 60px */
+  --text-6xl:   4.5rem;     /* 72px */
+
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-semibold: 600;
+  --weight-bold:    700;
+  --weight-black:   900;
+
+  --leading-tight:  1.2;
+  --leading-snug:   1.35;
+  --leading-base:   1.6;
+  --leading-loose:  1.8;
+
+  --tracking-tight:  -0.02em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.05em;
+  --tracking-wider:   0.1em;
+
+  /* === SPACING SCALE === */
+  --sp-1:   0.25rem;   /* 4px */
+  --sp-2:   0.5rem;    /* 8px */
+  --sp-3:   0.75rem;   /* 12px */
+  --sp-4:   1rem;      /* 16px */
+  --sp-5:   1.25rem;   /* 20px */
+  --sp-6:   1.5rem;    /* 24px */
+  --sp-8:   2rem;      /* 32px */
+  --sp-10:  2.5rem;    /* 40px */
+  --sp-12:  3rem;      /* 48px */
+  --sp-16:  4rem;      /* 64px */
+  --sp-20:  5rem;      /* 80px */
+  --sp-24:  6rem;      /* 96px */
+  --sp-32:  8rem;      /* 128px */
+
+  /* === LAYOUT === */
+  --container-sm:   640px;
+  --container-md:   768px;
+  --container-lg:   1024px;
+  --container-xl:   1280px;
+  --container-2xl:  1440px;
+  --container-pad:  clamp(1rem, 4vw, 2rem);
+
+  --header-h:       72px;
+
+  /* === RADIUS === */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-2xl:  24px;
+  --radius-full: 9999px;
+
+  /* === SHADOWS === */
+  --shadow-xs:  0 1px 2px rgba(26,26,46,0.06);
+  --shadow-sm:  0 2px 8px rgba(26,26,46,0.08);
+  --shadow-md:  0 4px 20px rgba(26,26,46,0.10);
+  --shadow-lg:  0 8px 40px rgba(26,26,46,0.12);
+  --shadow-xl:  0 16px 60px rgba(26,26,46,0.16);
+  --shadow-accent: 0 4px 24px rgba(233,69,96,0.28);
+
+  /* === TRANSITIONS === */
+  --ease-out:   cubic-bezier(0.0, 0.0, 0.2, 1);
+  --ease-in:    cubic-bezier(0.4, 0.0, 1, 1);
+  --ease-inout: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --duration-fast:   120ms;
+  --duration-base:   200ms;
+  --duration-slow:   350ms;
+  --duration-slower: 500ms;
+
+  /* === Z-INDEX SCALE === */
+  --z-below:    -1;
+  --z-base:      0;
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+
+  /* === PRODUCT GRID === */
+  --grid-cols-mobile: 2;
+  --grid-cols-tablet: 3;
+  --grid-cols-desktop: 4;
+  --grid-gap: var(--sp-6);
+
+  /* === BADGE COLORS === */
+  --badge-new-bg:     #2cb67d;
+  --badge-sale-bg:    #e94560;
+  --badge-hot-bg:     #f4a261;
+  --badge-out-bg:     #a09dae;
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] {
+  --clr-bg:           #0d0d1a;
+  --clr-bg-alt:       #13131f;
+  --clr-panel:        #1a1a2e;
+  --clr-border:       #2a2a3e;
+  --clr-border-light: #1f1f32;
+
+  --clr-text:         #f0eff4;
+  --clr-text-muted:   #9d9aaa;
+  --clr-text-light:   #6b6878;
+
+  --shadow-xs:  0 1px 2px rgba(0,0,0,0.3);
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.4);
+  --shadow-md:  0 4px 20px rgba(0,0,0,0.45);
+  --shadow-lg:  0 8px 40px rgba(0,0,0,0.5);
+  --shadow-xl:  0 16px 60px rgba(0,0,0,0.6);
+}

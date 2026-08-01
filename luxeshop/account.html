@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account — LuxeShop</title>
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <style>
+    /* ============================================================
+       ACCOUNT PAGE — fully self-contained styles.
+       All values are fixed units / locally-scoped variables.
+       Nothing here depends on tokens from variables.css or
+       style.css, so it can't silently break if those change.
+       Everything is prefixed "ac-" to avoid collisions.
+       ============================================================ */
+
+    .ac-page{
+      --ink: #1a1a2e;
+      --ink-muted: #6b6b80;
+      --ink-light: #a5a5b5;
+      --line: #e6e6ec;
+      --panel: #ffffff;
+      --panel-alt: #f6f6f9;
+      --accent: #e94560;
+      --accent-soft: rgba(233,69,96,0.1);
+      --success: #2cb67d;
+      --success-soft: rgba(44,182,125,0.1);
+      --info: #0ea5e9;
+      --info-soft: rgba(14,165,233,0.1);
+      --error: #e5484d;
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --radius-sm: 6px;
+      color: var(--ink);
+    }
+    .ac-page *{ box-sizing: border-box; }
+
+    .ac-wrap{
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-inline: 1.25rem;
+    }
+
+    .ac-hero{
+      background: var(--panel-alt);
+      border-bottom: 1px solid var(--line);
+      padding-block: 1.75rem;
+    }
+    .ac-breadcrumb{
+      display: flex; align-items: center; gap: 0.4rem;
+      font-size: 0.85rem; color: var(--ink-muted); margin-bottom: 0.6rem;
+    }
+    .ac-breadcrumb a{ color: var(--ink-muted); text-decoration: none; }
+    .ac-breadcrumb a:hover{ color: var(--accent); }
+    .ac-hero h1{ font-size: clamp(1.4rem, 3.5vw, 2rem); font-weight: 900; }
+
+    .ac-section{ padding-block: 2.25rem; }
+
+    .ac-layout{
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 1.75rem;
+      align-items: start;
+    }
+    .ac-layout > aside,
+    .ac-layout > div{
+      min-width: 0;
+    }
+
+    /* ---- Sidebar ---- */
+    .ac-profile-card{
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .ac-avatar{
+      width: 68px; height: 68px; border-radius: 50%;
+      background: var(--accent);
+      margin: 0 auto 0.7rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; color: #fff; font-weight: 900;
+    }
+    .ac-profile-card .name{ font-weight: 600; }
+    .ac-profile-card .email{ font-size: 0.8rem; color: var(--ink-muted); }
+    .ac-profile-card .since{ font-size: 0.75rem; color: var(--ink-light); margin-top: 0.25rem; }
+
+    .ac-nav{
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .ac-nav ul{ list-style: none; margin: 0; padding: 0; }
+    .ac-nav li + li{ border-top: 1px solid var(--line); }
+    .ac-nav-btn{
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      text-align: left;
+      padding: 0.9rem 1rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--ink);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .ac-nav-btn:hover{ background: var(--panel-alt); }
+    .ac-nav-btn.active{ background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+    .ac-nav-btn.danger{ color: var(--error); }
+    .ac-nav-count{
+      background: var(--accent); color: #fff; font-size: 10px; font-weight: 700;
+      padding: 2px 7px; border-radius: 999px;
+    }
+
+    /* ---- Content ---- */
+    .ac-content-head{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    .ac-content-head h2{ font-size: 1.4rem; font-weight: 700; }
+
+    .ac-select{
+      font-size: 0.85rem;
+      padding: 0.5em 2em 0.5em 0.9em;
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--panel);
+      color: var(--ink);
+    }
+
+    .ac-btn{
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 0.6em 1.3em; font-size: 0.85rem; font-weight: 600;
+      border-radius: 999px; border: none; cursor: pointer; white-space: nowrap;
+      font-family: inherit;
+    }
+    .ac-btn-primary{ background: var(--accent); color: #fff; }
+    .ac-btn-outline{ background: transparent; border: 1.5px solid var(--line); color: var(--ink); }
+    .ac-btn-ghost{ background: transparent; color: var(--ink-muted); }
+    .ac-btn-ghost.danger{ color: var(--error); }
+    .ac-btn-sm{ padding: 0.45em 1em; font-size: 0.8rem; }
+
+    /* ---- Empty states ---- */
+    .ac-empty{
+      background: var(--panel);
+      border: 1.5px dashed var(--line);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+    .ac-empty .icon{ font-size: 2.5rem; margin-bottom: 0.75rem; opacity: 0.6; }
+    .ac-empty h3{ font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .ac-empty p{ font-size: 0.88rem; color: var(--ink-muted); max-width: 36ch; margin: 0 auto 1.25rem; line-height: 1.5; }
+
+    /* ---- Orders ---- */
+    .ac-orders{ display: flex; flex-direction: column; gap: 1rem; }
+    .ac-order-card{
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .ac-order-top{
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.75rem; flex-wrap: wrap;
+      padding: 0.9rem 1.1rem;
+      background: var(--panel-alt);
+    }
+    .ac-order-meta{ display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .ac-order-meta .k{ font-size: 0.7rem; color: var(--ink-light); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; }
+    .ac-order-meta .v{ font-weight: 600; font-size: 0.85rem; }
+    .ac-status{
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      padding: 4px 12px; border-radius: 999px; font-size: 0.75rem; font-weight: 700;
+    }
+    .ac-status.processing{ background: var(--info-soft); color: var(--info); }
+    .ac-status.shipped{ background: var(--info-soft); color: var(--info); }
+    .ac-status.delivered{ background: var(--success-soft); color: var(--success); }
+    .ac-status.cancelled{ background: rgba(229,72,77,0.1); color: var(--error); }
+
+    .ac-order-body{ padding: 1rem 1.1rem 1.1rem; }
+
+    /* Itemized product list inside an order */
+    .ac-order-items{
+      display: flex; flex-direction: column; gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .ac-order-item-row{
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.55rem 0.7rem;
+      background: var(--panel-alt);
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+    }
+    .ac-order-item-row .oi-icon{
+      width: 30px; height: 30px; border-radius: var(--radius-sm);
+      background: var(--panel); border: 1px solid var(--line);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; flex-shrink: 0;
+    }
+    .ac-order-item-row .oi-name{ flex: 1; min-width: 0; font-weight: 600; }
+    .ac-order-item-row .oi-qty{ color: var(--ink-muted); white-space: nowrap; font-size: 0.8rem; }
+    .ac-order-item-row .oi-total{ font-weight: 700; white-space: nowrap; }
+
+    /* Two-column detail grid: address / shipping / payment */
+    .ac-order-detail-grid{
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .ac-order-detail-box{
+      background: var(--panel-alt);
+      border-radius: var(--radius-sm);
+      padding: 0.7rem 0.8rem;
+    }
+    .ac-order-detail-box .k{
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.05em; color: var(--ink-light); margin-bottom: 0.35rem;
+    }
+    .ac-order-detail-box .v{ font-size: 0.82rem; line-height: 1.55; color: var(--ink); }
+    .ac-order-detail-box .v .muted{ color: var(--ink-muted); }
+
+    /* Cost summary */
+    .ac-order-costs{
+      border-top: 1px dashed var(--line);
+      padding-top: 0.75rem;
+      display: flex; flex-direction: column; gap: 0.3rem;
+      margin-bottom: 1rem;
+    }
+    .ac-cost-row{
+      display: flex; justify-content: space-between;
+      font-size: 0.82rem; color: var(--ink-muted);
+    }
+    .ac-cost-row.discount{ color: var(--success); }
+    .ac-cost-row.grand{
+      font-size: 0.95rem; font-weight: 800; color: var(--ink);
+      padding-top: 0.4rem; margin-top: 0.15rem; border-top: 1px solid var(--line);
+    }
+
+    .ac-order-actions{ display: flex; gap: 0.6rem; flex-wrap: wrap; }
+
+    /* ---- Profile form ---- */
+    .ac-panel{
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+    }
+    .ac-form{ display: flex; flex-direction: column; gap: 1rem; }
+    .ac-row{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .ac-field{ display: flex; flex-direction: column; gap: 0.4rem; }
+    .ac-field label{ font-size: 0.85rem; font-weight: 600; }
+    .ac-field input,
+    .ac-field select{
+      width: 100%; padding: 0.7em 0.9em; font-size: 0.95rem;
+      border: 1.5px solid var(--line); border-radius: var(--radius-md);
+      font-family: inherit; color: var(--ink); background: var(--panel);
+    }
+    .ac-field input:focus,
+    .ac-field select:focus{ outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+    .ac-divider{ height: 1px; background: var(--line); margin-block: 0.5rem; }
+    .ac-subtitle{ font-size: 1.05rem; font-weight: 700; }
+    .ac-form-actions{ display: flex; gap: 0.75rem; margin-top: 0.5rem; flex-wrap: wrap; }
+    .ac-form-hint{ font-size: 0.8rem; color: var(--ink-muted); margin-top: -0.4rem; }
+
+    /* ---- Addresses ---- */
+    .ac-address-grid{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .ac-address-card{
+      background: var(--panel);
+      border: 2px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem;
+      position: relative;
+    }
+    .ac-address-card.is-default{ border-color: var(--accent); }
+    .ac-default-badge{
+      position: absolute; top: 0.75rem; right: 0.75rem;
+      font-size: 10px; font-weight: 700; background: var(--accent); color: #fff;
+      padding: 2px 8px; border-radius: 999px;
+    }
+    .ac-address-card .name{ font-weight: 600; margin-bottom: 0.3rem; padding-right: 4.5rem; }
+    .ac-address-card .addr{ font-size: 0.85rem; color: var(--ink-muted); line-height: 1.6; }
+    .ac-address-actions{ display: flex; gap: 0.5rem; margin-top: 0.9rem; }
+    .ac-address-add{
+      background: var(--panel-alt);
+      border: 2px dashed var(--line);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; min-height: 150px; cursor: pointer;
+    }
+    .ac-address-add .plus{ font-size: 1.4rem; color: var(--ink-light); margin-bottom: 0.4rem; }
+    .ac-address-add p{ font-size: 0.85rem; color: var(--ink-muted); font-weight: 500; }
+
+    /* ---- Payment ---- */
+    .ac-payment-card{
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .ac-payment-icon{ font-size: 1.8rem; }
+    .ac-payment-info{ flex: 1; min-width: 160px; }
+    .ac-payment-info .card-name{ font-weight: 600; }
+    .ac-payment-info .expiry{ font-size: 0.75rem; color: var(--ink-muted); }
+    .ac-payment-info .expiry .ok{ color: var(--success); }
+    .ac-payment-actions{ display: flex; gap: 0.5rem; }
+
+    /* ---- Modal (for Add Address / Add Card) ---- */
+    .ac-modal-overlay{
+      position: fixed; inset: 0; background: rgba(26,26,46,0.55);
+      z-index: 1000; display: none; align-items: center; justify-content: center;
+      padding: 1.25rem;
+    }
+    .ac-modal-overlay.open{ display: flex; }
+    .ac-modal{
+      background: var(--panel);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      width: 100%;
+      max-width: 460px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .ac-modal-head{ display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .ac-modal-head h3{ font-size: 1.15rem; font-weight: 700; }
+    .ac-modal-close{
+      width: 30px; height: 30px; border-radius: 999px; border: none; background: var(--panel-alt);
+      color: var(--ink-muted); cursor: pointer; font-size: 1rem;
+    }
+
+    /* ---- Auth-check overlay (shown until Firebase confirms a session) ---- */
+    .ac-auth-gate{
+      position: fixed; inset: 0; background: var(--panel-alt);
+      z-index: 2000; display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 0.75rem;
+    }
+    .ac-auth-gate .spin{
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 3px solid var(--line); border-top-color: var(--accent);
+      animation: ac-spin 0.7s linear infinite;
+    }
+    .ac-auth-gate p{ font-size: 0.85rem; color: var(--ink-muted); }
+    @keyframes ac-spin{ to{ transform: rotate(360deg); } }
+
+    /* ================= RESPONSIVE ================= */
+
+    @media (max-width: 900px){
+      .ac-layout{ grid-template-columns: 1fr; gap: 1.25rem; }
+      .ac-panel{ padding: 1.25rem; }
+      .ac-address-grid{ grid-template-columns: 1fr 1fr; }
+      .ac-order-detail-grid{ grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px){
+      .ac-hero{ padding-block: 1.25rem; }
+      .ac-section{ padding-block: 1.25rem; }
+      .ac-wrap{ padding-inline: 1rem; }
+
+      .ac-profile-card{ padding: 1rem; }
+      .ac-nav-btn{ padding: 1rem; font-size: 0.95rem; }
+
+      .ac-content-head{ flex-direction: column; align-items: stretch; }
+      .ac-content-head h2{ margin-bottom: 0.25rem; }
+      .ac-content-head .ac-select,
+      .ac-content-head .ac-btn{ width: 100%; }
+
+      .ac-order-top{ flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+      .ac-order-meta{ flex-direction: column; gap: 0.6rem; width: 100%; }
+      .ac-order-actions{ flex-direction: column; }
+      .ac-order-actions .ac-btn{ width: 100%; }
+      .ac-order-detail-grid{ grid-template-columns: 1fr; }
+
+      .ac-row{ grid-template-columns: 1fr; }
+      .ac-address-grid{ grid-template-columns: 1fr; }
+      .ac-address-actions{ flex-direction: column; }
+      .ac-address-actions .ac-btn{ width: 100%; }
+
+      .ac-form-actions{ flex-direction: column; }
+      .ac-form-actions .ac-btn{ width: 100%; }
+
+      .ac-payment-card{ flex-direction: column; align-items: stretch; text-align: left; }
+      .ac-payment-actions{ width: 100%; flex-direction: column; }
+      .ac-payment-actions .ac-btn{ width: 100%; }
+
+      .ac-empty{ padding: 2rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Shown until Firebase confirms whether someone is signed in,
+       so the page never flashes another user's stale localStorage
+       data before redirecting to login.html. -->
+  <div class="ac-auth-gate" id="acAuthGate"><div class="spin"></div><p>Loading your account…</p></div>
+
+  <div class="announcement-bar">🚚 Free shipping on orders over $75 — <a href="shop.html">Shop Now</a></div>
+  <header class="site-header" id="siteHeader">
+    <div class="container"><div class="header-inner">
+      <a href="index.html" class="site-logo"><div class="logo-mark">✦</div><span class="logo-text">Luxe<span>Shop</span></span></a>
+      <nav class="main-nav"><ul class="nav-list">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="shop.html" class="nav-link">Shop <span style="font-size:0.7em">▾</span></a>
+          <div class="nav-dropdown"><a href="shop.html?cat=new">New Arrivals</a><a href="shop.html?cat=women">Women</a><a href="shop.html?cat=men">Men</a><a href="shop.html?cat=sale">Sale</a></div>
+        </li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+      </ul></nav>
+      <div class="header-actions">
+        <button class="header-icon-btn" onclick="openSearch()">⌕</button>
+        <a href="account.html" class="header-icon-btn" style="color:var(--clr-accent)">◉</a>
+        <a href="wishlist.html" class="header-icon-btn">♡<span class="badge-count" id="wishlistCount">0</span></a>
+        <button class="header-icon-btn" id="cartToggle">⊡<span class="badge-count" id="cartCount">0</span></button>
+        <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+      </div>
+    </div></div>
+  </header>
+
+  <main class="ac-page">
+
+    <div class="ac-hero">
+      <div class="ac-wrap">
+        <nav class="ac-breadcrumb"><a href="index.html">Home</a><span>›</span><span>My Account</span></nav>
+        <h1>My Account</h1>
+      </div>
+    </div>
+
+    <section class="ac-section">
+      <div class="ac-wrap">
+        <div class="ac-layout">
+
+          <!-- Account Sidebar -->
+          <aside>
+            <div class="ac-profile-card">
+              <div class="ac-avatar" id="acAvatarInitial">?</div>
+              <p class="name" id="acProfileName">Set up your profile</p>
+              <p class="email" id="acProfileEmail">Add your email</p>
+              <p class="since" id="acProfileSince"></p>
+            </div>
+
+            <nav class="ac-nav">
+              <ul>
+                <li><button class="ac-nav-btn active" data-tab-btn="orders" onclick="switchAccountTab('orders',this)">📦 My Orders <span class="ac-nav-count" id="acOrdersCount">0</span></button></li>
+                <li><button class="ac-nav-btn" data-tab-btn="profile" onclick="switchAccountTab('profile',this)">◉ Profile</button></li>
+                <li><button class="ac-nav-btn" data-tab-btn="addresses" onclick="switchAccountTab('addresses',this)">📍 Addresses</button></li>
+                <li><button class="ac-nav-btn" data-tab-btn="payment" onclick="switchAccountTab('payment',this)">💳 Payment Methods</button></li>
+                <li><a href="wishlist.html" class="ac-nav-btn">♡ Wishlist <span class="ac-nav-count" id="acWishlistCount">0</span></a></li>
+                <li><button class="ac-nav-btn danger" onclick="signOut()">↪ Sign Out</button></li>
+              </ul>
+            </nav>
+          </aside>
+
+          <!-- Account Content -->
+          <div>
+
+            <!-- Orders Tab -->
+            <div id="tab-orders">
+              <div class="ac-content-head">
+                <h2>My Orders</h2>
+                <select class="ac-select" id="orderFilter" onchange="renderOrders()">
+                  <option value="all">All Orders</option>
+                  <option value="processing">Processing</option>
+                  <option value="shipped">Shipped</option>
+                  <option value="delivered">Delivered</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </div>
+              <div class="ac-orders" id="ordersList"></div>
+            </div>
+
+            <!-- Profile Tab (hidden) -->
+            <div id="tab-profile" style="display:none">
+              <div class="ac-content-head"><h2>Profile Settings</h2></div>
+              <div class="ac-panel">
+                <div class="ac-form">
+                  <div class="ac-row">
+                    <div class="ac-field"><label for="pFirstName">First Name</label><input type="text" id="pFirstName" placeholder="Jane"></div>
+                    <div class="ac-field"><label for="pLastName">Last Name</label><input type="text" id="pLastName" placeholder="Smith"></div>
+                  </div>
+                  <div class="ac-field"><label for="pEmail">Email</label><input type="email" id="pEmail" placeholder="you@example.com"></div>
+                  <div class="ac-field"><label for="pPhone">Phone <span style="font-weight:400;color:var(--ink-light)">(optional)</span></label><input type="tel" id="pPhone" placeholder="+1 (555) 234-5678"></div>
+                  <div class="ac-divider"></div>
+                  <h3 class="ac-subtitle">Change Password</h3>
+                  <div class="ac-field"><label for="pCurrentPw">Current Password</label><input type="password" id="pCurrentPw" placeholder="••••••••"></div>
+                  <div class="ac-row">
+                    <div class="ac-field"><label for="pNewPw">New Password</label><input type="password" id="pNewPw" placeholder="••••••••"></div>
+                    <div class="ac-field"><label for="pConfirmPw">Confirm Password</label><input type="password" id="pConfirmPw" placeholder="••••••••"></div>
+                  </div>
+                  <div class="ac-form-actions">
+                    <button class="ac-btn ac-btn-primary" onclick="saveProfile()">Save Changes</button>
+                    <button class="ac-btn ac-btn-ghost" onclick="loadProfileForm()">Cancel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Addresses Tab (hidden) -->
+            <div id="tab-addresses" style="display:none">
+              <div class="ac-content-head">
+                <h2>Saved Addresses</h2>
+                <button class="ac-btn ac-btn-primary ac-btn-sm" onclick="openAddressModal()">+ Add Address</button>
+              </div>
+              <div id="addressesArea"></div>
+            </div>
+
+            <!-- Payment Tab (hidden) -->
+            <div id="tab-payment" style="display:none">
+              <div class="ac-content-head">
+                <h2>Payment Methods</h2>
+                <button class="ac-btn ac-btn-primary ac-btn-sm" onclick="openCardModal()">+ Add Card</button>
+              </div>
+              <div id="paymentArea"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-main"><div class="container"><div class="footer-grid">
+      <div class="footer-brand"><a href="index.html" class="footer-logo">✦ Luxe<span>Shop</span></a><p class="footer-desc">Curated fashion essentials.</p></div>
+      <div><h4 class="footer-heading">Shop</h4><ul class="footer-links"><li><a href="shop.html">All Products</a></li><li><a href="shop.html?cat=sale">Sale</a></li></ul></div>
+      <div><h4 class="footer-heading">Help</h4><ul class="footer-links"><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div><h4 class="footer-heading">Legal</h4><ul class="footer-links"><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div>
+    </div></div></div>
+    <div class="container"><div class="footer-bottom"><span>© 2025 LuxeShop</span></div></div>
+  </footer>
+
+  <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="drawer-header"><h2 class="drawer-title">Your Cart</h2><button class="drawer-close" onclick="closeCart()">✕</button></div>
+    <div class="drawer-body" id="drawerBody"></div>
+    <div class="drawer-footer"><div class="summary-row total"><span>Total</span><span id="drawerTotal">$0.00</span></div><a href="checkout.html" class="btn btn-primary" style="width:100%;margin-top:1rem">Checkout</a></div>
+  </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header"><a href="index.html" class="site-logo"><div class="logo-mark">✦</div><span>Luxe<span>Shop</span></span></a><button onclick="closeMobileNav()">✕</button></div>
+    <div class="mobile-nav-body"><ul class="mobile-nav-list"><li><a href="index.html" class="mobile-nav-link">Home</a></li><li><a href="shop.html" class="mobile-nav-link">Shop</a></li></ul></div>
+  </nav>
+  <div class="search-modal" id="searchModal">
+    <div class="search-modal-inner">
+      <div class="search-modal-input-wrap"><span class="search-modal-icon">⌕</span><input type="search" id="searchInput" placeholder="Search…"><button onclick="closeSearch()">✕</button></div>
+      <div id="searchResults" style="padding:1rem;color:#6b6b80;font-size:0.9rem">Start typing…</div>
+    </div>
+  </div>
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- Add Address modal -->
+  <div class="ac-modal-overlay" id="addressModalOverlay" onclick="if(event.target===this) closeAddressModal()">
+    <div class="ac-modal">
+      <div class="ac-modal-head"><h3>Add New Address</h3><button class="ac-modal-close" onclick="closeAddressModal()">✕</button></div>
+      <div class="ac-form">
+        <div class="ac-field"><label for="addrName">Full Name</label><input type="text" id="addrName" placeholder="Jane Smith"></div>
+        <div class="ac-field"><label for="addrLine1">Street Address</label><input type="text" id="addrLine1" placeholder="123 Main Street, Apt 4B"></div>
+        <div class="ac-row">
+          <div class="ac-field"><label for="addrCity">City</label><input type="text" id="addrCity" placeholder="New York"></div>
+          <div class="ac-field"><label for="addrState">State</label><input type="text" id="addrState" placeholder="NY"></div>
+        </div>
+        <div class="ac-row">
+          <div class="ac-field"><label for="addrZip">ZIP Code</label><input type="text" id="addrZip" placeholder="10001"></div>
+          <div class="ac-field"><label for="addrCountry">Country</label><input type="text" id="addrCountry" placeholder="United States"></div>
+        </div>
+        <div class="ac-form-actions">
+          <button class="ac-btn ac-btn-primary" onclick="saveAddress()">Save Address</button>
+          <button class="ac-btn ac-btn-ghost" onclick="closeAddressModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Card modal -->
+  <div class="ac-modal-overlay" id="cardModalOverlay" onclick="if(event.target===this) closeCardModal()">
+    <div class="ac-modal">
+      <div class="ac-modal-head"><h3>Add Payment Method</h3><button class="ac-modal-close" onclick="closeCardModal()">✕</button></div>
+      <div class="ac-form">
+        <div class="ac-field"><label for="cardBrand">Card Type</label>
+          <select id="cardBrand">
+            <option>Visa</option>
+            <option>Mastercard</option>
+            <option>American Express</option>
+          </select>
+        </div>
+        <div class="ac-field"><label for="cardLast4">Card Number</label><input type="text" id="cardLast4" placeholder="•••• •••• •••• 4242" maxlength="19"></div>
+        <p class="ac-form-hint">This is a demo — only the last 4 digits are ever stored.</p>
+        <div class="ac-row">
+          <div class="ac-field"><label for="cardExpiry">Expiry (MM/YY)</label><input type="text" id="cardExpiry" placeholder="09/27" maxlength="5"></div>
+          <div class="ac-field"><label for="cardCvc">CVC</label><input type="text" id="cardCvc" placeholder="123" maxlength="4"></div>
+        </div>
+        <div class="ac-form-actions">
+          <button class="ac-btn ac-btn-primary" onclick="saveCard()">Save Card</button>
+          <button class="ac-btn ac-btn-ghost" onclick="closeCardModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <!-- ============================================================
+       AUTH BRIDGE
+       Loads Firebase, gates this page behind requireLuxeUser(),
+       and exposes signOutLuxe / updateLuxeProfile to the classic
+       script below via window.__luxeAuth. Module scripts always
+       finish executing before DOMContentLoaded fires, so the
+       classic script's DOMContentLoaded handler can safely rely
+       on window.__luxeAuth being ready.
+       ============================================================ -->
+  <script type="module">
+    import { requireLuxeUser, signOutLuxe, updateLuxeProfile } from './luxe-auth.js';
+
+    window.__luxeAuth = { requireLuxeUser, signOutLuxe, updateLuxeProfile };
+
+    // Resolve/redirect immediately so we're not racing the classic
+    // script's own DOMContentLoaded listener below.
+    window.__luxeAuthReady = requireLuxeUser({ redirectTo: 'login.html' })
+      .then(({ user }) => {
+        document.getElementById('acAuthGate').style.display = 'none';
+        return user;
+      })
+      .catch(() => {
+        // requireLuxeUser already redirected to login.html; leave
+        // the gate up so nothing else on this page renders first.
+      });
+  </script>
+
+  <script>
+    /* ============================================================
+       ACCOUNT STATE
+       ------------------------------------------------------------
+       Everything below reads/writes localStorage under the
+       "luxeshop_*" keys. luxe-auth.js (loaded above) mirrors the
+       signed-in Firebase user's profile into LS_KEYS.profile
+       before this script's DOMContentLoaded handler runs, so
+       "Set up your profile" only ever shows for a signed-out
+       visitor — which can't happen here since the page is gated.
+
+       ORDERS: checkout.html writes each completed order directly
+       into localStorage under LS_KEYS.orders ("luxeshop_orders")
+       as a full, detailed record:
+
+         {
+           id, date, status,
+           contact:  { firstName, lastName, email, phone },
+           address:  { line1, apartment, city, state, zip, country },
+           items:    [ { name, price, qty }, ... ],
+           shipping: { label, cost },
+           payment:  { method, cardLast4 },
+           promoCode, subtotal, tax, discount, total
+         }
+
+       This page reads that same record back and renders every
+       field — items, address, shipping method, payment method,
+       and the full cost breakdown — on the "My Orders" tab.
+
+       Other integrations (e.g. a future backend) can still call
+       LuxeAccount.addOrder({...}) with the same shape; missing
+       fields simply render as blank/omitted rather than erroring.
+       ============================================================ */
+
+    const LS_KEYS = {
+      profile: 'luxeshop_profile',
+      orders: 'luxeshop_orders',
+      addresses: 'luxeshop_addresses',
+      payments: 'luxeshop_payment_methods',
+      wishlist: 'luxeshop_wishlist_count'
+    };
+
+    function readLS(key, fallback) {
+      try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : fallback;
+      } catch (e) {
+        return fallback;
+      }
+    }
+    function writeLS(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    /* ---------- Public helper API for other pages ---------- */
+    window.LuxeAccount = {
+      addOrder(order) {
+        const orders = readLS(LS_KEYS.orders, []);
+        const now = new Date();
+        orders.unshift({
+          id: order.id || ('LX-' + now.getFullYear() + '-' + Math.floor(1000 + Math.random() * 9000)),
+          date: order.date || now.toISOString(),
+          status: order.status || 'processing',
+          contact: order.contact || {},
+          address: order.address || {},
+          items: order.items || [],
+          shipping: order.shipping || { label: '', cost: 0 },
+          payment: order.payment || { method: '', cardLast4: null },
+          promoCode: order.promoCode || null,
+          subtotal: order.subtotal || 0,
+          tax: order.tax || 0,
+          discount: order.discount || 0,
+          total: order.total || 0
+        });
+        writeLS(LS_KEYS.orders, orders);
+      },
+      setWishlistCount(n) {
+        writeLS(LS_KEYS.wishlist, n);
+      }
+    };
+
+    /* ---------- Formatting helpers ---------- */
+    const fmtMoney = n => '$' + (Number(n) || 0).toFixed(2);
+
+    const PAYMENT_LABELS = {
+      card: 'Credit / Debit Card',
+      paypal: 'PayPal',
+      applepay: 'Apple Pay',
+      googlepay: 'Google Pay'
+    };
+
+    /* ---------- Profile ---------- */
+    function loadProfileForm() {
+      const p = readLS(LS_KEYS.profile, {});
+      document.getElementById('pFirstName').value = p.firstName || '';
+      document.getElementById('pLastName').value = p.lastName || '';
+      document.getElementById('pEmail').value = p.email || '';
+      document.getElementById('pPhone').value = p.phone || '';
+      document.getElementById('pCurrentPw').value = '';
+      document.getElementById('pNewPw').value = '';
+      document.getElementById('pConfirmPw').value = '';
+    }
+
+    function saveProfile() {
+      const firstName = document.getElementById('pFirstName').value.trim();
+      const lastName = document.getElementById('pLastName').value.trim();
+      const email = document.getElementById('pEmail').value.trim();
+      const phone = document.getElementById('pPhone').value.trim();
+
+      if (!firstName || !email) {
+        showToast('Please add at least your first name and email', 'warning');
+        return;
+      }
+
+      const existing = readLS(LS_KEYS.profile, {});
+      const memberSince = existing.memberSince || new Date().toISOString();
+      writeLS(LS_KEYS.profile, { uid: existing.uid, firstName, lastName, email, phone, memberSince });
+
+      // Best-effort: keep the Firestore account doc in sync too.
+      // If it fails (offline, etc.) the local save above already
+      // succeeded, so the UI doesn't need to know or block on it.
+      if (existing.uid && window.__luxeAuth) {
+        window.__luxeAuth.updateLuxeProfile(existing.uid, { firstName, lastName, email, phone })
+          .catch(err => console.warn('[account] Firestore profile sync failed', err));
+      }
+
+      renderProfileSummary();
+      showToast('Profile saved!', 'success');
+    }
+
+    function renderProfileSummary() {
+      const p = readLS(LS_KEYS.profile, null);
+      const nameEl = document.getElementById('acProfileName');
+      const emailEl = document.getElementById('acProfileEmail');
+      const sinceEl = document.getElementById('acProfileSince');
+      const avatarEl = document.getElementById('acAvatarInitial');
+
+      if (!p || !p.firstName) {
+        nameEl.textContent = 'Set up your profile';
+        emailEl.textContent = 'Add your email';
+        sinceEl.textContent = '';
+        avatarEl.textContent = '?';
+        return;
+      }
+
+      const fullName = [p.firstName, p.lastName].filter(Boolean).join(' ');
+      nameEl.textContent = fullName;
+      emailEl.textContent = p.email || '';
+      avatarEl.textContent = p.firstName.charAt(0).toUpperCase();
+
+      if (p.memberSince) {
+        const d = new Date(p.memberSince);
+        sinceEl.textContent = 'Member since ' + d.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
+      }
+    }
+
+    /* ---------- Orders ---------- */
+    function statusLabel(status) {
+      const map = {
+        processing: { icon: '⚡', text: 'Processing' },
+        shipped: { icon: '🚚', text: 'Shipped' },
+        delivered: { icon: '✓', text: 'Delivered' },
+        cancelled: { icon: '✕', text: 'Cancelled' }
+      };
+      return map[status] || map.processing;
+    }
+
+    function renderOrders() {
+      const list = document.getElementById('ordersList');
+      const filter = document.getElementById('orderFilter').value;
+      let orders = readLS(LS_KEYS.orders, []);
+
+      document.getElementById('acOrdersCount').textContent = orders.length;
+
+      if (filter !== 'all') {
+        orders = orders.filter(o => o.status === filter);
+      }
+
+      if (orders.length === 0) {
+        list.innerHTML = `
+          <div class="ac-empty">
+            <div class="icon">📦</div>
+            <h3>No orders yet</h3>
+            <p>Once you place an order at checkout, it'll show up here with every item, the shipping address, payment method and full receipt.</p>
+            <a href="shop.html" class="ac-btn ac-btn-primary">Start Shopping</a>
+          </div>`;
+        return;
+      }
+
+      list.innerHTML = orders.map(order => {
+        const s = statusLabel(order.status);
+        const dateStr = new Date(order.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+        const items = order.items || [];
+        const itemCount = items.length;
+
+        // ---- Itemized list ----
+        const itemsHtml = items.map(it => `
+          <div class="ac-order-item-row">
+            <div class="oi-icon">👕</div>
+            <div class="oi-name">${it.name || 'Item'}</div>
+            <div class="oi-qty">${fmtMoney(it.price)} × ${it.qty}</div>
+            <div class="oi-total">${fmtMoney((it.price || 0) * (it.qty || 1))}</div>
+          </div>
+        `).join('');
+
+        // ---- Contact / address block ----
+        const c = order.contact || {};
+        const a = order.address || {};
+        const fullName = [c.firstName, c.lastName].filter(Boolean).join(' ');
+        const addrLine2 = a.apartment ? `, ${a.apartment}` : '';
+        const addressHtml = (a.line1 || a.city)
+          ? `
+            <div class="v">
+              ${fullName ? `<strong>${fullName}</strong><br>` : ''}
+              ${a.line1 || ''}${addrLine2}<br>
+              ${[a.city, a.state, a.zip].filter(Boolean).join(', ')}<br>
+              ${a.country || ''}
+              ${c.phone ? `<br><span class="muted">${c.phone}</span>` : ''}
+            </div>`
+          : `<div class="v muted">No address on file</div>`;
+
+        // ---- Shipping block ----
+        const sh = order.shipping || {};
+        const shippingHtml = `
+          <div class="v">
+            ${sh.label || 'Standard Shipping'}<br>
+            <span class="muted">${sh.cost > 0 ? fmtMoney(sh.cost) : 'Free'}</span>
+          </div>`;
+
+        // ---- Payment block ----
+        const pay = order.payment || {};
+        const payLabel = PAYMENT_LABELS[pay.method] || pay.method || 'Not specified';
+        const paymentHtml = `
+          <div class="v">
+            ${payLabel}
+            ${pay.cardLast4 ? `<br><span class="muted">Ending in ${pay.cardLast4}</span>` : ''}
+          </div>`;
+
+        // ---- Cost breakdown ----
+        const costsHtml = `
+          <div class="ac-cost-row"><span>Subtotal</span><span>${fmtMoney(order.subtotal)}</span></div>
+          ${order.discount > 0 ? `<div class="ac-cost-row discount"><span>Discount${order.promoCode ? ' (' + order.promoCode + ')' : ''}</span><span>−${fmtMoney(order.discount)}</span></div>` : ''}
+          <div class="ac-cost-row"><span>Shipping</span><span>${(sh.cost || 0) > 0 ? fmtMoney(sh.cost) : 'Free'}</span></div>
+          <div class="ac-cost-row"><span>Tax</span><span>${fmtMoney(order.tax)}</span></div>
+          <div class="ac-cost-row grand"><span>Total</span><span>${fmtMoney(order.total)}</span></div>
+        `;
+
+        const actions = order.status === 'delivered'
+          ? `<button class="ac-btn ac-btn-outline ac-btn-sm">View Order</button>
+             <button class="ac-btn ac-btn-ghost ac-btn-sm">Leave Review</button>
+             <button class="ac-btn ac-btn-ghost ac-btn-sm">Reorder</button>`
+          : order.status === 'cancelled'
+          ? `<button class="ac-btn ac-btn-outline ac-btn-sm">View Order</button>
+             <button class="ac-btn ac-btn-ghost ac-btn-sm">Reorder</button>`
+          : `<button class="ac-btn ac-btn-outline ac-btn-sm">Track Package</button>
+             <button class="ac-btn ac-btn-ghost ac-btn-sm danger" onclick="cancelOrder('${order.id}')">Cancel Order</button>`;
+
+        return `
+          <div class="ac-order-card">
+            <div class="ac-order-top">
+              <div class="ac-order-meta">
+                <div><div class="k">Order</div><div class="v">#${order.id}</div></div>
+                <div><div class="k">Placed</div><div class="v">${dateStr}</div></div>
+                <div><div class="k">Items</div><div class="v">${itemCount} item${itemCount === 1 ? '' : 's'}</div></div>
+                <div><div class="k">Total</div><div class="v">${fmtMoney(order.total)}</div></div>
+              </div>
+              <span class="ac-status ${order.status}">${s.icon} ${s.text}</span>
+            </div>
+            <div class="ac-order-body">
+              <div class="ac-order-items">${itemsHtml || '<div class="ac-order-item-row"><div class="oi-name muted">No item details available</div></div>'}</div>
+
+              <div class="ac-order-detail-grid">
+                <div class="ac-order-detail-box">
+                  <div class="k">Shipping Address</div>
+                  ${addressHtml}
+                </div>
+                <div class="ac-order-detail-box">
+                  <div class="k">Shipping Method</div>
+                  ${shippingHtml}
+                </div>
+                <div class="ac-order-detail-box">
+                  <div class="k">Payment Method</div>
+                  ${paymentHtml}
+                </div>
+              </div>
+
+              <div class="ac-order-costs">${costsHtml}</div>
+
+              <div class="ac-order-actions">${actions}</div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function cancelOrder(orderId) {
+      if (!confirm('Cancel this order?')) return;
+      const orders = readLS(LS_KEYS.orders, []);
+      const order = orders.find(o => o.id === orderId);
+      if (order) order.status = 'cancelled';
+      writeLS(LS_KEYS.orders, orders);
+      renderOrders();
+      showToast('Order cancelled');
+    }
+
+    /* ---------- Addresses ---------- */
+    function renderAddresses() {
+      const area = document.getElementById('addressesArea');
+      const addresses = readLS(LS_KEYS.addresses, []);
+
+      const addTile = `
+        <div class="ac-address-add" onclick="openAddressModal()">
+          <div class="plus">+</div>
+          <p>Add New Address</p>
+        </div>`;
+
+      if (addresses.length === 0) {
+        area.innerHTML = `
+          <div class="ac-empty">
+            <div class="icon">📍</div>
+            <h3>No saved addresses</h3>
+            <p>Save a shipping address so checkout is faster next time.</p>
+            <button class="ac-btn ac-btn-primary" onclick="openAddressModal()">+ Add Address</button>
+          </div>`;
+        return;
+      }
+
+      const cards = addresses.map((a, i) => `
+        <div class="ac-address-card ${a.isDefault ? 'is-default' : ''}">
+          ${a.isDefault ? '<span class="ac-default-badge">Default</span>' : ''}
+          <p class="name">${a.name}</p>
+          <p class="addr">${a.line1}<br>${a.city}, ${a.state} ${a.zip}<br>${a.country}</p>
+          <div class="ac-address-actions">
+            ${!a.isDefault ? `<button class="ac-btn ac-btn-outline ac-btn-sm" onclick="setDefaultAddress(${i})">Set Default</button>` : ''}
+            <button class="ac-btn ac-btn-ghost ac-btn-sm danger" onclick="deleteAddress(${i})">Delete</button>
+          </div>
+        </div>`).join('');
+
+      area.innerHTML = `<div class="ac-address-grid">${cards}${addTile}</div>`;
+    }
+
+    function openAddressModal() {
+      document.getElementById('addressModalOverlay').classList.add('open');
+    }
+    function closeAddressModal() {
+      document.getElementById('addressModalOverlay').classList.remove('open');
+      ['addrName','addrLine1','addrCity','addrState','addrZip','addrCountry'].forEach(id => document.getElementById(id).value = '');
+    }
+    function saveAddress() {
+      const name = document.getElementById('addrName').value.trim();
+      const line1 = document.getElementById('addrLine1').value.trim();
+      const city = document.getElementById('addrCity').value.trim();
+      const state = document.getElementById('addrState').value.trim();
+      const zip = document.getElementById('addrZip').value.trim();
+      const country = document.getElementById('addrCountry').value.trim();
+
+      if (!name || !line1 || !city || !zip || !country) {
+        showToast('Please fill in all address fields', 'warning');
+        return;
+      }
+
+      const addresses = readLS(LS_KEYS.addresses, []);
+      addresses.push({ name, line1, city, state, zip, country, isDefault: addresses.length === 0 });
+      writeLS(LS_KEYS.addresses, addresses);
+
+      closeAddressModal();
+      renderAddresses();
+      showToast('Address saved!', 'success');
+    }
+    function setDefaultAddress(index) {
+      const addresses = readLS(LS_KEYS.addresses, []);
+      addresses.forEach((a, i) => a.isDefault = (i === index));
+      writeLS(LS_KEYS.addresses, addresses);
+      renderAddresses();
+    }
+    function deleteAddress(index) {
+      const addresses = readLS(LS_KEYS.addresses, []);
+      const wasDefault = addresses[index] && addresses[index].isDefault;
+      addresses.splice(index, 1);
+      if (wasDefault && addresses.length > 0) addresses[0].isDefault = true;
+      writeLS(LS_KEYS.addresses, addresses);
+      renderAddresses();
+      showToast('Address removed');
+    }
+
+    /* ---------- Payment methods ---------- */
+    function renderPaymentMethods() {
+      const area = document.getElementById('paymentArea');
+      const cards = readLS(LS_KEYS.payments, []);
+
+      if (cards.length === 0) {
+        area.innerHTML = `
+          <div class="ac-empty">
+            <div class="icon">💳</div>
+            <h3>No payment methods saved</h3>
+            <p>Add a card to speed through checkout next time you order.</p>
+            <button class="ac-btn ac-btn-primary" onclick="openCardModal()">+ Add Card</button>
+          </div>`;
+        return;
+      }
+
+      area.innerHTML = `<div style="display:flex;flex-direction:column;gap:1rem">` + cards.map((c, i) => `
+        <div class="ac-payment-card">
+          <div class="ac-payment-icon">💳</div>
+          <div class="ac-payment-info">
+            <p class="card-name">${c.brand} ending in ${c.last4}</p>
+            <p class="expiry">Expires ${c.expiry}${c.isDefault ? ' · <span class="ok">Default</span>' : ''}</p>
+          </div>
+          <div class="ac-payment-actions">
+            ${!c.isDefault ? `<button class="ac-btn ac-btn-outline ac-btn-sm" onclick="setDefaultCard(${i})">Set Default</button>` : ''}
+            <button class="ac-btn ac-btn-ghost ac-btn-sm danger" onclick="deleteCard(${i})">Remove</button>
+          </div>
+        </div>`).join('') + `</div>`;
+    }
+
+    function openCardModal() {
+      document.getElementById('cardModalOverlay').classList.add('open');
+    }
+    function closeCardModal() {
+      document.getElementById('cardModalOverlay').classList.remove('open');
+      ['cardLast4','cardExpiry','cardCvc'].forEach(id => document.getElementById(id).value = '');
+    }
+    function saveCard() {
+      const brand = document.getElementById('cardBrand').value;
+      const rawNumber = document.getElementById('cardLast4').value.replace(/\D/g, '');
+      const expiry = document.getElementById('cardExpiry').value.trim();
+      const cvc = document.getElementById('cardCvc').value.trim();
+
+      if (rawNumber.length < 4 || !expiry || !cvc) {
+        showToast('Please fill in all card fields', 'warning');
+        return;
+      }
+
+      const last4 = rawNumber.slice(-4);
+      const cards = readLS(LS_KEYS.payments, []);
+      cards.push({ brand, last4, expiry, isDefault: cards.length === 0 });
+      writeLS(LS_KEYS.payments, cards);
+
+      closeCardModal();
+      renderPaymentMethods();
+      showToast('Card saved!', 'success');
+    }
+    function setDefaultCard(index) {
+      const cards = readLS(LS_KEYS.payments, []);
+      cards.forEach((c, i) => c.isDefault = (i === index));
+      writeLS(LS_KEYS.payments, cards);
+      renderPaymentMethods();
+    }
+    function deleteCard(index) {
+      const cards = readLS(LS_KEYS.payments, []);
+      const wasDefault = cards[index] && cards[index].isDefault;
+      cards.splice(index, 1);
+      if (wasDefault && cards.length > 0) cards[0].isDefault = true;
+      writeLS(LS_KEYS.payments, cards);
+      renderPaymentMethods();
+      showToast('Card removed');
+    }
+
+    /* ---------- Wishlist badge ---------- */
+    function renderWishlistCount() {
+      const n = readLS(LS_KEYS.wishlist, 0);
+      document.getElementById('wishlistCount').textContent = n;
+      document.getElementById('acWishlistCount').textContent = n;
+    }
+
+    /* ---------- Tabs ---------- */
+    const ACCOUNT_TABS = ['orders', 'profile', 'addresses', 'payment'];
+    function switchAccountTab(name, btn) {
+      ACCOUNT_TABS.forEach(t => {
+        const el = document.getElementById('tab-' + t);
+        if (el) el.style.display = t === name ? '' : 'none';
+      });
+      document.querySelectorAll('[data-tab-btn]').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-tab-btn') === name);
+      });
+    }
+    function signOut() {
+      if (!confirm('Sign out?')) return;
+      if (window.__luxeAuth) {
+        window.__luxeAuth.signOutLuxe('login.html');
+      } else {
+        window.location.href = 'login.html';
+      }
+    }
+
+    /* ---------- Init ---------- */
+    document.addEventListener('DOMContentLoaded', async function () {
+      // Wait for the Firebase auth check (started in the module
+      // script above) before touching anything profile-related.
+      // If it rejects, requireLuxeUser() already redirected to
+      // login.html, so there's nothing left to render here.
+      try {
+        await window.__luxeAuthReady;
+      } catch (e) { /* redirect already in flight */ }
+
+      if (!auth_ok()) return;
+
+      renderProfileSummary();
+      loadProfileForm();
+      renderOrders();
+      renderAddresses();
+      renderPaymentMethods();
+      renderWishlistCount();
+    });
+
+    function auth_ok() {
+      // window.__luxeAuthReady only resolves (rather than being
+      // left pending/redirected) once a Firestore-backed profile
+      // has been mirrored into LS_KEYS.profile.
+      return !!readLS(LS_KEYS.profile, null);
+    }
+
+    // Keep the orders list fresh if the user places a new order in
+    // another tab (checkout.html) and comes back to this one.
+    window.addEventListener('storage', function (e) {
+      if (e.key === LS_KEYS.orders) renderOrders();
+    });
+    window.addEventListener('focus', renderOrders);
+  </script>
+</body>
+</html>

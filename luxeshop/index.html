@@ -1,0 +1,1775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LuxeShop — Curated fashion and lifestyle essentials. New arrivals, trending styles, and exclusive collections.">
+  <title>LuxeShop — Curated Fashion & Lifestyle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <style>
+    /* ── HOMEPAGE OVERRIDES & ENHANCEMENTS ── */
+
+    /* Announcement ticker */
+    .ticker-wrap { background: #1a1a2e; overflow: hidden; padding: 9px 0; }
+    .ticker { display: flex; gap: 0; animation: ticker 28s linear infinite; white-space: nowrap; }
+    .ticker-item { padding: 0 48px; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.7); display: flex; align-items: center; gap: 10px; }
+    .ticker-item span { color: #e94560; }
+    @keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    /* ── HERO ── */
+    .hp-hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 620px;
+      background: #0d0c1a;
+      overflow: hidden;
+    }
+    .hp-hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 72px 56px 72px 72px;
+      position: relative;
+    }
+    .hp-hero-left::after {
+      content:'';
+      position:absolute;
+      right:-1px;
+      top:0;
+      bottom:0;
+      width:1px;
+      background:rgba(255,255,255,.07);
+    }
+    .hp-hero-right {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 3px;
+      background: #0d0c1a;
+    }
+    .hero-img-cell {
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-img-cell img {
+      width:100%; height:100%; object-fit:cover;
+      transition: transform .6s ease;
+      filter: brightness(.88) saturate(1.05);
+    }
+    .hero-img-cell:hover img { transform: scale(1.04); }
+    .hero-img-cell.span2 { grid-column: span 2; }
+
+    /* Fake product images using Unsplash */
+    .hero-img-cell:nth-child(1) { background: #2a1f3d; }
+    .hero-img-cell:nth-child(2) { background: #1f2a2a; }
+    .hero-img-cell:nth-child(3) { background: #2a251f; }
+
+    .hero-badge-float {
+      position:absolute; bottom:14px; left:14px;
+      background: rgba(233,69,96,.92);
+      backdrop-filter: blur(8px);
+      color: white;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: 5px 12px; border-radius: 3px;
+    }
+
+    .hero-eyebrow-new {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+      color: #e94560;
+      margin-bottom: 20px;
+    }
+    .hero-eyebrow-new::before {
+      content:''; display:block; width:28px; height:1px; background:#e94560;
+    }
+
+    .hp-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 3.8vw, 3.5rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.06;
+      letter-spacing: -.025em;
+      margin-bottom: 22px;
+    }
+    .hp-hero h1 em { font-style: italic; color: #e94560; }
+
+    .hero-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,.5);
+      line-height: 1.75;
+      max-width: 38ch;
+      margin-bottom: 36px;
+    }
+    .hero-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+
+    .btn-hero-primary {
+      background: #e94560; color: #fff;
+      padding: 14px 32px;
+      font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+      border-radius: 3px;
+      transition: background .18s, box-shadow .18s, transform .12s;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-hero-primary:hover { background: #c73652; box-shadow: 0 6px 28px rgba(233,69,96,.4); transform: translateY(-1px); }
+
+    .btn-hero-ghost {
+      color: rgba(255,255,255,.6);
+      font-size: 13px; font-weight: 600; letter-spacing: .04em;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 0;
+      transition: color .15s, gap .2s;
+    }
+    .btn-hero-ghost:hover { color: #fff; gap: 12px; }
+
+    .hero-stat-row {
+      display: flex; gap: 36px;
+      margin-top: 52px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+    .hsr-num { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:900; color:#fff; line-height:1; }
+    .hsr-label { font-size:10px; color:rgba(255,255,255,.38); letter-spacing:.1em; text-transform:uppercase; margin-top:4px; }
+
+    /* ── TRUST BAR ── */
+    .trust-strip {
+      background: #fff;
+      border-bottom: 1px solid #e4e1db;
+      padding: 0;
+    }
+    .trust-strip-inner {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .trust-cell {
+      display: flex; align-items: center; gap: 14px;
+      padding: 20px 28px;
+      border-right: 1px solid #e4e1db;
+    }
+    .trust-cell:last-child { border-right: none; }
+    .trust-cell-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: #fdf1f3;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.15rem; flex-shrink: 0;
+    }
+    .trust-cell-title { font-size: 13px; font-weight: 700; color: #1a1a2e; }
+    .trust-cell-sub { font-size: 11px; color: #a09dae; margin-top: 2px; }
+
+    /* ── CATEGORIES ROW ── */
+    .cats-section { padding: 60px 0 0; }
+    .cats-scroll {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      margin-top: 32px;
+    }
+    .cat-pill {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .cat-pill-img {
+      width: 100%; aspect-ratio: 1;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2.5px solid transparent;
+      transition: border-color .2s, transform .2s;
+      background: #f0eee9;
+    }
+    .cat-pill-img img { width:100%; height:100%; object-fit:cover; }
+    .cat-pill:hover .cat-pill-img { border-color: #e94560; transform: scale(1.04); }
+    .cat-pill-name { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #1a1a2e; text-align:center; }
+    .cat-pill-count { font-size: 10px; color: #a09dae; text-align:center; margin-top:-4px; }
+
+    /* ── SECTION LABEL SYSTEM ── */
+    .sec-label {
+      font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+      color: #e94560;
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 6px;
+    }
+    .sec-label::before { content:''; display:block; width:20px; height:1.5px; background:#e94560; }
+    .sec-title { font-family:'Playfair Display',serif; font-size: clamp(1.6rem,2.8vw,2.4rem); font-weight:900; letter-spacing:-.02em; color:#1a1a2e; }
+
+    /* ── PRODUCT GRID (Homepage) ── */
+    .hp-products-section { padding: 64px 0; background: #f8f7f4; }
+    .hp-prod-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 32px; flex-wrap: wrap; gap: 16px;
+    }
+    .see-all-link {
+      font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      color: #1a1a2e;
+      display: flex; align-items: center; gap: 6px;
+      padding: 10px 20px; border: 1.5px solid #1a1a2e; border-radius: 2px;
+      transition: background .15s, color .15s;
+    }
+    .see-all-link:hover { background: #1a1a2e; color: #fff; }
+
+    /* Tab filters */
+    .prod-tabs {
+      display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 28px;
+    }
+    .prod-tab {
+      padding: 7px 18px;
+      font-size: 12px; font-weight: 600; letter-spacing: .04em;
+      border: 1.5px solid #e4e1db;
+      border-radius: 2px;
+      color: #6b6878;
+      transition: all .15s;
+      cursor: pointer;
+    }
+    .prod-tab.active, .prod-tab:hover { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
+
+    /* Product card */
+    .hp-product-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+    .hp-prod-card {
+      background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: box-shadow .25s, transform .25s;
+      position: relative;
+    }
+    .hp-prod-card:hover { box-shadow: 0 12px 40px rgba(26,26,46,.12); transform: translateY(-3px); }
+    .hp-prod-card:hover .hp-prod-actions { opacity: 1; transform: translateY(0); }
+    .hp-prod-card:hover .hp-prod-img img { transform: scale(1.06); }
+
+    .hp-prod-img {
+      position: relative;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      background: #f0eee9;
+    }
+    .hp-prod-img img { width:100%; height:100%; object-fit:cover; transition: transform .45s ease; }
+
+    .hp-prod-badges {
+      position: absolute; top: 10px; left: 10px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .hp-badge {
+      font-size: 9px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 2px; color: #fff;
+      line-height: 1.4;
+    }
+    .hp-badge-new { background: #1a1a2e; }
+    .hp-badge-sale { background: #e94560; }
+    .hp-badge-hot { background: #f59e0b; }
+
+    .hp-prod-actions {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: rgba(26,26,46,.85);
+      backdrop-filter: blur(4px);
+      display: flex;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity .2s, transform .2s;
+    }
+    .hp-prod-act-btn {
+      flex: 1; padding: 11px 8px;
+      font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+      color: rgba(255,255,255,.85);
+      border-right: 1px solid rgba(255,255,255,.1);
+      transition: background .15s, color .15s;
+      text-align: center;
+    }
+    .hp-prod-act-btn:last-child { border-right: none; }
+    .hp-prod-act-btn:hover { background: #e94560; color: #fff; }
+
+    .hp-prod-body { padding: 13px 14px 16px; }
+    .hp-prod-cat { font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #a09dae; margin-bottom: 4px; }
+    .hp-prod-name { font-size: 13px; font-weight: 600; color: #1a1a2e; line-height: 1.35; margin-bottom: 8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .hp-prod-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .hp-prod-price-wrap { display: flex; align-items: baseline; gap: 6px; }
+    .hp-prod-price { font-size: 14px; font-weight: 800; color: #1a1a2e; }
+    .hp-prod-orig { font-size: 11px; color: #c0bcca; text-decoration: line-through; }
+    .hp-prod-rating { display: flex; align-items: center; gap: 3px; }
+    .hp-prod-stars { color: #f59e0b; font-size: 10px; letter-spacing: -1px; }
+    .hp-prod-rcount { font-size: 10px; color: #a09dae; }
+
+    /* ── FEATURED BANNER SPLIT ── */
+    .feat-banner { display: grid; grid-template-columns: 1fr 1fr; min-height: 420px; }
+    .feat-panel {
+      position: relative; overflow: hidden;
+      display: flex; align-items: flex-end;
+      padding: 48px;
+    }
+    .feat-panel img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .6s; }
+    .feat-panel:hover img { transform: scale(1.04); }
+    .feat-panel-overlay { position:absolute; inset:0; background:linear-gradient(to top, rgba(13,12,26,.82) 0%, rgba(13,12,26,.1) 60%); }
+    .feat-panel-content { position:relative; z-index:1; }
+    .feat-eyebrow { font-size:9px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#e94560; margin-bottom:8px; }
+    .feat-panel h3 { font-family:'Playfair Display',serif; font-size:1.75rem; font-weight:900; color:#fff; line-height:1.15; margin-bottom:16px; }
+    .feat-panel h3 em { font-style:italic; }
+    .feat-cta {
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+      color:#fff; padding:10px 22px;
+      border:1.5px solid rgba(255,255,255,.5); border-radius:2px;
+      transition:background .15s, border-color .15s;
+    }
+    .feat-cta:hover { background:#e94560; border-color:#e94560; }
+
+    /* ── BEST SELLERS ── */
+    .bestsellers-section { padding: 64px 0; background: #fff; }
+    .bs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: #e4e1db;
+      border: 1px solid #e4e1db;
+      margin-top: 36px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .bs-item {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 0;
+      background: #fff;
+      transition: background .15s;
+      text-decoration: none;
+      overflow: hidden;
+    }
+    .bs-item:hover { background: #fdf8f9; }
+    .bs-item-rank {
+      display: flex; align-items: center; justify-content: center;
+      font-family:'Playfair Display',serif;
+      font-size: 2.2rem; font-weight: 900;
+      color: #f0eee9;
+      background: #f8f7f4;
+      border-right: 1px solid #e4e1db;
+      padding: 20px 10px;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .bs-item-img {
+      width: 100px; height: 110px; flex-shrink:0;
+      overflow: hidden;
+    }
+    .bs-item-img img { width:100%; height:100%; object-fit:cover; }
+    .bs-item-info { padding: 16px 20px; display:flex; flex-direction:column; justify-content:center; }
+    .bs-item-cat { font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:#a09dae; margin-bottom:4px; }
+    .bs-item-name { font-size:13px; font-weight:600; color:#1a1a2e; line-height:1.3; margin-bottom:8px; }
+    .bs-item-meta { display:flex; align-items:center; gap:10px; }
+    .bs-item-price { font-size:14px; font-weight:800; color:#1a1a2e; }
+    .bs-item-stars { color:#f59e0b; font-size:10px; }
+
+    /* ── SOCIAL PROOF BANNER ── */
+    .social-proof {
+      background: linear-gradient(135deg, #0d0c1a 0%, #1a1a2e 100%);
+      padding: 72px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .social-proof::before {
+      content:'';
+      position:absolute;
+      top:-200px; left:50%;
+      width:700px; height:700px;
+      background:radial-gradient(circle, rgba(233,69,96,.12) 0%, transparent 70%);
+      transform:translateX(-50%);
+    }
+    .sp-inner { text-align:center; position:relative; }
+    .sp-rating-big {
+      display:flex; align-items:center; justify-content:center; gap:6px;
+      margin-bottom:20px;
+    }
+    .sp-stars-big { color:#f59e0b; font-size:1.5rem; letter-spacing:2px; }
+    .sp-rating-num { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:900; color:#fff; }
+    .sp-title { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,3vw,2.8rem); font-weight:900; color:#fff; line-height:1.1; margin-bottom:12px; }
+    .sp-sub { font-size:14px; color:rgba(255,255,255,.45); margin-bottom:48px; }
+
+    /* Review cards */
+    .sp-reviews { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .sp-card {
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:8px;
+      padding:24px;
+      text-align:left;
+      transition:background .2s;
+    }
+    .sp-card:hover { background:rgba(255,255,255,.08); }
+    .sp-card-stars { color:#f59e0b; font-size:12px; letter-spacing:1px; margin-bottom:12px; }
+    .sp-card-body { font-size:13px; line-height:1.7; color:rgba(255,255,255,.65); margin-bottom:16px; font-style:italic; }
+    .sp-card-foot { display:flex; align-items:center; gap:10px; }
+    .sp-card-avatar {
+      width:36px; height:36px; border-radius:50%;
+      overflow:hidden; border:2px solid rgba(255,255,255,.12);
+      background: #2a2040;
+      display:flex; align-items:center; justify-content:center;
+      font-size:14px; font-weight:700; color:rgba(255,255,255,.7);
+      flex-shrink:0;
+    }
+    .sp-card-name { font-size:12px; font-weight:700; color:#fff; }
+    .sp-card-date { font-size:10px; color:rgba(255,255,255,.35); margin-top:1px; }
+    .sp-card-verified { font-size:9px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#2cb67d; margin-top:2px; }
+
+    /* ── BRAND LOGOS ── */
+    .brands-bar { background:#f8f7f4; border-top:1px solid #e4e1db; border-bottom:1px solid #e4e1db; padding:28px 0; }
+    .brands-label { font-size:10px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:#c0bcca; margin-bottom:20px; text-align:center; }
+    .brands-list { display:flex; align-items:center; justify-content:center; gap:48px; flex-wrap:wrap; }
+    .brand-logo-item {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(13px,2vw,18px);
+      font-weight:700;
+      color:#c0bcca;
+      letter-spacing:.05em;
+      transition:color .15s;
+      opacity:.6;
+    }
+    .brand-logo-item:hover { color:#1a1a2e; opacity:1; }
+
+    /* ── EDITORIAL GRID ── */
+    .editorial-section { padding:64px 0; background:#f8f7f4; }
+    .editorial-grid {
+      display:grid;
+      grid-template-columns:1.5fr 1fr 1fr;
+      grid-template-rows:auto auto;
+      gap:12px;
+      margin-top:36px;
+    }
+    .ed-item {
+      position:relative;
+      overflow:hidden;
+      border-radius:6px;
+      background:#1a1a2e;
+      cursor:pointer;
+    }
+    .ed-item img { width:100%; height:100%; object-fit:cover; opacity:.75; transition:opacity .3s, transform .4s; }
+    .ed-item:hover img { opacity:.55; transform:scale(1.04); }
+    .ed-item.tall { grid-row:span 2; min-height:480px; }
+    .ed-item.normal { min-height:220px; }
+    .ed-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(to top, rgba(13,12,26,.9) 0%, transparent 55%);
+      display:flex; flex-direction:column; justify-content:flex-end;
+      padding:24px;
+    }
+    .ed-tag { font-size:9px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#e94560; margin-bottom:6px; }
+    .ed-title { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:#fff; line-height:1.25; margin-bottom:8px; }
+    .ed-read { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.5); display:inline-flex; align-items:center; gap:6px; transition:color .15s; }
+    .ed-item:hover .ed-read { color:#e94560; }
+
+    /* ── NEWSLETTER ── */
+    .hp-newsletter {
+      padding:80px 0;
+      background:#fff;
+      border-top:1px solid #e4e1db;
+    }
+    .nl-inner {
+      max-width:600px;
+      margin:0 auto;
+      text-align:center;
+    }
+    .nl-icon { font-size:2.2rem; margin-bottom:16px; }
+    .nl-title { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,3vw,2.6rem); font-weight:900; color:#1a1a2e; line-height:1.15; margin-bottom:12px; }
+    .nl-sub { font-size:14px; color:#6b6878; line-height:1.7; margin-bottom:32px; max-width:42ch; margin-left:auto; margin-right:auto; }
+    .nl-form { display:flex; gap:8px; max-width:440px; margin:0 auto; }
+    .nl-input {
+      flex:1; padding:14px 18px;
+      border:1.5px solid #e4e1db; border-radius:3px;
+      font-size:14px; color:#1a1a2e;
+      transition:border-color .2s, box-shadow .2s;
+      background:#f8f7f4;
+    }
+    .nl-input:focus { outline:none; border-color:#e94560; background:#fff; box-shadow:0 0 0 3px rgba(233,69,96,.1); }
+    .nl-input::placeholder { color:#c0bcca; }
+    .nl-btn {
+      padding:14px 28px;
+      background:#1a1a2e; color:#fff;
+      font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+      border:none; border-radius:3px; cursor:pointer;
+      white-space:nowrap;
+      transition:background .15s;
+    }
+    .nl-btn:hover { background:#e94560; }
+    .nl-perks { display:flex; justify-content:center; gap:24px; margin-top:20px; flex-wrap:wrap; }
+    .nl-perk { font-size:11px; color:#a09dae; display:flex; align-items:center; gap:5px; }
+    .nl-perk::before { content:'✓'; color:#2cb67d; font-weight:700; }
+
+    /* ── PRODUCT COLOR SWATCHES ── */
+    .prod-swatches { display:flex; gap:4px; margin-top:6px; }
+    .prod-swatch { width:12px; height:12px; border-radius:50%; border:1.5px solid rgba(0,0,0,.1); }
+
+    /* ── RECENTLY VIEWED STRIP ── */
+    .recent-strip { padding:40px 0; background:#f0eee9; }
+    .recent-scroll { display:flex; gap:12px; overflow-x:auto; padding-bottom:4px; scrollbar-width:none; }
+    .recent-scroll::-webkit-scrollbar { display:none; }
+    .recent-card {
+      flex-shrink:0; width:120px;
+      text-decoration:none;
+      transition:transform .2s;
+    }
+    .recent-card:hover { transform:translateY(-2px); }
+    .recent-card-img {
+      width:120px; height:140px;
+      border-radius:4px; overflow:hidden;
+      background:#e4e1db;
+    }
+    .recent-card-img img { width:100%; height:100%; object-fit:cover; }
+    .recent-card-name { font-size:11px; font-weight:600; color:#1a1a2e; margin-top:8px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .recent-card-price { font-size:11px; color:#6b6878; margin-top:2px; }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1100px) {
+      .hp-product-grid { grid-template-columns:repeat(4,1fr); }
+      .hp-hero { grid-template-columns:1fr; min-height:auto; }
+      .hp-hero-right { grid-column:1; display:none; }
+      .hp-hero-left { padding:60px 32px; }
+      .bs-grid { grid-template-columns:1fr; }
+    }
+    @media(max-width:900px) {
+      .hp-product-grid { grid-template-columns:repeat(3,1fr); }
+      .trust-strip-inner { grid-template-columns:repeat(2,1fr); }
+      .trust-cell:nth-child(2) { border-right:none; }
+      .feat-banner { grid-template-columns:1fr; }
+      .sp-reviews { grid-template-columns:1fr; }
+      .editorial-grid { grid-template-columns:1fr 1fr; }
+      .ed-item.tall { grid-row:span 1; min-height:280px; }
+      .cats-scroll { grid-template-columns:repeat(3,1fr); }
+    }
+    @media(max-width:640px) {
+      .hp-product-grid { grid-template-columns:repeat(2,1fr); }
+      .trust-strip-inner { grid-template-columns:1fr; }
+      .trust-cell { border-right:none; border-bottom:1px solid #e4e1db; }
+      .trust-cell:last-child { border-bottom:none; }
+      .editorial-grid { grid-template-columns:1fr; }
+      .cats-scroll { grid-template-columns:repeat(3,1fr); gap:6px; }
+      .brands-list { gap:24px; }
+      .nl-form { flex-direction:column; }
+    }
+
+    /* Placeholder image backgrounds (Unsplash URLs) */
+    .img-placeholder { background:#e4e1db; display:flex; align-items:center; justify-content:center; color:#c0bcca; font-size:11px; }
+
+    /* Scroll reveal */
+    .fade-up { opacity:0; transform:translateY(20px); transition:opacity .5s ease, transform .5s ease; }
+    .fade-up.in { opacity:1; transform:translateY(0); }
+
+    /* ── MOBILE NAV DRAWER (bulletproof against conflicting rules in
+         assets/css/*.css — uses !important + a unique "is-open" state
+         class instead of the generic ".active" that style.css may
+         already define differently for .mobile-nav) ── */
+    div#mobileNavOverlay.mobile-nav-overlay {
+      position: fixed !important;
+      top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+      width: 100% !important; height: 100% !important;
+      translate: none !important;
+      transform: none !important;
+      background: rgba(13,12,26,.55) !important;
+      backdrop-filter: blur(2px);
+      z-index: 99998 !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transition: opacity .3s ease !important;
+      margin: 0 !important;
+      transform: none !important;
+    }
+    div#mobileNavOverlay.mobile-nav-overlay.is-open {
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+    nav#mobileNav.mobile-nav {
+      position: fixed !important;
+      top: 0 !important;
+      right: 0 !important;
+      left: auto !important;
+      bottom: auto !important;
+      margin: 0 !important;
+      height: 100vh !important;
+      max-height: 100vh !important;
+      width: min(340px, 86vw) !important;
+      max-width: 86vw !important;
+      background: #fff !important;
+      z-index: 99999 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      /* IMPORTANT: the site's own style.css animates a different
+         .mobile-nav via the CSS `translate` property (translate: -100% 0),
+         which is a SEPARATE property from `transform` and stacks with it
+         instead of being overridden by it — that's what caused the
+         drawer to sit permanently visible/pinned. Force it off here. */
+      translate: none !important;
+      transform: translateX(100%) !important;
+      transition: transform .32s cubic-bezier(.4,0,.2,1) !important;
+      box-shadow: -8px 0 32px rgba(13,12,26,.18);
+      overflow-y: auto !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+    }
+    nav#mobileNav.mobile-nav.is-open {
+      translate: none !important;
+      transform: translateX(0) !important;
+    }
+    .mobile-nav-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 20px;
+      border-bottom: 1px solid #e4e1db;
+      flex-shrink: 0;
+    }
+    .mobile-search { padding: 16px 20px; border-bottom: 1px solid #e4e1db; flex-shrink: 0; }
+    .mobile-nav-body { flex: 1; padding: 8px 0; }
+    .mobile-nav-list { list-style: none; margin: 0; padding: 0; }
+    .mobile-nav-link {
+      display: block;
+      padding: 14px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1a1a2e;
+      text-decoration: none;
+      border-bottom: 1px solid #f0eee9;
+    }
+    .mobile-nav-link.active,
+    .mobile-nav-link:hover { color: #e94560; background: #fdf8f9; }
+    .mobile-nav-footer {
+      padding: 20px;
+      border-top: 1px solid #e4e1db;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    body.no-scroll { overflow: hidden !important; }
+    /* Only show hamburger on narrower layouts where the row nav would otherwise be cramped */
+    @media(min-width: 1101px) {
+      button#menuToggle.menu-toggle { display: none !important; }
+    }
+    button#menuToggle.menu-toggle {
+      display: flex !important;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      background: transparent !important;
+      border: none !important;
+      cursor: pointer;
+    }
+    button#menuToggle.menu-toggle span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: #1a1a2e;
+      border-radius: 2px;
+      transition: transform .25s ease, opacity .25s ease;
+    }
+    button#menuToggle.menu-toggle.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    button#menuToggle.menu-toggle.is-open span:nth-child(2) { opacity: 0; }
+    button#menuToggle.menu-toggle.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .sp-card-avatar-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+  </style>
+</head>
+<body>
+
+  <!-- ── ANNOUNCEMENT TICKER ── -->
+  <div class="ticker-wrap" aria-hidden="true">
+    <div class="ticker">
+      <div class="ticker-item">🚚 Free shipping on orders over $75</div>
+      <div class="ticker-item">Use code <span>WELCOME15</span> for 15% off your first order</div>
+      <div class="ticker-item">⭐ Rated 4.9/5 by over 12,000 customers</div>
+      <div class="ticker-item">🌿 Sustainably sourced &amp; ethically made</div>
+      <div class="ticker-item">↩️ 30-day hassle-free returns</div>
+      <div class="ticker-item">🔒 Secure checkout · Pay with Apple Pay, PayPal, Visa</div>
+      <!-- duplicate for seamless loop -->
+      <div class="ticker-item">🚚 Free shipping on orders over $75</div>
+      <div class="ticker-item">Use code <span>WELCOME15</span> for 15% off your first order</div>
+      <div class="ticker-item">⭐ Rated 4.9/5 by over 12,000 customers</div>
+      <div class="ticker-item">🌿 Sustainably sourced &amp; ethically made</div>
+      <div class="ticker-item">↩️ 30-day hassle-free returns</div>
+      <div class="ticker-item">🔒 Secure checkout · Pay with Apple Pay, PayPal, Visa</div>
+    </div>
+  </div>
+
+  <!-- ── HEADER ── -->
+  <header class="site-header" id="siteHeader">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="site-logo">
+          <div class="logo-mark">✦</div>
+          <span class="logo-text">Luxe<span>Shop</span></span>
+        </a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <ul class="nav-list">
+            <li><a href="index.html" class="nav-link active">Home</a></li>
+            <li class="nav-item">
+              <a href="shop.html" class="nav-link">New Arrivals <span style="font-size:0.7em">▾</span></a>
+              <div class="nav-dropdown">
+                <a href="shop.html?cat=new">Just Landed</a>
+                <a href="shop.html?cat=trending">Trending</a>
+                <a href="shop.html?cat=editors-pick">Editor's Pick</a>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a href="shop.html" class="nav-link">Women <span style="font-size:0.7em">▾</span></a>
+              <div class="nav-dropdown">
+                <a href="shop.html?cat=dresses">Dresses</a>
+                <a href="shop.html?cat=tops">Tops &amp; Blouses</a>
+                <a href="shop.html?cat=blazers">Blazers &amp; Jackets</a>
+                <a href="shop.html?cat=pants">Trousers &amp; Jeans</a>
+                <a href="shop.html?cat=knitwear">Knitwear</a>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a href="shop.html" class="nav-link">Men <span style="font-size:0.7em">▾</span></a>
+              <div class="nav-dropdown">
+                <a href="shop.html?cat=shirts">Shirts</a>
+                <a href="shop.html?cat=mens-jackets">Jackets &amp; Coats</a>
+                <a href="shop.html?cat=mens-trousers">Trousers</a>
+                <a href="shop.html?cat=mens-knitwear">Knitwear</a>
+              </div>
+            </li>
+            <li><a href="shop.html?cat=accessories" class="nav-link">Accessories</a></li>
+            <li><a href="shop.html?cat=sale" class="nav-link" style="color:var(--clr-accent);font-weight:700">Sale</a></li>
+          </ul>
+        </nav>
+        <div class="header-search">
+          <span class="header-search-icon">⌕</span>
+          <input type="search" placeholder="Search products, brands…" aria-label="Search" id="headerSearch" readonly onclick="openSearch()">
+        </div>
+        <div class="header-actions">
+          <button class="header-icon-btn" aria-label="Search" onclick="openSearch()">⌕</button>
+          <a href="account.html" class="header-icon-btn" aria-label="Account">◉</a>
+          <a href="wishlist.html" class="header-icon-btn" aria-label="Wishlist">♡<span class="badge-count" id="wishlistCount">0</span></a>
+          <button class="header-icon-btn" aria-label="Cart" id="cartToggle">⊡<span class="badge-count" id="cartCount">0</span></button>
+          <button class="menu-toggle" aria-label="Open menu" id="menuToggle"><span></span><span></span><span></span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ──────────────────────────────────────────
+         HERO — Split layout: copy left, image mosaic right
+    ─────────────────────────────────────────── -->
+    <section class="hp-hero">
+      <!-- Left: copy -->
+      <div class="hp-hero-left">
+        <div class="hero-eyebrow-new">Summer 2025 Collection</div>
+        <h1>Style Built for<br>the <em>Modern</em><br>Wardrobe</h1>
+        <p class="hero-sub">Curated pieces from independent designers and heritage houses — quality you can feel, style you'll keep reaching for.</p>
+        <div class="hero-actions">
+          <a href="shop.html" class="btn-hero-primary">Shop New Arrivals →</a>
+          <a href="shop.html?cat=sale" class="btn-hero-ghost">View Sale <span>↗</span></a>
+        </div>
+        <div class="hero-stat-row">
+          <div>
+            <div class="hsr-num">12K+</div>
+            <div class="hsr-label">Customers</div>
+          </div>
+          <div>
+            <div class="hsr-num">800+</div>
+            <div class="hsr-label">Products</div>
+          </div>
+          <div>
+            <div class="hsr-num">4.9★</div>
+            <div class="hsr-label">Rating</div>
+          </div>
+          <div>
+            <div class="hsr-num">30d</div>
+            <div class="hsr-label">Free Returns</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: image mosaic -->
+      <div class="hp-hero-right">
+        <div class="hero-img-cell">
+          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80&fit=crop" alt="Fashion model in blazer" loading="eager">
+          <div class="hero-badge-float">New In</div>
+        </div>
+        <div class="hero-img-cell">
+          <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80&fit=crop&crop=top" alt="Fashion accessories" loading="eager">
+          <div class="hero-badge-float">Up to 60% Off</div>
+        </div>
+        <div class="hero-img-cell span2">
+          <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1000&q=80&fit=crop" alt="Women's clothing collection" loading="eager" style="object-position:center 25%">
+          <div class="hero-badge-float">Trending Now</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────────
+         TRUST BAR
+    ─────────────────────────────────────────── -->
+    <div class="trust-strip">
+      <div class="container">
+        <div class="trust-strip-inner">
+          <div class="trust-cell">
+            <div class="trust-cell-icon">🚚</div>
+            <div>
+              <div class="trust-cell-title">Free Shipping</div>
+              <div class="trust-cell-sub">On all orders over $75</div>
+            </div>
+          </div>
+          <div class="trust-cell">
+            <div class="trust-cell-icon">↩️</div>
+            <div>
+              <div class="trust-cell-title">30-Day Returns</div>
+              <div class="trust-cell-sub">No questions asked</div>
+            </div>
+          </div>
+          <div class="trust-cell">
+            <div class="trust-cell-icon">🔒</div>
+            <div>
+              <div class="trust-cell-title">Secure Checkout</div>
+              <div class="trust-cell-sub">256-bit SSL encryption</div>
+            </div>
+          </div>
+          <div class="trust-cell">
+            <div class="trust-cell-icon">🌿</div>
+            <div>
+              <div class="trust-cell-title">Ethically Sourced</div>
+              <div class="trust-cell-sub">Certified supply chain</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────
+         CATEGORY PILLS
+    ─────────────────────────────────────────── -->
+    <section class="cats-section fade-up">
+      <div class="container">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div>
+            <div class="sec-label">Browse by Category</div>
+            <h2 class="sec-title" style="font-size:clamp(1.3rem,2.2vw,1.8rem)">Shop Your Style</h2>
+          </div>
+          <a href="shop.html" class="see-all-link">All Categories →</a>
+        </div>
+        <div class="cats-scroll" style="margin-top:28px">
+          <a href="shop.html?cat=women" class="cat-pill">
+            <div class="cat-pill-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&h=200&fit=crop&q=75" alt="Women"></div>
+            <div class="cat-pill-name">Women</div>
+            <div class="cat-pill-count">214 items</div>
+          </a>
+          <a href="shop.html?cat=men" class="cat-pill">
+            <div class="cat-pill-img"><img src="https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=200&h=200&fit=crop&q=75" alt="Men"></div>
+            <div class="cat-pill-name">Men</div>
+            <div class="cat-pill-count">183 items</div>
+          </a>
+          <a href="shop.html?cat=accessories" class="cat-pill">
+            <div class="cat-pill-img"><img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=200&h=200&fit=crop&q=75" alt="Bags"></div>
+            <div class="cat-pill-name">Bags</div>
+            <div class="cat-pill-count">96 items</div>
+          </a>
+          <a href="shop.html?cat=shoes" class="cat-pill">
+            <div class="cat-pill-img"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&h=200&fit=crop&q=75" alt="Shoes"></div>
+            <div class="cat-pill-name">Shoes</div>
+            <div class="cat-pill-count">142 items</div>
+          </a>
+          <a href="shop.html?cat=jewellery" class="cat-pill">
+            <div class="cat-pill-img"><img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=200&h=200&fit=crop&q=75" alt="Jewellery"></div>
+            <div class="cat-pill-name">Jewellery</div>
+            <div class="cat-pill-count">78 items</div>
+          </a>
+          <a href="shop.html?cat=sale" class="cat-pill">
+            <div class="cat-pill-img" style="border-color:#e94560 !important;border-width:2.5px;"><img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=200&h=200&fit=crop&q=75" alt="Sale"></div>
+            <div class="cat-pill-name" style="color:#e94560">Sale</div>
+            <div class="cat-pill-count" style="color:#e94560">Up to 60% off</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────────
+         NEW ARRIVALS PRODUCT GRID
+    ─────────────────────────────────────────── -->
+    <section class="hp-products-section fade-up">
+      <div class="container">
+        <div class="hp-prod-header">
+          <div>
+            <div class="sec-label">Just Landed</div>
+            <h2 class="sec-title">New Arrivals</h2>
+          </div>
+          <a href="shop.html?cat=new" class="see-all-link">View All New →</a>
+        </div>
+
+        <!-- Tab filters -->
+        <div class="prod-tabs" role="tablist">
+          <button class="prod-tab active" role="tab" onclick="filterTab(this)">All</button>
+          <button class="prod-tab" role="tab" onclick="filterTab(this)">Women</button>
+          <button class="prod-tab" role="tab" onclick="filterTab(this)">Men</button>
+          <button class="prod-tab" role="tab" onclick="filterTab(this)">Accessories</button>
+          <button class="prod-tab" role="tab" onclick="filterTab(this)">Under $100</button>
+        </div>
+
+        <div class="hp-product-grid">
+
+          <!-- Product 1 -->
+          <div class="hp-prod-card">
+            <div class="hp-prod-img">
+              <img src="https://images.unsplash.com/photo-1591369822096-ffd140ec948f?w=400&h=530&fit=crop&q=80" alt="Merino Wool Blazer" loading="lazy">
+              <div class="hp-prod-badges"><span class="hp-badge hp-badge-new">New</span></div>
+              <div class="hp-prod-actions">
+                <button class="hp-prod-act-btn" onclick="showToast('Added to wishlist ♡')">♡ Save</button>
+                <a href="product.html" class="hp-prod-act-btn">View</a>
+                <button class="hp-prod-act-btn" onclick="showToast('Added to cart!','success')">+ Cart</button>
+              </div>
+            </div>
+            <div class="hp-prod-body">
+              <div class="hp-prod-cat">Women / Blazers</div>
+              <div class="hp-prod-name">Merino Wool Blazer</div>
+              <div class="prod-swatches">
+                <div class="prod-swatch" style="background:#f8f7f4;border:1.5px solid #ccc" title="Ivory"></div>
+                <div class="prod-swatch" style="background:#1a1a2e" title="Navy"></div>
+                <div class="prod-swatch" style="background:#a09dae" title="Stone"></div>
+              </div>
+              <div class="hp-prod-footer" style="margin-top:10px">
+                <div class="hp-prod-price-wrap">
+                  <span class="hp-prod-price">$189</span>
+                  <span class="hp-prod-orig">$240</span>
+                </div>
+                <div class="hp-prod-rating">
+                  <span class="hp-prod-stars">★★★★★</span>
+                  <span class="hp-prod-rcount">(142)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 2 -->
+          <div class="hp-prod-card">
+            <div class="hp-prod-img">
+              <img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=400&h=530&fit=crop&q=80" alt="Linen Slip Dress" loading="lazy">
+              <div class="hp-prod-badges"><span class="hp-badge hp-badge-new">New</span></div>
+              <div class="hp-prod-actions">
+                <button class="hp-prod-act-btn" onclick="showToast('Added to wishlist ♡')">♡ Save</button>
+                <a href="product.html" class="hp-prod-act-btn">View</a>
+                <button class="hp-prod-act-btn" onclick="showToast('Added to cart!','success')">+ Cart</button>
+              </div>
+            </div>
+            <div class="hp-prod-body">
+              <div class="hp-prod-cat">Women / Dresses</div>
+              <div class="hp-prod-name">Linen Slip Dress</div>
+              <div class="prod-swatches">
+                <div class="prod-swatch" style="background:#d4af8c" title="Sand"></div>
+                <div class="prod-swatch" style="background:#c0bcca" title="Lilac"></div>
+                <div class="prod-swatch" style="background:#2d2d2d" title="Black"></div>
+              </div>
+              <div class="hp-prod-footer" style="margin-top:10px">
+                <div class="hp-prod-price-wrap"><span class="hp-prod-price">$129</span></div>
+                <div class="hp-prod-rating"><span class="hp-prod-stars">★★★★☆</span><span class="hp-prod-rcount">(87)</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 3 -->
+          <div class="hp-prod-card">
+            <div class="hp-prod-img">
+              <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&h=530&fit=crop&q=80" alt="Leather Tote Bag" loading="lazy">
+              <div class="hp-prod-badges"><span class="hp-badge hp-badge-hot">Bestseller</span></div>
+              <div class="hp-prod-actions">
+                <button class="hp-prod-act-btn" onclick="showToast('Added to wishlist ♡')">♡ Save</button>
+                <a href="product.html" class="hp-prod-act-btn">View</a>
+                <button class="hp-prod-act-btn" onclick="showToast('Added to cart!','success')">+ Cart</button>
+              </div>
+            </div>
+            <div class="hp-prod-body">
+              <div class="hp-prod-cat">Accessories / Bags</div>
+              <div class="hp-prod-name">Italian Leather Tote</div>
+              <div class="prod-swatches">
+                <div class="prod-swatch" style="background:#8B6914" title="Tan"></div>
+                <div class="prod-swatch" style="background:#1a1a2e" title="Black"></div>
+                <div class="prod-swatch" style="background:#c0392b" title="Burgundy"></div>
+              </div>
+              <div class="hp-prod-footer" style="margin-top:10px">
+                <div class="hp-prod-price-wrap"><span class="hp-prod-price">$245</span></div>
+                <div class="hp-prod-rating"><span class="hp-prod-stars">★★★★★</span><span class="hp-prod-rcount">(203)</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 4 -->
+          <div class="hp-prod-card">
+            <div class="hp-prod-img">
+              <img src="https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=400&h=530&fit=crop&q=80&crop=top" alt="Relaxed Linen Shirt" loading="lazy">
+              <div class="hp-prod-badges"><span class="hp-badge hp-badge-new">New</span></div>
+              <div class="hp-prod-actions">
+                <button class="hp-prod-act-btn" onclick="showToast('Added to wishlist ♡')">♡ Save</button>
+                <a href="product.html" class="hp-prod-act-btn">View</a>
+                <button class="hp-prod-act-btn" onclick="showToast('Added to cart!','success')">+ Cart</button>
+              </div>
+            </div>
+            <div class="hp-prod-body">
+              <div class="hp-prod-cat">Men / Shirts</div>
+              <div class="hp-prod-name">Relaxed Linen Shirt</div>
+              <div class="prod-swatches">
+                <div class="prod-swatch" style="background:#f5f0e8" title="Ecru"></div>
+                <div class="prod-swatch" style="background:#88a4b5" title="Sky"></div>
+                <div class="prod-swatch" style="background:#4a4a4a" title="Charcoal"></div>
+              </div>
+              <div class="hp-prod-footer" style="margin-top:10px">
+                <div class="hp-prod-price-wrap"><span class="hp-prod-price">$95</span></div>
+                <div class="hp-prod-rating"><span class="hp-prod-stars">★★★★★</span><span class="hp-prod-rcount">(61)</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product 5 -->
+          <div class="hp-prod-card">
+            <div class="hp-prod-img">
+              <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&h=530&fit=crop&q=80" alt="Gold Hoop Earrings" loading="lazy">
+              <div class="hp-prod-badges"><span class="hp-badge hp-badge-sale">−30%</span></div>
+              <div class="hp-prod-actions">
+                <button class="hp-prod-act-btn" onclick="showToast('Added to wishlist ♡')">♡ Save</button>
+                <a href="product.html" class="hp-prod-act-btn">View</a>
+                <button class="hp-prod-act-btn" onclick="showToast('Added to cart!','success')">+ Cart</button>
+              </div>
+            </div>
+            <div class="hp-prod-body">
+              <div class="hp-prod-cat">Jewellery / Earrings</div>
+              <div class="hp-prod-name">Gold Hoop Earrings</div>
+              <div class="prod-swatches">
+                <div class="prod-swatch" style="background:#d4af37" title="Gold"></div>
+                <div class="prod-swatch" style="background:#b0b0b0" title="Silver"></div>
+              </div>
+              <div class="hp-prod-footer" style="margin-top:10px">
+                <div class="hp-prod-price-wrap">
+                  <span class="hp-prod-price">$49</span>
+                  <span class="hp-prod-orig">$69</span>
+                </div>
+                <div class="hp-prod-rating"><span class="hp-prod-stars">★★★★★</span><span class="hp-prod-rcount">(178)</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────────
+         FEATURED SPLIT BANNERS
+    ─────────────────────────────────────────── -->
+    <div class="feat-banner fade-up">
+      <a href="shop.html?cat=women" class="feat-panel">
+        <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&q=80&fit=crop&crop=center" alt="Women's new season">
+        <div class="feat-panel-overlay"></div>
+        <div class="feat-panel-content">
+          <div class="feat-eyebrow">Women's Edit · Summer 2025</div>
+          <h3>New Season<br><em>Essentials</em></h3>
+          <span class="feat-cta">Shop Women →</span>
+        </div>
+      </a>
+      <a href="shop.html?cat=sale" class="feat-panel">
+        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&q=80&fit=crop&crop=top" alt="Sale up to 60% off">
+        <div class="feat-panel-overlay"></div>
+        <div class="feat-panel-content">
+          <div class="feat-eyebrow">Limited Time · Ends Sunday</div>
+          <h3>Up to <em>60% Off</em><br>Sale Items</h3>
+          <span class="feat-cta">Shop the Sale →</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- ──────────────────────────────────────────
+         TRENDING / BESTSELLERS (list format)
+    ─────────────────────────────────────────── -->
+    <section class="bestsellers-section fade-up">
+      <div class="container">
+        <div class="hp-prod-header">
+          <div>
+            <div class="sec-label">Customer Favorites</div>
+            <h2 class="sec-title">Bestsellers This Week</h2>
+          </div>
+          <a href="shop.html?sort=popular" class="see-all-link">View All →</a>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+          <!-- Product grid (right) -->
+          <div class="hp-product-grid" style="grid-template-columns:repeat(2,1fr)">
+            <!-- Mini product cards -->
+            <div class="hp-prod-card">
+              <div class="hp-prod-img" style="aspect-ratio:3/4">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=400&fit=crop&q=80&crop=top" alt="Classic Chino" loading="lazy">
+                <div class="hp-prod-badges"><span class="hp-badge hp-badge-hot">Top Pick</span></div>
+                <div class="hp-prod-actions">
+                  <button class="hp-prod-act-btn" onclick="showToast('Added to wishlist ♡')">♡</button>
+                  <a href="product.html" class="hp-prod-act-btn">View</a>
+                  <button class="hp-prod-act-btn" onclick="showToast('Added to cart!','success')">+</button>
+                </div>
+              </div>
+              <div class="hp-prod-body">
+                <div class="hp-prod-cat">Men / Trousers</div>
+                <div class="hp-prod-name">Classic Slim Chino</div>
+                <div class="hp-prod-footer" style="margin-top:8px">
+                  <span class="hp-prod-price">$115</span>
+                  <div class="hp-prod-rating"><span class="hp-prod-stars">★★★★★</span><span class="hp-prod-rcount">(94)</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="hp-prod-card">
+              <div class="hp-prod-img" style="aspect-ratio:3/4">
+                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&h=400&fit=crop&q=80" alt="White Sneaker" loading="lazy">
+                <div class="hp-prod-badges"><span class="hp-badge hp-badge-sale">−25%</span></div>
+                <div class="hp-prod-actions">
+                  <button class="hp-prod-act-btn" onclick="showToast('Added to wishlist ♡')">♡</button>
+                  <a href="product.html" class="hp-prod-act-btn">View</a>
+                  <button class="hp-prod-act-btn" onclick="showToast('Added to cart!','success')">+</button>
+                </div>
+              </div>
+              <div class="hp-prod-body">
+                <div class="hp-prod-cat">Shoes / Sneakers</div>
+                <div class="hp-prod-name">Clean Court Sneaker</div>
+                <div class="hp-prod-footer" style="margin-top:8px">
+                  <div class="hp-prod-price-wrap"><span class="hp-prod-price">$89</span><span class="hp-prod-orig">$119</span></div>
+                  <div class="hp-prod-rating"><span class="hp-prod-stars">★★★★★</span><span class="hp-prod-rcount">(312)</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="hp-prod-card">
+              <div class="hp-prod-img" style="aspect-ratio:3/4">
+                <img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=300&h=400&fit=crop&q=80" alt="Cashmere Sweater" loading="lazy">
+                <div class="hp-prod-badges"><span class="hp-badge hp-badge-new">New</span></div>
+                <div class="hp-prod-actions">
+                  <button class="hp-prod-act-btn" onclick="showToast('Added to wishlist ♡')">♡</button>
+                  <a href="product.html" class="hp-prod-act-btn">View</a>
+                  <button class="hp-prod-act-btn" onclick="showToast('Added to cart!','success')">+</button>
+                </div>
+              </div>
+              <div class="hp-prod-body">
+                <div class="hp-prod-cat">Women / Knitwear</div>
+                <div class="hp-prod-name">Cashmere V-Neck</div>
+                <div class="hp-prod-footer" style="margin-top:8px">
+                  <span class="hp-prod-price">$195</span>
+                  <div class="hp-prod-rating"><span class="hp-prod-stars">★★★★★</span><span class="hp-prod-rcount">(56)</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="hp-prod-card">
+              <div class="hp-prod-img" style="aspect-ratio:3/4">
+                <img src="https://images.unsplash.com/photo-1523779917675-b6ed3a42a561?w=300&h=400&fit=crop&q=80" alt="Wool Coat" loading="lazy">
+                <div class="hp-prod-badges"><span class="hp-badge hp-badge-hot">Bestseller</span></div>
+                <div class="hp-prod-actions">
+                  <button class="hp-prod-act-btn" onclick="showToast('Added to wishlist ♡')">♡</button>
+                  <a href="product.html" class="hp-prod-act-btn">View</a>
+                  <button class="hp-prod-act-btn" onclick="showToast('Added to cart!','success')">+</button>
+                </div>
+              </div>
+              <div class="hp-prod-body">
+                <div class="hp-prod-cat">Women / Coats</div>
+                <div class="hp-prod-name">Structured Wool Coat</div>
+                <div class="hp-prod-footer" style="margin-top:8px">
+                  <span class="hp-prod-price">$349</span>
+                  <div class="hp-prod-rating"><span class="hp-prod-stars">★★★★★</span><span class="hp-prod-rcount">(211)</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bestseller ranked list (left) -->
+          <div>
+            <div class="bs-grid">
+              <a href="product.html" class="bs-item">
+                <div class="bs-item-rank">01</div>
+                <div class="bs-item-img"><img src="https://images.unsplash.com/photo-1591369822096-ffd140ec948f?w=200&h=220&fit=crop&q=75" alt="Merino Blazer" loading="lazy"></div>
+                <div class="bs-item-info">
+                  <div class="bs-item-cat">Women · Blazers</div>
+                  <div class="bs-item-name">Merino Wool Blazer</div>
+                  <div class="bs-item-meta">
+                    <span class="bs-item-price">$189</span>
+                    <span class="bs-item-stars">★★★★★</span>
+                    <span style="font-size:10px;color:#a09dae">(142)</span>
+                  </div>
+                </div>
+              </a>
+              <a href="product.html" class="bs-item">
+                <div class="bs-item-rank">02</div>
+                <div class="bs-item-img"><img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=200&h=220&fit=crop&q=75" alt="Leather Tote" loading="lazy"></div>
+                <div class="bs-item-info">
+                  <div class="bs-item-cat">Accessories · Bags</div>
+                  <div class="bs-item-name">Italian Leather Tote</div>
+                  <div class="bs-item-meta">
+                    <span class="bs-item-price">$245</span>
+                    <span class="bs-item-stars">★★★★★</span>
+                    <span style="font-size:10px;color:#a09dae">(203)</span>
+                  </div>
+                </div>
+              </a>
+              <a href="product.html" class="bs-item">
+                <div class="bs-item-rank">03</div>
+                <div class="bs-item-img"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&h=220&fit=crop&q=75" alt="Court Sneaker" loading="lazy"></div>
+                <div class="bs-item-info">
+                  <div class="bs-item-cat">Shoes · Sneakers</div>
+                  <div class="bs-item-name">Clean Court Sneaker</div>
+                  <div class="bs-item-meta">
+                    <span class="bs-item-price">$89</span>
+                    <span class="bs-item-stars">★★★★★</span>
+                    <span style="font-size:10px;color:#a09dae">(312)</span>
+                  </div>
+                </div>
+              </a>
+              <a href="product.html" class="bs-item">
+                <div class="bs-item-rank">04</div>
+                <div class="bs-item-img"><img src="https://images.unsplash.com/photo-1523779917675-b6ed3a42a561?w=200&h=220&fit=crop&q=75" alt="Wool Coat" loading="lazy"></div>
+                <div class="bs-item-info">
+                  <div class="bs-item-cat">Women · Outerwear</div>
+                  <div class="bs-item-name">Structured Wool Coat</div>
+                  <div class="bs-item-meta">
+                    <span class="bs-item-price">$349</span>
+                    <span class="bs-item-stars">★★★★★</span>
+                    <span style="font-size:10px;color:#a09dae">(211)</span>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────────
+         BRAND LOGOS BAR
+    ─────────────────────────────────────────── -->
+    <div class="brands-bar">
+      <div class="container">
+        <div class="brands-label">Brands we carry</div>
+        <div class="brands-list">
+          <span class="brand-logo-item">MAISON</span>
+          <span class="brand-logo-item">ÉCLAT</span>
+          <span class="brand-logo-item">ARLO STUDIO</span>
+          <span class="brand-logo-item">NORDVIK</span>
+          <span class="brand-logo-item">LE CÈDRE</span>
+          <span class="brand-logo-item">VOISIN</span>
+          <span class="brand-logo-item">HOLM&CO</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────
+         EDITORIAL / INSPIRATION GRID
+    ─────────────────────────────────────────── -->
+    <section class="editorial-section fade-up">
+      <div class="container">
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div>
+            <div class="sec-label">Style Inspiration</div>
+            <h2 class="sec-title">The Edit</h2>
+          </div>
+          <a href="shop.html" class="see-all-link">See All Looks →</a>
+        </div>
+        <div class="editorial-grid">
+          <!-- Tall feature -->
+          <div class="ed-item tall">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&h=900&fit=crop&q=80" alt="Summer Edit" loading="lazy">
+            <div class="ed-overlay">
+              <div class="ed-tag">The Summer Edit</div>
+              <div class="ed-title">Easy Pieces for<br>Long, Warm Days</div>
+              <span class="ed-read">Shop the Look →</span>
+            </div>
+          </div>
+          <!-- Normal items -->
+          <div class="ed-item normal">
+            <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&h=340&fit=crop&q=80" alt="Office Style" loading="lazy">
+            <div class="ed-overlay">
+              <div class="ed-tag">Work Edit</div>
+              <div class="ed-title">Power Dressing,<br>Refined</div>
+              <span class="ed-read">Explore →</span>
+            </div>
+          </div>
+          <div class="ed-item normal">
+            <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=500&h=340&fit=crop&q=80&crop=top" alt="Weekend style" loading="lazy">
+            <div class="ed-overlay">
+              <div class="ed-tag">Weekend Wear</div>
+              <div class="ed-title">Relaxed &amp; Ready<br>for Anything</div>
+              <span class="ed-read">Shop Now →</span>
+            </div>
+          </div>
+          <div class="ed-item normal">
+            <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500&h=340&fit=crop&q=80&crop=center" alt="Accessories" loading="lazy">
+            <div class="ed-overlay">
+              <div class="ed-tag">Accessories</div>
+              <div class="ed-title">Finish the Look<br>with the Right Bag</div>
+              <span class="ed-read">Discover →</span>
+            </div>
+          </div>
+          <div class="ed-item normal">
+            <img src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=500&h=340&fit=crop&q=80" alt="Sale" loading="lazy">
+            <div class="ed-overlay">
+              <div class="ed-tag">Sale · Up to 60% off</div>
+              <div class="ed-title">This Season's<br>Best Prices</div>
+              <span class="ed-read">Shop Sale →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────────
+         SOCIAL PROOF / REVIEWS
+    ─────────────────────────────────────────── -->
+    <section class="social-proof fade-up">
+      <div class="container">
+        <div class="sp-inner">
+          <div class="sp-rating-big">
+            <span class="sp-stars-big">★★★★★</span>
+            <span class="sp-rating-num">4.9 / 5</span>
+          </div>
+          <h2 class="sp-title">Loved by 12,000+<br>Happy Customers</h2>
+          <p class="sp-sub">Verified reviews from real customers — we don't edit them.</p>
+
+           <div class="sp-reviews">
+    <div class="sp-card">
+      <div class="sp-card-stars">★★★★★</div>
+      <p class="sp-card-body">"I've been shopping at LuxeShop for a year now. The merino wool blazer is still in perfect condition after dozens of wears — the quality is genuinely exceptional."</p>
+      <div class="sp-card-foot">
+        <img class="sp-card-avatar-img" src="https://i.pravatar.cc/64?img=47" alt="Sarah M.">
+        <div>
+          <div class="sp-card-name">Sarah M.</div>
+          <div class="sp-card-date">2 weeks ago · New York</div>
+          <div class="sp-card-verified">✓ Verified Purchase</div>
+        </div>
+      </div>
+    </div>
+    <div class="sp-card">
+      <div class="sp-card-stars">★★★★★</div>
+      <p class="sp-card-body">"Returns were so easy — they actually sent a prepaid label within an hour. The replacement arrived in 2 days. This is what online shopping should feel like."</p>
+      <div class="sp-card-foot">
+        <img class="sp-card-avatar-img" src="https://i.pravatar.cc/64?img=12" alt="James T.">
+        <div>
+          <div class="sp-card-name">James T.</div>
+          <div class="sp-card-date">1 month ago · London</div>
+          <div class="sp-card-verified">✓ Verified Purchase</div>
+        </div>
+      </div>
+    </div>
+    <div class="sp-card">
+      <div class="sp-card-stars">★★★★★</div>
+      <p class="sp-card-body">"The curation is impeccable. I've bought 8 pieces and every single one has become a wardrobe staple. And their packaging — it feels like a gift every time."</p>
+      <div class="sp-card-foot">
+        <img class="sp-card-avatar-img" src="https://i.pravatar.cc/64?img=32" alt="Priya K.">
+        <div>
+          <div class="sp-card-name">Priya K.</div>
+          <div class="sp-card-date">3 weeks ago · Sydney</div>
+          <div class="sp-card-verified">✓ Verified Purchase</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+          <!-- Stats row -->
+          <div style="display:flex;justify-content:center;gap:48px;margin-top:48px;padding-top:32px;border-top:1px solid rgba(255,255,255,.08);flex-wrap:wrap">
+            <div style="text-align:center">
+              <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:#fff;line-height:1">98%</div>
+              <div style="font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Recommend Us</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:#fff;line-height:1">4.2d</div>
+              <div style="font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Avg. Delivery</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:#fff;line-height:1">3h</div>
+              <div style="font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Support Response</div>
+            </div>
+            <div style="text-align:center">
+              <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:#fff;line-height:1">30d</div>
+              <div style="font-size:10px;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase;margin-top:4px">Free Returns</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────────
+         MORE PRODUCTS — UNDER $100
+    ─────────────────────────────────────────── -->
+    <section class="hp-products-section fade-up">
+      <div class="container">
+        <div class="hp-prod-header">
+          <div>
+            <div class="sec-label">Budget-Friendly Finds</div>
+            <h2 class="sec-title">Under $100</h2>
+          </div>
+          <a href="shop.html?price=under100" class="see-all-link">Shop All →</a>
+        </div>
+        <div class="hp-product-grid">
+          <div class="hp-prod-card">
+            <div class="hp-prod-img">
+              <img src="https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=530&fit=crop&q=80" alt="Classic Cotton Tee" loading="lazy">
+              <div class="hp-prod-actions">
+                <button class="hp-prod-act-btn" onclick="showToast('Saved ♡')">♡</button>
+                <a href="product.html" class="hp-prod-act-btn">View</a>
+                <button class="hp-prod-act-btn" onclick="showToast('Added!','success')">+ Cart</button>
+              </div>
+            </div>
+            <div class="hp-prod-body">
+              <div class="hp-prod-cat">Basics / Tops</div>
+              <div class="hp-prod-name">Classic Cotton Tee</div>
+              <div class="hp-prod-footer" style="margin-top:8px">
+                <span class="hp-prod-price">$39</span>
+                <div class="hp-prod-rating"><span class="hp-prod-stars">★★★★★</span><span class="hp-prod-rcount">(418)</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="hp-prod-card">
+            <div class="hp-prod-img">
+              <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&h=530&fit=crop&q=80" alt="Ribbed Tank" loading="lazy">
+              <div class="hp-prod-badges"><span class="hp-badge hp-badge-sale">−20%</span></div>
+              <div class="hp-prod-actions">
+                <button class="hp-prod-act-btn" onclick="showToast('Saved ♡')">♡</button>
+                <a href="product.html" class="hp-prod-act-btn">View</a>
+                <button class="hp-prod-act-btn" onclick="showToast('Added!','success')">+ Cart</button>
+              </div>
+            </div>
+            <div class="hp-prod-body">
+              <div class="hp-prod-cat">Women / Tops</div>
+              <div class="hp-prod-name">Ribbed Tank Top</div>
+              <div class="hp-prod-footer" style="margin-top:8px">
+                <div class="hp-prod-price-wrap"><span class="hp-prod-price">$28</span><span class="hp-prod-orig">$35</span></div>
+                <div class="hp-prod-rating"><span class="hp-prod-stars">★★★★☆</span><span class="hp-prod-rcount">(236)</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="hp-prod-card">
+            <div class="hp-prod-img">
+              <img src="https://images.unsplash.com/photo-1521223890158-f9f7c3d5d504?w=400&h=530&fit=crop&q=80" alt="Canvas Tote" loading="lazy">
+              <div class="hp-prod-actions">
+                <button class="hp-prod-act-btn" onclick="showToast('Saved ♡')">♡</button>
+                <a href="product.html" class="hp-prod-act-btn">View</a>
+                <button class="hp-prod-act-btn" onclick="showToast('Added!','success')">+ Cart</button>
+              </div>
+            </div>
+            <div class="hp-prod-body">
+              <div class="hp-prod-cat">Accessories / Bags</div>
+              <div class="hp-prod-name">Canvas Market Tote</div>
+              <div class="hp-prod-footer" style="margin-top:8px">
+                <span class="hp-prod-price">$45</span>
+                <div class="hp-prod-rating"><span class="hp-prod-stars">★★★★★</span><span class="hp-prod-rcount">(89)</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="hp-prod-card">
+            <div class="hp-prod-img">
+              <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=530&fit=crop&q=80" alt="Cap" loading="lazy">
+              <div class="hp-prod-badges"><span class="hp-badge hp-badge-new">New</span></div>
+              <div class="hp-prod-actions">
+                <button class="hp-prod-act-btn" onclick="showToast('Saved ♡')">♡</button>
+                <a href="product.html" class="hp-prod-act-btn">View</a>
+                <button class="hp-prod-act-btn" onclick="showToast('Added!','success')">+ Cart</button>
+              </div>
+            </div>
+            <div class="hp-prod-body">
+              <div class="hp-prod-cat">Accessories / Hats</div>
+              <div class="hp-prod-name">Washed Baseball Cap</div>
+              <div class="hp-prod-footer" style="margin-top:8px">
+                <span class="hp-prod-price">$55</span>
+                <div class="hp-prod-rating"><span class="hp-prod-stars">★★★★★</span><span class="hp-prod-rcount">(155)</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="hp-prod-card">
+            <div class="hp-prod-img">
+              <img src="https://images.unsplash.com/photo-1538329972958-465d6d2144ed?w=400&h=530&fit=crop&q=80" alt="Silk Scarf" loading="lazy">
+              <div class="hp-prod-badges"><span class="hp-badge hp-badge-hot">Popular</span></div>
+              <div class="hp-prod-actions">
+                <button class="hp-prod-act-btn" onclick="showToast('Saved ♡')">♡</button>
+                <a href="product.html" class="hp-prod-act-btn">View</a>
+                <button class="hp-prod-act-btn" onclick="showToast('Added!','success')">+ Cart</button>
+              </div>
+            </div>
+            <div class="hp-prod-body">
+              <div class="hp-prod-cat">Accessories / Scarves</div>
+              <div class="hp-prod-name">Silk Printed Scarf</div>
+              <div class="hp-prod-footer" style="margin-top:8px">
+                <span class="hp-prod-price">$65</span>
+                <div class="hp-prod-rating"><span class="hp-prod-stars">★★★★★</span><span class="hp-prod-rcount">(73)</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────────────────────────────────
+         NEWSLETTER
+    ─────────────────────────────────────────── -->
+    <div class="hp-newsletter">
+      <div class="container">
+        <div class="nl-inner">
+          <div class="nl-icon">✉️</div>
+          <h2 class="nl-title">Get 15% Off<br>Your First Order</h2>
+          <p class="nl-sub">Join 12,000+ members for early access to new arrivals, exclusive offers, and style inspiration delivered weekly.</p>
+          <div class="nl-form">
+            <input type="email" class="nl-input" placeholder="Enter your email address" aria-label="Email address" id="nlEmail">
+            <button class="nl-btn" onclick="subscribeNL()">Subscribe</button>
+          </div>
+          <div class="nl-perks">
+            <span class="nl-perk">15% off welcome discount</span>
+            <span class="nl-perk">Early access to sales</span>
+            <span class="nl-perk">Unsubscribe anytime</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-main">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="index.html" class="footer-logo">✦ Luxe<span>Shop</span></a>
+            <p class="footer-desc">Curated fashion and lifestyle essentials. Quality pieces that last, delivered to your door with care.</p>
+            <div class="footer-social">
+              <a href="#" class="social-link" aria-label="Instagram">◈</a>
+              <a href="#" class="social-link" aria-label="Facebook">◉</a>
+              <a href="#" class="social-link" aria-label="Twitter">◎</a>
+              <a href="#" class="social-link" aria-label="Pinterest">◍</a>
+            </div>
+          </div>
+          <div>
+            <h4 class="footer-heading">Shop</h4>
+            <ul class="footer-links">
+              <li><a href="shop.html?cat=new">New Arrivals</a></li>
+              <li><a href="shop.html?cat=women">Women</a></li>
+              <li><a href="shop.html?cat=men">Men</a></li>
+              <li><a href="shop.html?cat=accessories">Accessories</a></li>
+              <li><a href="shop.html?cat=sale">Sale</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="footer-heading">Help</h4>
+            <ul class="footer-links">
+              <li><a href="faq.html">FAQ</a></li>
+              <li><a href="contact.html">Contact Us</a></li>
+              <li><a href="faq.html#shipping">Shipping Info</a></li>
+              <li><a href="faq.html#returns">Returns</a></li>
+              <li><a href="account.html">Track Order</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="footer-heading">Company</h4>
+            <ul class="footer-links">
+              <li><a href="about.html">About Us</a></li>
+              <li><a href="privacy.html">Privacy Policy</a></li>
+              <li><a href="terms.html">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© 2025 LuxeShop. All rights reserved.</span>
+        <div class="footer-payment-icons">
+          <span class="payment-pill">💳 Visa</span>
+          <span class="payment-pill">💳 Mastercard</span>
+          <span class="payment-pill">💳 Amex</span>
+          <span class="payment-pill">📱 Apple Pay</span>
+          <span class="payment-pill">🅿️ PayPal</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Drawer -->
+  <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="drawer-header">
+      <h2 class="drawer-title">Your Cart <span id="drawerCartCount" style="font-size:var(--text-sm);color:var(--clr-text-muted);font-family:var(--font-body);font-weight:var(--weight-regular)">(0)</span></h2>
+      <button class="drawer-close" onclick="closeCart()" aria-label="Close cart">✕</button>
+    </div>
+    <div class="drawer-body" id="drawerBody">
+      <div style="text-align:center;padding:var(--sp-16) var(--sp-8);color:var(--clr-text-muted)">
+        <div style="font-size:3rem;margin-bottom:var(--sp-4)">⊡</div>
+        <p style="font-weight:var(--weight-semibold);margin-bottom:var(--sp-2)">Your cart is empty</p>
+        <p style="font-size:var(--text-sm)">Add some products to get started</p>
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <div class="summary-row total"><span>Total</span><span id="drawerTotal">$0.00</span></div>
+      <a href="checkout.html" class="btn btn-primary" style="width:100%;margin-top:var(--sp-4)">Proceed to Checkout</a>
+      <a href="cart.html" class="btn btn-outline" style="width:100%;margin-top:var(--sp-3)">View Full Cart</a>
+    </div>
+  </div>
+
+  <!-- Mobile Nav Overlay (backdrop, click to close) -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+
+  <!-- Mobile Nav -->
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+    <div class="mobile-nav-header">
+      <a href="index.html" class="site-logo"><div class="logo-mark">✦</div><span>Luxe<span>Shop</span></span></a>
+      <button id="mobileNavClose" aria-label="Close menu" style="font-size:1.2rem;color:var(--clr-text-muted, #6b6878);background:none;border:none;cursor:pointer">✕</button>
+    </div>
+    <div class="mobile-search">
+      <input type="search" class="form-control" placeholder="Search products…" aria-label="Search" style="width:100%;padding:10px 14px;border:1.5px solid #e4e1db;border-radius:3px;font-size:14px">
+    </div>
+    <div class="mobile-nav-body">
+      <ul class="mobile-nav-list">
+        <li><a href="index.html" class="mobile-nav-link active">Home</a></li>
+        <li><a href="shop.html?cat=new" class="mobile-nav-link">New Arrivals</a></li>
+        <li><a href="shop.html?cat=women" class="mobile-nav-link">Women</a></li>
+        <li><a href="shop.html?cat=men" class="mobile-nav-link">Men</a></li>
+        <li><a href="shop.html?cat=accessories" class="mobile-nav-link">Accessories</a></li>
+        <li><a href="shop.html?cat=sale" class="mobile-nav-link" style="color:#e94560;font-weight:700">Sale</a></li>
+        <li><a href="about.html" class="mobile-nav-link">About</a></li>
+        <li><a href="contact.html" class="mobile-nav-link">Contact</a></li>
+      </ul>
+    </div>
+    <div class="mobile-nav-footer">
+      <a href="account.html" class="btn btn-outline" style="width:100%">My Account</a>
+      <a href="wishlist.html" class="btn btn-ghost" style="width:100%">♡ Wishlist</a>
+    </div>
+  </nav>
+
+  <!-- Search Modal -->
+  <div class="search-modal" id="searchModal">
+    <div class="search-modal-inner">
+      <div class="search-modal-input-wrap">
+        <span class="search-modal-icon">⌕</span>
+        <input type="search" id="searchInput" placeholder="Search for products, brands…" aria-label="Search">
+        <button onclick="closeSearch()" style="color:var(--clr-text-muted)">✕</button>
+      </div>
+      <div id="searchResults" style="padding:var(--sp-4);min-height:80px;font-size:var(--text-sm);color:var(--clr-text-muted)">
+        Start typing to search…
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    // Scroll-reveal
+    const fadeEls = document.querySelectorAll('.fade-up');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    fadeEls.forEach(el => obs.observe(el));
+
+    // Tab filter UI (visual only — full filter in shop.js)
+    function filterTab(btn) {
+      btn.closest('.prod-tabs').querySelectorAll('.prod-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // Newsletter
+    function subscribeNL() {
+      const v = document.getElementById('nlEmail').value.trim();
+      if(!v || !v.includes('@')){ showToast('Please enter a valid email', 'warning'); return; }
+      showToast('You\'re in! Check your email for 15% off 🎉', 'success');
+      document.getElementById('nlEmail').value = '';
+    }
+
+    // Sticky header shadow
+    window.addEventListener('scroll', () => {
+      document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    /* ── MOBILE NAV DRAWER — fully self-contained.
+       We clone+replace the toggle/close buttons first to strip out any
+       click listeners assets/js/main.js may have already attached to
+       them (that was the source of the "drops down / won't close"
+       double-toggle bug). After that, ONLY this code controls the
+       drawer, via a dedicated "is-open" class. ── */
+    (function setupMobileNav() {
+      function bind() {
+        const nav = document.getElementById('mobileNav');
+        const overlay = document.getElementById('mobileNavOverlay');
+        let toggleBtn = document.getElementById('menuToggle');
+        let closeBtn = document.getElementById('mobileNavClose');
+
+        // Strip any pre-existing listeners (ours or main.js's) by cloning
+        const freshToggle = toggleBtn.cloneNode(true);
+        toggleBtn.parentNode.replaceChild(freshToggle, toggleBtn);
+        toggleBtn = freshToggle;
+
+        const freshClose = closeBtn.cloneNode(true);
+        closeBtn.parentNode.replaceChild(freshClose, closeBtn);
+        closeBtn = freshClose;
+
+        function open() {
+          nav.classList.add('is-open');
+          overlay.classList.add('is-open');
+          toggleBtn.classList.add('is-open');
+          document.body.classList.add('no-scroll');
+        }
+        function close() {
+          nav.classList.remove('is-open');
+          overlay.classList.remove('is-open');
+          toggleBtn.classList.remove('is-open');
+          document.body.classList.remove('no-scroll');
+        }
+
+        toggleBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          nav.classList.contains('is-open') ? close() : open();
+        });
+        closeBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          close();
+        });
+        overlay.addEventListener('click', close);
+        nav.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+
+        window.openMobileNav = open;
+        window.closeMobileNav = close;
+      }
+      // Bind now…
+      bind();
+      // …and re-bind after window 'load', which fires after every other
+      // script's own DOMContentLoaded handlers have had a chance to run.
+      // This guarantees our listener is the last one attached, so nothing
+      // added later by assets/js/main.js can sneak back in.
+      window.addEventListener('load', bind);
+    })();
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && typeof window.closeMobileNav === 'function') window.closeMobileNav();
+    });
+    // Fallback: guard in case a global showToast() from main.js isn't loaded
+    if (typeof window.showToast !== 'function') {
+      window.showToast = function(msg, type) {
+        const c = document.getElementById('toastContainer');
+        if (!c) return;
+        const el = document.createElement('div');
+        el.textContent = msg;
+        el.style.cssText = 'background:#1a1a2e;color:#fff;padding:12px 18px;border-radius:4px;margin-top:8px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.2);';
+        c.appendChild(el);
+        setTimeout(() => el.remove(), 2600);
+      };
+    }
+    if (typeof window.openSearch !== 'function') {
+      window.openSearch = function() { document.getElementById('searchModal')?.classList.add('active'); };
+    }
+    if (typeof window.closeSearch !== 'function') {
+      window.closeSearch = function() { document.getElementById('searchModal')?.classList.remove('active'); };
+    }
+  </script>
+</body>
+</html>

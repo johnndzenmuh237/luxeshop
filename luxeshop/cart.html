@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Your shopping cart — LuxeShop">
+  <title>Your Cart — LuxeShop</title>
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body>
+
+  <div class="announcement-bar">
+    🚚 Free shipping on orders over $75 — <a href="shop.html">Shop Now</a>
+  </div>
+
+  <header class="site-header" id="siteHeader">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="site-logo"><div class="logo-mark">✦</div><span class="logo-text">Luxe<span>Shop</span></span></a>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="shop.html" class="nav-link">Shop <span style="font-size:0.7em">▾</span></a>
+              <div class="nav-dropdown">
+                <a href="shop.html?cat=new">New Arrivals</a>
+                <a href="shop.html?cat=women">Women</a>
+                <a href="shop.html?cat=men">Men</a>
+                <a href="shop.html?cat=accessories">Accessories</a>
+                <a href="shop.html?cat=sale">Sale</a>
+              </div>
+            </li>
+            <li><a href="about.html" class="nav-link">About</a></li>
+            <li><a href="contact.html" class="nav-link">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-search"><span class="header-search-icon">⌕</span><input type="search" placeholder="Search…" readonly onclick="openSearch()"></div>
+        <div class="header-actions">
+          <button class="header-icon-btn" onclick="openSearch()">⌕</button>
+          <a href="account.html" class="header-icon-btn">◉</a>
+          <a href="wishlist.html" class="header-icon-btn">♡<span class="badge-count" id="wishlistCount">0</span></a>
+          <button class="header-icon-btn" id="cartToggle">⊡<span class="badge-count" id="cartCount">0</span></button>
+          <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb"><a href="index.html">Home</a><span class="breadcrumb-sep">›</span><span class="breadcrumb-current">Cart</span></nav>
+        <h1 class="page-hero-title">Your Cart</h1>
+      </div>
+    </div>
+
+    <section class="section--sm">
+      <div class="container">
+        <!-- Empty cart state -->
+        <div class="wishlist-empty" id="emptyCart" style="display:none">
+          <div class="wishlist-empty-icon">⊡</div>
+          <h2>Your cart is empty</h2>
+          <p>Looks like you haven't added anything yet. Explore our collections and find something you love.</p>
+          <a href="shop.html" class="btn btn-primary btn-lg" style="margin-top:var(--sp-4)">Start Shopping</a>
+        </div>
+
+        <!-- Cart with items -->
+        <div class="cart-layout" id="cartContent">
+          <!-- Cart Items -->
+          <div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--sp-4)">
+              <h2 style="font-size:var(--text-xl);font-family:var(--font-display);font-weight:700">Cart Items <span id="cartItemCount" style="font-size:var(--text-base);color:var(--clr-text-muted);font-family:var(--font-body);font-weight:400">(3)</span></h2>
+              <button class="btn btn-ghost btn-sm" style="color:var(--clr-error)" onclick="clearCartConfirm()">Remove All</button>
+            </div>
+
+            <div id="cartItemsList">
+              <!-- Cart Item 1 -->
+              <div class="cart-item" data-id="1">
+                <div class="cart-item-img">
+                  <img src="assets/images/products/blazer-main.jpg" alt="Merino Wool Blazer">
+                </div>
+                <div>
+                  <a href="product.html" class="cart-item-name">Merino Wool Blazer</a>
+                  <div class="cart-item-variant">Ivory / L</div>
+                  <div class="quantity-control" style="margin-top:var(--sp-3)">
+                    <button class="qty-btn" onclick="updateCartQty(1,-1)">−</button>
+                    <input type="number" class="qty-input" value="1" min="1" max="10" aria-label="Quantity" onchange="setCartQty(1,this.value)">
+                    <button class="qty-btn" onclick="updateCartQty(1,1)">+</button>
+                  </div>
+                </div>
+                <div class="cart-item-actions">
+                  <div style="text-align:right">
+                    <div class="cart-item-price">$189.00</div>
+                    <div style="font-size:var(--text-xs);color:var(--clr-text-light);text-decoration:line-through">$240.00</div>
+                  </div>
+                  <button class="btn btn-ghost btn-sm" style="color:var(--clr-error)" onclick="removeCartItem(1)" aria-label="Remove item">✕ Remove</button>
+                </div>
+              </div>
+
+              <!-- Cart Item 2 -->
+              <div class="cart-item" data-id="2">
+                <div class="cart-item-img">
+                  <img src="assets/images/products/tshirt-main.jpg" alt="Classic Cotton Tee">
+                </div>
+                <div>
+                  <a href="product.html" class="cart-item-name">Classic Cotton Tee</a>
+                  <div class="cart-item-variant">White / M</div>
+                  <div class="quantity-control" style="margin-top:var(--sp-3)">
+                    <button class="qty-btn" onclick="updateCartQty(2,-1)">−</button>
+                    <input type="number" class="qty-input" value="2" min="1" max="10" aria-label="Quantity" onchange="setCartQty(2,this.value)">
+                    <button class="qty-btn" onclick="updateCartQty(2,1)">+</button>
+                  </div>
+                </div>
+                <div class="cart-item-actions">
+                  <div style="text-align:right">
+                    <div class="cart-item-price">$78.00</div>
+                    <div style="font-size:var(--text-xs);color:var(--clr-text-light)">$39.00 each</div>
+                  </div>
+                  <button class="btn btn-ghost btn-sm" style="color:var(--clr-error)" onclick="removeCartItem(2)">✕ Remove</button>
+                </div>
+              </div>
+
+              <!-- Cart Item 3 -->
+              <div class="cart-item" data-id="3">
+                <div class="cart-item-img">
+                  <img src="assets/images/products/bag-main.jpg" alt="Leather Tote Bag">
+                </div>
+                <div>
+                  <a href="product.html" class="cart-item-name">Leather Tote Bag</a>
+                  <div class="cart-item-variant">Tan / One Size</div>
+                  <div class="quantity-control" style="margin-top:var(--sp-3)">
+                    <button class="qty-btn" onclick="updateCartQty(3,-1)">−</button>
+                    <input type="number" class="qty-input" value="1" min="1" max="10" aria-label="Quantity" onchange="setCartQty(3,this.value)">
+                    <button class="qty-btn" onclick="updateCartQty(3,1)">+</button>
+                  </div>
+                </div>
+                <div class="cart-item-actions">
+                  <div style="text-align:right">
+                    <div class="cart-item-price">$145.00</div>
+                  </div>
+                  <button class="btn btn-ghost btn-sm" style="color:var(--clr-error)" onclick="removeCartItem(3)">✕ Remove</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Continue shopping -->
+            <div style="margin-top:var(--sp-6);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--sp-4)">
+              <a href="shop.html" class="btn btn-outline btn-sm">← Continue Shopping</a>
+              <button class="btn btn-ghost btn-sm" onclick="showToast('Cart updated','success')">↻ Update Cart</button>
+            </div>
+          </div>
+
+          <!-- Cart Summary -->
+          <div>
+            <div class="cart-summary">
+              <h2 class="summary-title">Order Summary</h2>
+
+              <div class="summary-row"><span>Subtotal (4 items)</span><span>$412.00</span></div>
+              <div class="summary-row"><span>Shipping</span><span style="color:var(--clr-success)">Free</span></div>
+              <div class="summary-row"><span>Tax (est.)</span><span>$33.00</span></div>
+              <div class="summary-row" id="discountRow" style="display:none;color:var(--clr-success)"><span>Discount</span><span id="discountAmount">-$0.00</span></div>
+              <div class="summary-row total"><span>Total</span><span id="cartTotalAmount">$445.00</span></div>
+
+              <!-- Coupon -->
+              <div style="margin-top:var(--sp-5)">
+                <label class="form-label" for="couponCode">Promo Code</label>
+                <div class="coupon-row" style="margin-top:var(--sp-2)">
+                  <input type="text" id="couponCode" class="form-control" placeholder="Enter code" aria-label="Promo code">
+                  <button class="btn btn-secondary btn-sm" onclick="applyCoupon()">Apply</button>
+                </div>
+                <p id="couponMsg" style="font-size:var(--text-xs);margin-top:var(--sp-2)"></p>
+              </div>
+
+              <a href="checkout.html" class="btn btn-primary" style="width:100%;margin-top:var(--sp-6);font-size:var(--text-base);padding:0.9em">
+                Proceed to Checkout →
+              </a>
+
+              <!-- Trust -->
+              <div style="margin-top:var(--sp-5);display:flex;flex-direction:column;gap:var(--sp-2)">
+                <div style="display:flex;align-items:center;gap:var(--sp-2);font-size:var(--text-xs);color:var(--clr-text-muted)">🔒 Secure 256-bit SSL checkout</div>
+                <div style="display:flex;align-items:center;gap:var(--sp-2);font-size:var(--text-xs);color:var(--clr-text-muted)">↩️ 30-day free returns</div>
+                <div style="display:flex;align-items:center;gap:var(--sp-2);font-size:var(--text-xs);color:var(--clr-text-muted)">🚚 Free shipping on this order</div>
+              </div>
+
+              <!-- Payment icons -->
+              <div style="margin-top:var(--sp-5);padding-top:var(--sp-4);border-top:1px solid var(--clr-border);display:flex;gap:var(--sp-2);flex-wrap:wrap">
+                <span class="payment-pill" style="background:var(--clr-bg-alt);color:var(--clr-text-muted)">💳 Visa</span>
+                <span class="payment-pill" style="background:var(--clr-bg-alt);color:var(--clr-text-muted)">💳 MC</span>
+                <span class="payment-pill" style="background:var(--clr-bg-alt);color:var(--clr-text-muted)">📱 Apple Pay</span>
+                <span class="payment-pill" style="background:var(--clr-bg-alt);color:var(--clr-text-muted)">🅿️ PayPal</span>
+              </div>
+            </div>
+
+            <!-- You may also like -->
+            <div style="margin-top:var(--sp-8)">
+              <h3 style="font-size:var(--text-base);font-weight:var(--weight-semibold);margin-bottom:var(--sp-4)">You May Also Like</h3>
+              <div style="display:flex;flex-direction:column;gap:var(--sp-3)" id="cartSuggestions">
+                <div style="display:flex;gap:var(--sp-3);align-items:center">
+                  <div style="width:60px;height:60px;border-radius:var(--radius-md);background:var(--clr-bg-alt);flex-shrink:0;overflow:hidden">
+                    <img src="assets/images/products/scarf.jpg" alt="Silk Scarf" style="width:100%;height:100%;object-fit:cover">
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <a href="product.html" style="font-size:var(--text-sm);font-weight:var(--weight-medium);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Silk Printed Scarf</a>
+                    <span style="font-size:var(--text-sm);color:var(--clr-text-muted)">$65.00</span>
+                  </div>
+                  <button class="btn btn-outline btn-sm" onclick="showToast('Added to cart','success')">+ Add</button>
+                </div>
+                <div style="display:flex;gap:var(--sp-3);align-items:center">
+                  <div style="width:60px;height:60px;border-radius:var(--radius-md);background:var(--clr-bg-alt);flex-shrink:0;overflow:hidden">
+                    <img src="assets/images/products/belt.jpg" alt="Leather Belt" style="width:100%;height:100%;object-fit:cover">
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <a href="product.html" style="font-size:var(--text-sm);font-weight:var(--weight-medium);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Italian Leather Belt</a>
+                    <span style="font-size:var(--text-sm);color:var(--clr-text-muted)">$89.00</span>
+                  </div>
+                  <button class="btn btn-outline btn-sm" onclick="showToast('Added to cart','success')">+ Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-main"><div class="container"><div class="footer-grid">
+      <div class="footer-brand"><a href="index.html" class="footer-logo">✦ Luxe<span>Shop</span></a><p class="footer-desc">Curated fashion essentials.</p></div>
+      <div><h4 class="footer-heading">Shop</h4><ul class="footer-links"><li><a href="shop.html">All Products</a></li><li><a href="shop.html?cat=sale">Sale</a></li></ul></div>
+      <div><h4 class="footer-heading">Help</h4><ul class="footer-links"><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div><h4 class="footer-heading">Legal</h4><ul class="footer-links"><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div>
+    </div></div></div>
+    <div class="container"><div class="footer-bottom"><span>© 2025 LuxeShop</span></div></div>
+  </footer>
+
+  <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="drawer-header"><h2 class="drawer-title">Your Cart</h2><button class="drawer-close" onclick="closeCart()">✕</button></div>
+    <div class="drawer-body" id="drawerBody"></div>
+    <div class="drawer-footer"><div class="summary-row total"><span>Total</span><span id="drawerTotal">$0.00</span></div><a href="checkout.html" class="btn btn-primary" style="width:100%;margin-top:var(--sp-4)">Checkout</a></div>
+  </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header"><a href="index.html" class="site-logo"><div class="logo-mark">✦</div><span>Luxe<span>Shop</span></span></a><button onclick="closeMobileNav()">✕</button></div>
+    <div class="mobile-nav-body"><ul class="mobile-nav-list"><li><a href="index.html" class="mobile-nav-link">Home</a></li><li><a href="shop.html" class="mobile-nav-link">Shop</a></li></ul></div>
+  </nav>
+  <div class="search-modal" id="searchModal">
+    <div class="search-modal-inner">
+      <div class="search-modal-input-wrap"><span class="search-modal-icon">⌕</span><input type="search" id="searchInput" placeholder="Search…"><button onclick="closeSearch()">✕</button></div>
+      <div id="searchResults" style="padding:var(--sp-4);color:var(--clr-text-muted);font-size:var(--text-sm)">Start typing…</div>
+    </div>
+  </div>
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    function applyCoupon() {
+      const code = document.getElementById('couponCode').value.trim().toUpperCase();
+      const msg = document.getElementById('couponMsg');
+      const discountRow = document.getElementById('discountRow');
+      if (code === 'WELCOME15') {
+        discountRow.style.display = '';
+        document.getElementById('discountAmount').textContent = '-$61.80';
+        document.getElementById('cartTotalAmount').textContent = '$383.20';
+        msg.textContent = '✓ Code applied — 15% off!';
+        msg.style.color = 'var(--clr-success)';
+        showToast('Promo code applied!', 'success');
+      } else if (code === '') {
+        msg.textContent = 'Please enter a code.';
+        msg.style.color = 'var(--clr-error)';
+      } else {
+        msg.textContent = 'Invalid code. Try WELCOME15.';
+        msg.style.color = 'var(--clr-error)';
+      }
+    }
+    function clearCartConfirm() {
+      if (confirm('Remove all items from cart?')) {
+        document.getElementById('cartItemsList').innerHTML = '';
+        document.getElementById('emptyCart').style.display = '';
+        document.getElementById('cartContent').style.display = 'none';
+        showToast('Cart cleared', 'success');
+      }
+    }
+    function updateCartQty(id, delta) {
+      const item = document.querySelector(`.cart-item[data-id="${id}"]`);
+      if (!item) return;
+      const input = item.querySelector('.qty-input');
+      const newVal = Math.max(1, Math.min(10, parseInt(input.value) + delta));
+      input.value = newVal;
+    }
+    function setCartQty(id, val) {
+      const clamped = Math.max(1, Math.min(10, parseInt(val) || 1));
+      const item = document.querySelector(`.cart-item[data-id="${id}"]`);
+      if (item) item.querySelector('.qty-input').value = clamped;
+    }
+    function removeCartItem(id) {
+      const item = document.querySelector(`.cart-item[data-id="${id}"]`);
+      if (item) { item.style.opacity = '0'; item.style.transition = 'opacity 0.2s'; setTimeout(() => item.remove(), 200); }
+      showToast('Item removed from cart');
+    }
+  </script>
+</body>
+</html>

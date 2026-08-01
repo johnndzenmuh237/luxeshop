@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Shop LuxeShop — Women's Dresses, Men's Shirts, Shoes, Watches, Jewelry, Chains and Luggage & Bags.">
+  <title>Shop All Products — LuxeShop</title>
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <style>
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--sp-6);
+    }
+    .category-grid .category-card:first-child {
+      grid-column: 1 / -1;
+    }
+    .category-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--clr-border);
+      border-radius: var(--radius-lg, 12px);
+      overflow: hidden;
+      background: var(--clr-surface, #fff);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .category-card:hover {
+      box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+    }
+    .category-card-img-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: var(--clr-bg-alt, #f4f3f0);
+    }
+    .category-grid .category-card:first-child .category-card-img-wrap {
+      aspect-ratio: 21 / 9;
+    }
+    .category-card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+    .category-card:hover .category-card-img-wrap img {
+      transform: scale(1.04);
+    }
+    .category-card-count {
+      position: absolute;
+      top: var(--sp-3);
+      right: var(--sp-3);
+      background: rgba(255,255,255,0.92);
+      color: var(--clr-text, #1a1a2e);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      padding: 0.3em 0.8em;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+    }
+    .category-card-badge {
+      position: absolute;
+      top: var(--sp-3);
+      left: var(--sp-3);
+      background: var(--clr-accent, #b5471b);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.3em 0.7em;
+      border-radius: 4px;
+    }
+    .category-card-body {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-2);
+      padding: var(--sp-5);
+      flex: 1;
+    }
+    .category-card-title {
+      font-size: var(--text-xl);
+      font-weight: 700;
+      margin: 0;
+    }
+    .category-card-desc {
+      font-size: var(--text-sm);
+      color: var(--clr-text-muted);
+      margin: 0 0 var(--sp-2) 0;
+      flex: 1;
+    }
+    .shop-intro {
+      max-width: 640px;
+      margin: 0 0 var(--sp-8) 0;
+    }
+    .shop-intro p {
+      font-size: var(--text-base);
+      color: var(--clr-text-muted);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .shop-value-strip {
+      background: var(--clr-bg-alt, #f4f3f0);
+    }
+    .shop-value-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--sp-6);
+      text-align: center;
+    }
+    .shop-value-item .icon { font-size: 1.6rem; margin-bottom: 0.4em; }
+    .shop-value-item h3 {
+      font-size: var(--text-base);
+      font-weight: 700;
+      margin: 0 0 0.3em 0;
+    }
+    .shop-value-item p {
+      font-size: var(--text-sm);
+      color: var(--clr-text-muted);
+      margin: 0;
+    }
+    .shop-proof {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--sp-6);
+      flex-wrap: wrap;
+      padding: var(--sp-6) 0;
+    }
+    .shop-proof-stat strong {
+      display: block;
+      font-size: var(--text-2xl, 1.6rem);
+      font-weight: 800;
+    }
+    .shop-proof-stat span {
+      font-size: var(--text-xs);
+      color: var(--clr-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    @media (max-width: 860px) {
+      .category-grid { grid-template-columns: 1fr 1fr; }
+      .category-grid .category-card:first-child { grid-column: 1 / -1; }
+      .category-grid .category-card:first-child .category-card-img-wrap { aspect-ratio: 16 / 9; }
+      .shop-value-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .category-grid { grid-template-columns: 1fr; }
+      .shop-value-grid { grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="announcement-bar">
+    🚚 Free shipping on orders over $75 — <a href="#">Shop Now</a> &nbsp;|&nbsp; Use code <strong>WELCOME15</strong> for 15% off
+  </div>
+
+  <header class="site-header" id="siteHeader">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="site-logo">
+          <div class="logo-mark">✦</div>
+          <span class="logo-text">Luxe<span>Shop</span></span>
+        </a>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item">
+              <a href="shop.html" class="nav-link active">Shop <span style="font-size:0.7em">▾</span></a>
+              <div class="nav-dropdown">
+                <a href="product.html#women">Women</a>
+                <a href="product.html#men">Men</a>
+                <a href="product.html#shoes">Shoes</a>
+                <a href="product.html#watches">Watches</a>
+                <a href="product.html#jewelry">Jewelry</a>
+                <a href="product.html#chains">Chains</a>
+                <a href="product.html#luggage">Luggage &amp; Bags</a>
+              </div>
+            </li>
+            <li><a href="about.html" class="nav-link">About</a></li>
+            <li><a href="contact.html" class="nav-link">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-search">
+          <span class="header-search-icon">⌕</span>
+          <input type="search" placeholder="Search products…" aria-label="Search" readonly onclick="openSearch()">
+        </div>
+        <div class="header-actions">
+          <button class="header-icon-btn" onclick="openSearch()">⌕</button>
+          <a href="account.html" class="header-icon-btn">◉</a>
+          <a href="wishlist.html" class="header-icon-btn">♡<span class="badge-count" id="wishlistCount">0</span></a>
+          <button class="header-icon-btn" id="cartToggle">⊡<span class="badge-count" id="cartCount">0</span></button>
+          <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="index.html">Home</a>
+          <span class="breadcrumb-sep">›</span>
+          <span class="breadcrumb-current">Shop All</span>
+        </nav>
+        <h1 class="page-hero-title">Shop by Category</h1>
+        <p class="page-hero-desc">Pick a category to browse the full collection — every piece, one click away.</p>
+      </div>
+    </div>
+
+    <section class="section--sm">
+      <div class="container">
+
+        <div class="shop-intro">
+          <p>Curated essentials across seven categories — women's dresses, men's shirts, shoes for both, men's watches, jewelry for both, chains and travel-ready luggage. Every order ships free over $75, every return is free for 30 days, and every piece is backed by our quality promise.</p>
+        </div>
+
+        <div class="category-grid">
+
+          <!-- ALL PRODUCTS -->
+          <div class="category-card">
+            <div class="category-card-img-wrap">
+              <img src="https://loremflickr.com/1200/514/luxury,fashion,boutique" alt="All Products" loading="lazy">
+              <span class="category-card-badge">Most popular</span>
+              <span class="category-card-count">490+ items</span>
+            </div>
+            <div class="category-card-body">
+              <h2 class="category-card-title">All Products</h2>
+              <p class="category-card-desc">Browse everything in one place — Women's Dresses, Men's Shirts, Shoes, Watches, Jewelry, Chains and Luggage & Bags.</p>
+              <a href="product.html" class="btn btn-primary">Shop All Products</a>
+            </div>
+          </div>
+
+          <!-- WOMEN -->
+          <div class="category-card">
+            <div class="category-card-img-wrap">
+              <img src="https://loremflickr.com/800/450/dress,woman,elegant" alt="Women's dresses collection" loading="lazy">
+              <span class="category-card-count">120 items</span>
+            </div>
+            <div class="category-card-body">
+              <h2 class="category-card-title">Women</h2>
+              <p class="category-card-desc">Midi, maxi and evening dresses in premium fabrics. Rated 4.8★ on average.</p>
+              <a href="product.html#women" class="btn btn-outline">Shop Women's Dresses</a>
+            </div>
+          </div>
+
+          <!-- MEN -->
+          <div class="category-card">
+            <div class="category-card-img-wrap">
+              <img src="https://loremflickr.com/800/450/shirt,suit,man" alt="Men's shirts collection" loading="lazy">
+              <span class="category-card-count">96 items</span>
+            </div>
+            <div class="category-card-body">
+              <h2 class="category-card-title">Men</h2>
+              <p class="category-card-desc">Oxford, dress and casual shirts, tailored to last. Rated 4.7★ on average.</p>
+              <a href="product.html#men" class="btn btn-outline">Shop Men's Shirts</a>
+            </div>
+          </div>
+
+          <!-- SHOES -->
+          <div class="category-card">
+            <div class="category-card-img-wrap">
+              <img src="https://loremflickr.com/800/450/shoes,fashion,leather" alt="Shoes collection for men and women" loading="lazy">
+              <span class="category-card-count">76 items</span>
+            </div>
+            <div class="category-card-body">
+              <h2 class="category-card-title">Shoes</h2>
+              <p class="category-card-desc">Heels and flats for her, loafers and boots for him.</p>
+              <a href="product.html#shoes" class="btn btn-outline">Shop Shoes</a>
+            </div>
+          </div>
+
+          <!-- WATCHES -->
+          <div class="category-card">
+            <div class="category-card-img-wrap">
+              <img src="https://loremflickr.com/800/450/watch,luxury,mens" alt="Men's watches collection" loading="lazy">
+              <span class="category-card-count">46 items</span>
+            </div>
+            <div class="category-card-body">
+              <h2 class="category-card-title">Watches</h2>
+              <p class="category-card-desc">Men's watches — minimalist faces and classic mechanics. Rated 4.8★ on average.</p>
+              <a href="product.html#watches" class="btn btn-outline">Shop Watches</a>
+            </div>
+          </div>
+
+          <!-- JEWELRY -->
+          <div class="category-card">
+            <div class="category-card-img-wrap">
+              <img src="https://loremflickr.com/800/450/jewelry,gold,luxury" alt="Jewelry collection for men and women" loading="lazy">
+              <span class="category-card-count">52 items</span>
+            </div>
+            <div class="category-card-body">
+              <h2 class="category-card-title">Jewelry</h2>
+              <p class="category-card-desc">Rings, earrings and necklaces for her; rings and bracelets for him. Our highest-rated category at 4.9★.</p>
+              <a href="product.html#jewelry" class="btn btn-outline">Shop Jewelry</a>
+            </div>
+          </div>
+
+          <!-- CHAINS -->
+          <div class="category-card">
+            <div class="category-card-img-wrap">
+              <img src="https://loremflickr.com/800/450/gold,chain,necklace" alt="Chains collection" loading="lazy">
+              <span class="category-card-count">37 items</span>
+            </div>
+            <div class="category-card-body">
+              <h2 class="category-card-title">Chains</h2>
+              <p class="category-card-desc">Curb, figaro and Cuban link chains in gold and silver tones — layer them up.</p>
+              <a href="product.html#chains" class="btn btn-outline">Shop Chains</a>
+            </div>
+          </div>
+
+          <!-- LUGGAGE & BAGS -->
+          <div class="category-card">
+            <div class="category-card-img-wrap">
+              <img src="https://loremflickr.com/800/450/luggage,suitcase,leather" alt="Luggage and bags collection" loading="lazy">
+              <span class="category-card-badge">Just landed</span>
+              <span class="category-card-count">64 items</span>
+            </div>
+            <div class="category-card-body">
+              <h2 class="category-card-title">Luggage & Bags</h2>
+              <p class="category-card-desc">Suitcases, weekenders, totes and everyday carry for wherever you're headed.</p>
+              <a href="product.html#luggage" class="btn btn-outline">Shop Luggage &amp; Bags</a>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="shop-proof">
+          <div class="shop-proof-stat"><strong>490+</strong><span>Products across 7 categories</span></div>
+          <div class="shop-proof-stat"><strong>4.7★</strong><span>Average rating site-wide</span></div>
+          <div class="shop-proof-stat"><strong>50,000+</strong><span>Orders shipped</span></div>
+          <div class="shop-proof-stat"><strong>30-Day</strong><span>Free returns</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="section--sm shop-value-strip">
+      <div class="container">
+        <div class="shop-value-grid">
+          <div class="shop-value-item">
+            <div class="icon">🚚</div>
+            <h3>Free Shipping</h3>
+            <p>On every order over $75</p>
+          </div>
+          <div class="shop-value-item">
+            <div class="icon">↺</div>
+            <h3>Easy 30-Day Returns</h3>
+            <p>No questions asked</p>
+          </div>
+          <div class="shop-value-item">
+            <div class="icon">🔒</div>
+            <h3>Secure Checkout</h3>
+            <p>Your payment info stays safe</p>
+          </div>
+          <div class="shop-value-item">
+            <div class="icon">💬</div>
+            <h3>24/7 Support</h3>
+            <p>We're here when you need us</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-main">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a href="index.html" class="footer-logo">✦ Luxe<span>Shop</span></a>
+            <p class="footer-desc">Curated fashion and lifestyle essentials.</p>
+            <div class="footer-social">
+              <a href="#" class="social-link">◈</a>
+              <a href="#" class="social-link">◉</a>
+              <a href="#" class="social-link">◎</a>
+            </div>
+          </div>
+          <div><h4 class="footer-heading">Shop</h4><ul class="footer-links"><li><a href="product.html#women">Women</a></li><li><a href="product.html#men">Men</a></li><li><a href="product.html#shoes">Shoes</a></li><li><a href="product.html#luggage">Luggage &amp; Bags</a></li></ul></div>
+          <div><h4 class="footer-heading">Help</h4><ul class="footer-links"><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li><li><a href="faq.html#returns">Returns</a></li></ul></div>
+          <div><h4 class="footer-heading">Company</h4><ul class="footer-links"><li><a href="about.html">About</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="footer-bottom">
+        <span>© 2025 LuxeShop. All rights reserved.</span>
+        <div class="footer-payment-icons">
+          <span class="payment-pill">💳 Visa</span>
+          <span class="payment-pill">💳 Mastercard</span>
+          <span class="payment-pill">📱 Apple Pay</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Drawer -->
+  <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="drawer-header">
+      <h2 class="drawer-title">Your Cart</h2>
+      <button class="drawer-close" onclick="closeCart()">✕</button>
+    </div>
+    <div class="drawer-body" id="drawerBody"></div>
+    <div class="drawer-footer">
+      <div class="summary-row total"><span>Total</span><span id="drawerTotal">$0.00</span></div>
+      <a href="checkout.html" class="btn btn-primary" style="width:100%;margin-top:var(--sp-4)">Checkout</a>
+      <a href="cart.html" class="btn btn-outline" style="width:100%;margin-top:var(--sp-3)">View Cart</a>
+    </div>
+  </div>
+
+  <!-- Mobile Nav -->
+  <nav class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header">
+      <a href="index.html" class="site-logo"><div class="logo-mark">✦</div><span>Luxe<span>Shop</span></span></a>
+      <button onclick="closeMobileNav()">✕</button>
+    </div>
+    <div class="mobile-nav-body">
+      <ul class="mobile-nav-list">
+        <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+        <li><a href="shop.html" class="mobile-nav-link active">Shop All</a></li>
+        <li><a href="about.html" class="mobile-nav-link">About</a></li>
+        <li><a href="contact.html" class="mobile-nav-link">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="search-modal" id="searchModal">
+    <div class="search-modal-inner">
+      <div class="search-modal-input-wrap">
+        <span class="search-modal-icon">⌕</span>
+        <input type="search" id="searchInput" placeholder="Search for products…" aria-label="Search">
+        <button onclick="closeSearch()">✕</button>
+      </div>
+      <div id="searchResults" style="padding:var(--sp-4);color:var(--clr-text-muted);font-size:var(--text-sm)">Start typing to search…</div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

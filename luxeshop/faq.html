@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — LuxeShop</title>
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body>
+  <div class="announcement-bar">🚚 Free shipping on orders over $75 — <a href="shop.html">Shop Now</a></div>
+  <header class="site-header" id="siteHeader">
+    <div class="container"><div class="header-inner">
+      <a href="index.html" class="site-logo"><div class="logo-mark">✦</div><span class="logo-text">Luxe<span>Shop</span></span></a>
+      <nav class="main-nav"><ul class="nav-list">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="shop.html" class="nav-link">Shop <span style="font-size:0.7em">▾</span></a><div class="nav-dropdown"><a href="shop.html?cat=new">New Arrivals</a><a href="shop.html?cat=women">Women</a><a href="shop.html?cat=men">Men</a><a href="shop.html?cat=sale">Sale</a></div></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul></nav>
+      <div class="header-actions">
+        <button class="header-icon-btn" onclick="openSearch()">⌕</button>
+        <a href="account.html" class="header-icon-btn">◉</a>
+        <a href="wishlist.html" class="header-icon-btn">♡<span class="badge-count" id="wishlistCount">0</span></a>
+        <button class="header-icon-btn" id="cartToggle">⊡<span class="badge-count" id="cartCount">0</span></button>
+        <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+      </div>
+    </div></div>
+  </header>
+
+  <main>
+    <div class="page-hero">
+      <div class="container">
+        <nav class="breadcrumb"><a href="index.html">Home</a><span class="breadcrumb-sep">›</span><span class="breadcrumb-current">FAQ</span></nav>
+        <h1 class="page-hero-title">Frequently Asked Questions</h1>
+        <p class="page-hero-desc">Quick answers to the questions we hear most often.</p>
+      </div>
+    </div>
+
+    <section class="section--sm">
+      <div class="container container--lg">
+        <!-- FAQ categories tabs -->
+        <div style="display:flex;gap:var(--sp-2);flex-wrap:wrap;margin-bottom:var(--sp-10)" role="tablist">
+          <button class="btn btn-primary btn-sm" role="tab" aria-selected="true" onclick="filterFAQ('all',this)">All Topics</button>
+          <button class="btn btn-outline btn-sm" role="tab" onclick="filterFAQ('shipping',this)">🚚 Shipping</button>
+          <button class="btn btn-outline btn-sm" role="tab" onclick="filterFAQ('returns',this)">↩️ Returns</button>
+          <button class="btn btn-outline btn-sm" role="tab" onclick="filterFAQ('orders',this)">📦 Orders</button>
+          <button class="btn btn-outline btn-sm" role="tab" onclick="filterFAQ('products',this)">👗 Products</button>
+          <button class="btn btn-outline btn-sm" role="tab" onclick="filterFAQ('account',this)">◉ Account</button>
+          <button class="btn btn-outline btn-sm" role="tab" onclick="filterFAQ('payment',this)">💳 Payment</button>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-8);align-items:start">
+          <!-- Left column -->
+          <div>
+            <!-- SHIPPING -->
+            <div class="faq-section" data-cat="shipping" style="margin-bottom:var(--sp-8)">
+              <h2 id="shipping" style="font-size:var(--text-lg);font-weight:var(--weight-semibold);margin-bottom:var(--sp-4);display:flex;align-items:center;gap:var(--sp-2)">🚚 Shipping</h2>
+              <div class="faq-list">
+                <div class="faq-item">
+                  <button class="faq-question" onclick="toggleFAQ(this)">
+                    How long does shipping take?
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">Standard shipping takes 3–5 business days within the US. Express shipping (1–2 days) is available at checkout for $12. Overnight delivery is available for $24 on orders placed before 2pm EST.</div>
+                </div>
+                <div class="faq-item">
+                  <button class="faq-question" onclick="toggleFAQ(this)">
+                    Do you offer free shipping?
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">Yes! All orders over $75 qualify for free standard shipping. This threshold applies to the order total after any discounts are applied.</div>
+                </div>
+                <div class="faq-item">
+                  <button class="faq-question" onclick="toggleFAQ(this)">
+                    Do you ship internationally?
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">Currently we ship to the US, Canada, UK, Australia, and most EU countries. International shipping rates and times vary by destination and are calculated at checkout. Duties and taxes may apply.</div>
+                </div>
+                <div class="faq-item">
+                  <button class="faq-question" onclick="toggleFAQ(this)">
+                    How can I track my order?
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">Once your order ships, you'll receive a confirmation email with a tracking number. You can also track your order from the <a href="account.html" style="color:var(--clr-accent)">My Account</a> page. Allow up to 24 hours for tracking to activate.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RETURNS -->
+            <div class="faq-section" data-cat="returns" style="margin-bottom:var(--sp-8)">
+              <h2 id="returns" style="font-size:var(--text-lg);font-weight:var(--weight-semibold);margin-bottom:var(--sp-4);display:flex;align-items:center;gap:var(--sp-2)">↩️ Returns & Refunds</h2>
+              <div class="faq-list">
+                <div class="faq-item">
+                  <button class="faq-question" onclick="toggleFAQ(this)">
+                    What is your return policy?
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">We accept returns within 30 days of delivery for a full refund. Items must be unworn, unwashed, and in original packaging with tags attached. Sale items marked "Final Sale" cannot be returned.</div>
+                </div>
+                <div class="faq-item">
+                  <button class="faq-question" onclick="toggleFAQ(this)">
+                    How do I start a return?
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">Log in to your account, go to My Orders, and select "Return Item" next to the item you'd like to return. You'll receive a prepaid return label by email within 24 hours.</div>
+                </div>
+                <div class="faq-item">
+                  <button class="faq-question" onclick="toggleFAQ(this)">
+                    How long do refunds take?
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">Once we receive your return, we'll process the refund within 2 business days. Depending on your bank, the refund will appear on your statement within 3–10 business days.</div>
+                </div>
+                <div class="faq-item">
+                  <button class="faq-question" onclick="toggleFAQ(this)">
+                    Can I exchange an item?
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">We currently process exchanges as return + reorder. Return your item for a full refund, then place a new order for the size or color you need. This ensures the fastest turnaround.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right column -->
+          <div>
+            <!-- ORDERS -->
+            <div class="faq-section" data-cat="orders" style="margin-bottom:var(--sp-8)">
+              <h2 style="font-size:var(--text-lg);font-weight:var(--weight-semibold);margin-bottom:var(--sp-4);display:flex;align-items:center;gap:var(--sp-2)">📦 Orders</h2>
+              <div class="faq-list">
+                <div class="faq-item">
+                  <button class="faq-question" onclick="toggleFAQ(this)">
+                    Can I change or cancel my order?
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">You can cancel or modify an order within 2 hours of placing it. After that, the order enters processing and cannot be changed. Contact us immediately at hello@luxeshop.com if you need to make changes.</div>
+                </div>
+                <div class="faq-item">
+                  <button class="faq-question" onclick="toggleFAQ(this)">
+                    My order arrived damaged — what do I do?
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">We're so sorry to hear this. Please contact us within 48 hours of delivery with photos of the damage. We'll send a replacement or issue a full refund immediately — no need to return the damaged item.</div>
+                </div>
+                <div class="faq-item">
+                  <button class="faq-question" onclick="toggleFAQ(this)">
+                    What if an item is missing from my order?
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">Check your order confirmation — some orders ship in multiple packages. If items are still missing after checking tracking, contact us and we'll resolve it within 24 hours.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PRODUCTS -->
+            <div class="faq-section" data-cat="products" style="margin-bottom:var(--sp-8)">
+              <h2 style="font-size:var(--text-lg);font-weight:var(--weight-semibold);margin-bottom:var(--sp-4);display:flex;align-items:center;gap:var(--sp-2)">👗 Products</h2>
+              <div class="faq-list">
+                <div class="faq-item">
+                  <button class="faq-question" onclick="toggleFAQ(this)">
+                    How do I find the right size?
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">Each product page includes a size guide specific to that item. We recommend measuring yourself and comparing to the size chart. Our products are noted with fit guidance (slim, relaxed, oversized) on each listing.</div>
+                </div>
+                <div class="faq-item">
+                  <button class="faq-question" onclick="toggleFAQ(this)">
+                    Will out-of-stock items be restocked?
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">Many items are restocked, but some sell out permanently. Use the "Notify Me" button on sold-out product pages to be alerted when stock returns.</div>
+                </div>
+                <div class="faq-item">
+                  <button class="faq-question" onclick="toggleFAQ(this)">
+                    Are your products ethically sourced?
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">Yes — all our supplier partners meet our strict code of conduct covering fair wages, safe working conditions, and environmental standards. See our <a href="about.html" style="color:var(--clr-accent)">About page</a> for more on our sustainability commitment.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PAYMENT -->
+            <div class="faq-section" data-cat="payment" style="margin-bottom:var(--sp-8)">
+              <h2 style="font-size:var(--text-lg);font-weight:var(--weight-semibold);margin-bottom:var(--sp-4);display:flex;align-items:center;gap:var(--sp-2)">💳 Payment</h2>
+              <div class="faq-list">
+                <div class="faq-item">
+                  <button class="faq-question" onclick="toggleFAQ(this)">
+                    What payment methods do you accept?
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">We accept Visa, Mastercard, American Express, Discover, PayPal, Apple Pay, and Google Pay. All payments are processed securely via Stripe.</div>
+                </div>
+                <div class="faq-item">
+                  <button class="faq-question" onclick="toggleFAQ(this)">
+                    Is my payment information secure?
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-answer">Absolutely. We never store card details on our servers. All payment processing is handled by Stripe, which is PCI DSS Level 1 certified — the highest level of payment security.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Still have questions -->
+        <div style="margin-top:var(--sp-10);background:var(--clr-bg-alt);border-radius:var(--radius-2xl);padding:var(--sp-10);text-align:center">
+          <h2 style="font-size:var(--text-2xl);font-family:var(--font-display);font-weight:700;margin-bottom:var(--sp-3)">Still have questions?</h2>
+          <p style="color:var(--clr-text-muted);margin-bottom:var(--sp-6)">Our team is ready to help. Reach out and we'll respond within a few hours.</p>
+          <a href="contact.html" class="btn btn-primary">Contact Support →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-main"><div class="container"><div class="footer-grid">
+      <div class="footer-brand"><a href="index.html" class="footer-logo">✦ Luxe<span>Shop</span></a><p class="footer-desc">Curated fashion essentials.</p></div>
+      <div><h4 class="footer-heading">Shop</h4><ul class="footer-links"><li><a href="shop.html">All Products</a></li><li><a href="shop.html?cat=sale">Sale</a></li></ul></div>
+      <div><h4 class="footer-heading">Help</h4><ul class="footer-links"><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div><h4 class="footer-heading">Legal</h4><ul class="footer-links"><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div>
+    </div></div></div>
+    <div class="container"><div class="footer-bottom"><span>© 2025 LuxeShop</span></div></div>
+  </footer>
+
+  <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-drawer" id="cartDrawer"><div class="drawer-header"><h2 class="drawer-title">Your Cart</h2><button class="drawer-close" onclick="closeCart()">✕</button></div><div class="drawer-body" id="drawerBody"></div><div class="drawer-footer"><div class="summary-row total"><span>Total</span><span id="drawerTotal">$0.00</span></div><a href="checkout.html" class="btn btn-primary" style="width:100%;margin-top:var(--sp-4)">Checkout</a></div></div>
+  <nav class="mobile-nav" id="mobileNav"><div class="mobile-nav-header"><a href="index.html" class="site-logo"><div class="logo-mark">✦</div><span>Luxe<span>Shop</span></span></a><button onclick="closeMobileNav()">✕</button></div><div class="mobile-nav-body"><ul class="mobile-nav-list"><li><a href="index.html" class="mobile-nav-link">Home</a></li><li><a href="shop.html" class="mobile-nav-link">Shop</a></li></ul></div></nav>
+  <div class="search-modal" id="searchModal"><div class="search-modal-inner"><div class="search-modal-input-wrap"><span class="search-modal-icon">⌕</span><input type="search" id="searchInput" placeholder="Search…"><button onclick="closeSearch()">✕</button></div><div id="searchResults" style="padding:var(--sp-4);color:var(--clr-text-muted);font-size:var(--text-sm)">Start typing…</div></div></div>
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    function toggleFAQ(btn) {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+    function filterFAQ(cat, tabBtn) {
+      document.querySelectorAll('[role="tab"]').forEach(b => { b.classList.remove('btn-primary'); b.classList.add('btn-outline'); });
+      tabBtn.classList.remove('btn-outline'); tabBtn.classList.add('btn-primary');
+      document.querySelectorAll('.faq-section').forEach(section => {
+        section.style.display = (cat === 'all' || section.dataset.cat === cat) ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>

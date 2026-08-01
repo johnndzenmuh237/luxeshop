@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — LuxeShop</title>
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <style>
+    /* ============================================================
+       CONTACT PAGE — fully self-contained styles.
+       All values are fixed units / locally-scoped variables.
+       Nothing here depends on tokens from variables.css or
+       style.css, so it can't silently break if those change.
+       Everything is prefixed "cx-" to avoid collisions.
+       ============================================================ */
+
+    .cx-page{
+      --ink: #1a1a2e;
+      --ink-muted: #6b6b80;
+      --line: #e6e6ec;
+      --panel: #ffffff;
+      --panel-alt: #f6f6f9;
+      --accent: #e94560;
+      --accent-soft: rgba(233,69,96,0.1);
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --gap: 1.25rem;
+      color: var(--ink);
+    }
+    .cx-page *{ box-sizing: border-box; }
+
+    .cx-wrap{
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-inline: 1.25rem;
+    }
+
+    /* ---- Page hero ---- */
+    .cx-hero{
+      background: var(--panel-alt);
+      border-bottom: 1px solid var(--line);
+      padding-block: 2rem;
+    }
+    .cx-breadcrumb{
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      margin-bottom: 0.75rem;
+    }
+    .cx-breadcrumb a{ color: var(--ink-muted); text-decoration: none; }
+    .cx-breadcrumb a:hover{ color: var(--accent); }
+    .cx-hero h1{
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
+      font-weight: 900;
+      margin-bottom: 0.4rem;
+    }
+    .cx-hero p{
+      color: var(--ink-muted);
+      font-size: 0.95rem;
+      max-width: 50ch;
+    }
+
+    /* ---- Layout ---- */
+    .cx-section{ padding-block: 2.5rem; }
+
+    .cx-layout{
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: var(--gap);
+      align-items: start;
+    }
+
+    /* ---- Info cards ---- */
+    .cx-info-stack{
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .cx-info-card{
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+    }
+    .cx-info-icon{
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      background: var(--accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+    }
+    .cx-info-card .label{ font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
+    .cx-info-card a{ font-size: 0.88rem; color: var(--accent); text-decoration: none; word-break: break-word; }
+    .cx-info-card .hint{ font-size: 0.75rem; color: var(--ink-muted); margin-top: 0.3rem; }
+    .cx-info-card .addr{ font-size: 0.88rem; color: var(--ink-muted); line-height: 1.6; }
+
+    .cx-faq-card{
+      background: var(--panel-alt);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+    .cx-faq-card .emoji{ font-size: 1.4rem; flex-shrink: 0; }
+    .cx-faq-card .label{ font-weight: 600; font-size: 0.88rem; margin-bottom: 0.1rem; }
+    .cx-faq-card a{ font-size: 0.85rem; color: var(--accent); text-decoration: none; }
+
+    /* ---- Form panel ---- */
+    .cx-form-panel{
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 2rem;
+    }
+    .cx-form-panel h2{
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+    .cx-form-panel > p{
+      font-size: 0.9rem;
+      color: var(--ink-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .cx-form{
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+    .cx-row{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .cx-field{
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .cx-field label{
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .cx-field input,
+    .cx-field select,
+    .cx-field textarea{
+      width: 100%;
+      padding: 0.7em 0.9em;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--ink);
+      background: var(--panel);
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      appearance: none;
+    }
+    .cx-field textarea{ resize: vertical; }
+    .cx-field input:focus,
+    .cx-field select:focus,
+    .cx-field textarea:focus{
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .cx-field .optional{ font-weight: 400; color: #a5a5b5; }
+
+    .cx-consent{
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .cx-consent input{ accent-color: var(--accent); width: 16px; height: 16px; flex-shrink: 0; }
+    .cx-consent label{ font-size: 0.85rem; color: var(--ink-muted); }
+    .cx-consent a{ color: var(--accent); }
+
+    .cx-submit{
+      width: 100%;
+      padding: 0.9em;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      background: var(--accent);
+      border: none;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .cx-submit:hover{ opacity: 0.92; }
+
+    .cx-success{
+      display: none;
+      text-align: center;
+      padding: 2.5rem 1rem;
+    }
+    .cx-success .emoji{ font-size: 3rem; margin-bottom: 1rem; }
+    .cx-success h3{ font-size: 1.25rem; font-weight: 700; margin-bottom: 0.6rem; }
+    .cx-success p{ color: var(--ink-muted); margin-bottom: 1.25rem; }
+    .cx-success button{
+      padding: 0.65em 1.5em;
+      font-size: 0.9rem;
+      font-weight: 600;
+      background: transparent;
+      border: 1.5px solid var(--line);
+      border-radius: 999px;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    .cx-success button:hover{ border-color: var(--ink); }
+
+    /* ================= RESPONSIVE ================= */
+
+    /* Tablet: 960px and below — stack info above form */
+    @media (max-width: 960px){
+      .cx-layout{
+        grid-template-columns: 1fr;
+      }
+      .cx-info-stack{
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .cx-info-card{
+        flex: 1 1 260px;
+      }
+      .cx-faq-card{
+        flex: 1 1 100%;
+      }
+      .cx-form-panel{ padding: 1.75rem; }
+    }
+
+    /* Mobile: 600px and below */
+    @media (max-width: 600px){
+      .cx-hero{ padding-block: 1.5rem; }
+      .cx-section{ padding-block: 1.5rem; }
+      .cx-wrap{ padding-inline: 1rem; }
+      .cx-info-stack{ flex-direction: column; }
+      .cx-info-card{ flex: none; }
+      .cx-row{ grid-template-columns: 1fr; }
+      .cx-form-panel{ padding: 1.25rem; border-radius: 16px; }
+      .cx-form-panel h2{ font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="announcement-bar">🚚 Free shipping on orders over $75 — <a href="shop.html">Shop Now</a></div>
+  <header class="site-header" id="siteHeader">
+    <div class="container"><div class="header-inner">
+      <a href="index.html" class="site-logo"><div class="logo-mark">✦</div><span class="logo-text">Luxe<span>Shop</span></span></a>
+      <nav class="main-nav"><ul class="nav-list">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="shop.html" class="nav-link">Shop <span style="font-size:0.7em">▾</span></a><div class="nav-dropdown"><a href="shop.html?cat=new">New Arrivals</a><a href="shop.html?cat=women">Women</a><a href="shop.html?cat=men">Men</a><a href="shop.html?cat=sale">Sale</a></div></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link active">Contact</a></li>
+      </ul></nav>
+      <div class="header-actions">
+        <button class="header-icon-btn" onclick="openSearch()">⌕</button>
+        <a href="account.html" class="header-icon-btn">◉</a>
+        <a href="wishlist.html" class="header-icon-btn">♡<span class="badge-count" id="wishlistCount">0</span></a>
+        <button class="header-icon-btn" id="cartToggle">⊡<span class="badge-count" id="cartCount">0</span></button>
+        <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+      </div>
+    </div></div>
+  </header>
+
+  <main class="cx-page">
+
+    <div class="cx-hero">
+      <div class="cx-wrap">
+        <nav class="cx-breadcrumb"><a href="index.html">Home</a><span>›</span><span>Contact</span></nav>
+        <h1>Get in Touch</h1>
+        <p>We're here to help. Our team typically responds within a few hours on business days.</p>
+      </div>
+    </div>
+
+    <section class="cx-section">
+      <div class="cx-wrap">
+        <div class="cx-layout">
+
+          <!-- Contact info -->
+          <div class="cx-info-stack">
+            <div class="cx-info-card">
+              <div class="cx-info-icon">✉️</div>
+              <div>
+                <p class="label">Email</p>
+                <a href="mailto:hello@luxeshop.com">hello@luxeshop.com</a>
+                <p class="hint">Response within 4 hours</p>
+              </div>
+            </div>
+
+            <div class="cx-info-card">
+              <div class="cx-info-icon">💬</div>
+              <div>
+                <p class="label">Live Chat</p>
+                <button class="btn btn-primary btn-sm" onclick="showToast('Live chat coming soon')">Start Chat</button>
+                <p class="hint">Mon–Fri, 9am–6pm EST</p>
+              </div>
+            </div>
+
+            <div class="cx-info-card">
+              <div class="cx-info-icon">📱</div>
+              <div>
+                <p class="label">Phone</p>
+                <a href="tel:+18005550123">+1 (800) 555-0123</a>
+                <p class="hint">Mon–Fri, 9am–6pm EST</p>
+              </div>
+            </div>
+
+            <div class="cx-info-card">
+              <div class="cx-info-icon">📍</div>
+              <div>
+                <p class="label">Address</p>
+                <p class="addr">LuxeShop HQ<br>350 Fifth Avenue, Suite 6000<br>New York, NY 10118</p>
+              </div>
+            </div>
+
+            <div class="cx-faq-card">
+              <div class="emoji">❓</div>
+              <div>
+                <p class="label">Have a common question?</p>
+                <a href="faq.html">Browse our FAQ →</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact form -->
+          <div class="cx-form-panel">
+            <h2>Send us a message</h2>
+            <p>Fill out the form and we'll get back to you as soon as possible.</p>
+
+            <div class="cx-form" id="contactForm">
+              <div class="cx-row">
+                <div class="cx-field"><label for="cFirst">First Name</label><input type="text" id="cFirst" placeholder="Jane"></div>
+                <div class="cx-field"><label for="cLast">Last Name</label><input type="text" id="cLast" placeholder="Smith"></div>
+              </div>
+              <div class="cx-field"><label for="cEmail">Email</label><input type="email" id="cEmail" placeholder="you@example.com"></div>
+              <div class="cx-field">
+                <label for="cSubject">Subject</label>
+                <select id="cSubject">
+                  <option value="">Select a topic…</option>
+                  <option>Order Issue</option>
+                  <option>Return / Refund</option>
+                  <option>Shipping Question</option>
+                  <option>Product Question</option>
+                  <option>Account Help</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="cx-field" id="orderNumGroup" style="display:none">
+                <label for="cOrderNum">Order Number <span class="optional">(optional)</span></label>
+                <input type="text" id="cOrderNum" placeholder="#LX-2025-XXXX">
+              </div>
+              <div class="cx-field"><label for="cMessage">Message</label><textarea id="cMessage" rows="5" placeholder="Describe your issue or question in detail…"></textarea></div>
+              <div class="cx-consent">
+                <input type="checkbox" id="cConsent">
+                <label for="cConsent">I agree to LuxeShop's <a href="privacy.html">Privacy Policy</a></label>
+              </div>
+              <button class="cx-submit" onclick="submitContact()">Send Message</button>
+            </div>
+
+            <!-- Success state (hidden) -->
+            <div id="contactSuccess" class="cx-success">
+              <div class="emoji">✅</div>
+              <h3>Message sent!</h3>
+              <p>Thanks for reaching out. We'll get back to you within a few hours.</p>
+              <button onclick="resetContact()">Send another message</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-main"><div class="container"><div class="footer-grid">
+      <div class="footer-brand"><a href="index.html" class="footer-logo">✦ Luxe<span>Shop</span></a><p class="footer-desc">Curated fashion essentials.</p></div>
+      <div><h4 class="footer-heading">Shop</h4><ul class="footer-links"><li><a href="shop.html">All Products</a></li><li><a href="shop.html?cat=sale">Sale</a></li></ul></div>
+      <div><h4 class="footer-heading">Help</h4><ul class="footer-links"><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div><h4 class="footer-heading">Legal</h4><ul class="footer-links"><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div>
+    </div></div></div>
+    <div class="container"><div class="footer-bottom"><span>© 2025 LuxeShop</span></div></div>
+  </footer>
+
+  <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-drawer" id="cartDrawer"><div class="drawer-header"><h2 class="drawer-title">Your Cart</h2><button class="drawer-close" onclick="closeCart()">✕</button></div><div class="drawer-body" id="drawerBody"></div><div class="drawer-footer"><div class="summary-row total"><span>Total</span><span id="drawerTotal">$0.00</span></div><a href="checkout.html" class="btn btn-primary" style="width:100%;margin-top:1rem">Checkout</a></div></div>
+  <nav class="mobile-nav" id="mobileNav"><div class="mobile-nav-header"><a href="index.html" class="site-logo"><div class="logo-mark">✦</div><span>Luxe<span>Shop</span></span></a><button onclick="closeMobileNav()">✕</button></div><div class="mobile-nav-body"><ul class="mobile-nav-list"><li><a href="index.html" class="mobile-nav-link">Home</a></li><li><a href="shop.html" class="mobile-nav-link">Shop</a></li><li><a href="about.html" class="mobile-nav-link">About</a></li><li><a href="contact.html" class="mobile-nav-link active">Contact</a></li></ul></div></nav>
+  <div class="search-modal" id="searchModal"><div class="search-modal-inner"><div class="search-modal-input-wrap"><span class="search-modal-icon">⌕</span><input type="search" id="searchInput" placeholder="Search…"><button onclick="closeSearch()">✕</button></div><div id="searchResults" style="padding:1rem;color:#6b6b80;font-size:0.9rem">Start typing…</div></div></div>
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+    document.getElementById('cSubject').addEventListener('change', function() {
+      const show = ['Order Issue','Return / Refund','Shipping Question'].includes(this.value);
+      document.getElementById('orderNumGroup').style.display = show ? '' : 'none';
+    });
+    function submitContact() {
+      const first = document.getElementById('cFirst').value;
+      const email = document.getElementById('cEmail').value;
+      const msg = document.getElementById('cMessage').value;
+      const consent = document.getElementById('cConsent').checked;
+      if (!first || !email || !msg) { showToast('Please fill in all required fields', 'warning'); return; }
+      if (!consent) { showToast('Please agree to our Privacy Policy', 'warning'); return; }
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('contactSuccess').style.display = '';
+    }
+    function resetContact() {
+      document.getElementById('contactForm').style.display = '';
+      document.getElementById('contactSuccess').style.display = 'none';
+      document.getElementById('contactForm').querySelectorAll('input,textarea,select').forEach(el => el.value = '');
+    }
+  </script>
+</body>
+</html>

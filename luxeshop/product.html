@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Shop all products at LuxeShop — Women's Dresses, Men's Shirts, Shoes, Watches, Jewelry, Chains and Luggage.">
+  <title>All Products — LuxeShop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <style>
+    /* ── JUMP NAV ── */
+    .cat-jumpnav {
+      position: sticky; top: 72px; z-index: 90;
+      background: #fff; border-bottom: 1px solid #e4e1db;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .cat-jumpnav::-webkit-scrollbar { display: none; }
+    .cat-jumpnav-inner {
+      display: flex; gap: 4px; padding: 10px 0; white-space: nowrap;
+    }
+    .cat-jumpnav-link {
+      flex-shrink: 0; font-size: 13px; font-weight: 600;
+      color: #6b6878; padding: 7px 18px; border-radius: 999px;
+      text-decoration: none; transition: background .18s, color .18s;
+      border: 1.5px solid transparent;
+    }
+    .cat-jumpnav-link:hover { border-color: #1a1a2e; color: #1a1a2e; }
+    .cat-jumpnav-link.active { background: #1a1a2e; color: #fff; }
+
+    /* ── CATEGORY SECTION ── */
+    .cat-section { padding: 56px 0; border-bottom: 1px solid #e4e1db; scroll-margin-top: 130px; }
+    .cat-section:last-of-type { border-bottom: none; }
+
+    /* ── CATEGORY BANNER ── */
+    .cat-banner {
+      display: grid; grid-template-columns: 1.15fr 1fr;
+      gap: 48px; align-items: center; margin-bottom: 40px;
+    }
+    .cat-banner-img {
+      aspect-ratio: 16/9; border-radius: 12px; overflow: hidden;
+      background: #f0eee9;
+    }
+    .cat-banner-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .cat-banner-tag { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #e94560; display: block; margin-bottom: 10px; }
+    .cat-banner-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 2.5vw, 2.1rem); font-weight: 900; margin: 0 0 12px; line-height: 1.15; }
+    .cat-banner-desc { font-size: 14px; color: #6b6878; line-height: 1.7; margin: 0 0 20px; max-width: 44ch; }
+    .cat-banner-stats { display: flex; gap: 28px; margin-bottom: 22px; }
+    .cbs strong { display: block; font-size: 1.2rem; font-weight: 800; color: #1a1a2e; }
+    .cbs span { font-size: 11px; color: #a09dae; letter-spacing: .04em; }
+
+    /* ── SUBSECTION HEADING ── */
+    .sub-head { display: flex; align-items: baseline; gap: 12px; margin: 36px 0 20px; }
+    .sub-head:first-of-type { margin-top: 0; }
+    .sub-head h3 { font-size: 18px; font-weight: 700; margin: 0; }
+    .sub-head span { font-size: 13px; color: #a09dae; }
+
+    /* ── PRODUCT GRID ── */
+    .pgrid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+
+    /* ── PRODUCT CARD ── */
+    .pcard {
+      border: 1px solid #e4e1db; border-radius: 10px; overflow: hidden;
+      background: #fff; cursor: pointer;
+      transition: box-shadow .22s, transform .22s;
+      display: flex; flex-direction: column;
+    }
+    .pcard:hover { box-shadow: 0 10px 32px rgba(26,26,46,.11); transform: translateY(-3px); }
+    .pcard:hover .pcard-img img { transform: scale(1.07); }
+    .pcard:hover .pcard-quick { opacity: 1; transform: translateY(0); }
+
+    .pcard-img {
+      position: relative; aspect-ratio: 1/1; overflow: hidden;
+      background: #f0eee9;
+    }
+    .pcard-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
+
+    .pcard-badge {
+      position: absolute; top: 8px; left: 8px;
+      font-size: 9px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 3px; color: #fff;
+    }
+    .pcard-badge.new { background: #2cb67d; }
+    .pcard-badge.sale { background: #e94560; }
+    .pcard-wish {
+      position: absolute; top: 8px; right: 8px;
+      width: 30px; height: 30px; border-radius: 50%;
+      background: rgba(255,255,255,.92); border: none;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; cursor: pointer;
+      transition: background .15s, color .15s; color: #6b6878;
+    }
+    .pcard-wish:hover { background: #e94560; color: #fff; }
+    .pcard-wish.wishlisted { background: #e94560; color: #fff; }
+
+    /* Quick-view overlay on hover */
+    .pcard-quick {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: rgba(26,26,46,.88); backdrop-filter: blur(3px);
+      padding: 10px 8px;
+      display: flex; gap: 6px; justify-content: center;
+      opacity: 0; transform: translateY(6px);
+      transition: opacity .2s, transform .2s;
+    }
+    .pcard-quick-order, .pcard-quick-view {
+      padding: 7px 14px; border-radius: 5px;
+      font-size: 11px; font-weight: 700; letter-spacing: .06em;
+      cursor: pointer; border: none; transition: background .15s, color .15s;
+      font-family: inherit;
+    }
+    .pcard-quick-order {
+      background: #e94560; color: #fff;
+    }
+    .pcard-quick-order:hover { background: #c73652; }
+    .pcard-quick-view {
+      background: rgba(255,255,255,.15); color: rgba(255,255,255,.85);
+      border: 1px solid rgba(255,255,255,.3);
+    }
+    .pcard-quick-view:hover { background: rgba(255,255,255,.25); color: #fff; }
+
+    .pcard-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+    .pcard-cat { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #a09dae; }
+    .pcard-name { font-size: 13px; font-weight: 600; color: #1a1a2e; line-height: 1.3; margin: 0; }
+    .pcard-rating { font-size: 11px; color: #6b6878; }
+    .pcard-rating .stars { color: #f59e0b; }
+    .pcard-price { display: flex; align-items: baseline; gap: 6px; margin-top: auto; padding-top: 8px; }
+    .pcard-price .cur { font-size: 15px; font-weight: 800; color: #1a1a2e; }
+    .pcard-price .orig { font-size: 11px; color: #c0bcca; text-decoration: line-through; }
+    .pcard-colors { display: flex; gap: 4px; margin-top: 6px; }
+    .pcard-color { width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,.1); }
+    .cat-viewall { display: flex; justify-content: center; margin-top: 32px; }
+
+    /* ── PRODUCT MODAL OVERLAY ── */
+    .pm-overlay {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(13,12,26,.75); backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; visibility: hidden;
+      transition: opacity .3s, visibility .3s;
+    }
+    .pm-overlay.open { opacity: 1; visibility: visible; }
+
+    .pm-modal {
+      background: #fff; border-radius: 16px;
+      width: 100%; max-width: 1020px;
+      max-height: 92vh; overflow-y: auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      position: relative;
+      transform: scale(.96) translateY(10px);
+      transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+      scrollbar-width: thin;
+    }
+    .pm-overlay.open .pm-modal { transform: scale(1) translateY(0); }
+
+    .pm-close {
+      position: absolute; top: 16px; right: 16px; z-index: 10;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(26,26,46,.08); border: none;
+      font-size: 16px; cursor: pointer; color: #1a1a2e;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s;
+    }
+    .pm-close:hover { background: #e94560; color: #fff; }
+
+    /* ── GALLERY SIDE ── */
+    .pm-gallery { padding: 24px; display: flex; flex-direction: column; gap: 12px; background: #f8f7f4; border-radius: 16px 0 0 16px; }
+    .pm-main-img {
+      aspect-ratio: 1/1; border-radius: 10px; overflow: hidden;
+      background: #e4e1db; flex-shrink: 0;
+    }
+    .pm-main-img img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+    .pm-main-img:hover img { transform: scale(1.04); }
+    .pm-thumbs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+    .pm-thumbs::-webkit-scrollbar { display: none; }
+    .pm-thumb {
+      flex-shrink: 0; width: 68px; height: 68px; border-radius: 8px; overflow: hidden;
+      border: 2px solid transparent; cursor: pointer;
+      transition: border-color .15s; background: #e4e1db;
+    }
+    .pm-thumb.active { border-color: #e94560; }
+    .pm-thumb:hover:not(.active) { border-color: #1a1a2e; }
+    .pm-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* ── INFO SIDE ── */
+    .pm-info { padding: 32px 32px 32px 28px; display: flex; flex-direction: column; gap: 0; overflow-y: auto; }
+    .pm-cat { font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #e94560; margin-bottom: 8px; }
+    .pm-name { font-family: 'Playfair Display', serif; font-size: clamp(1.3rem, 2vw, 1.75rem); font-weight: 900; line-height: 1.15; margin: 0 0 10px; color: #1a1a2e; }
+    .pm-rating-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .pm-stars { color: #f59e0b; font-size: 14px; letter-spacing: 1px; }
+    .pm-rcount { font-size: 13px; color: #a09dae; }
+    .pm-verified { font-size: 11px; color: #2cb67d; font-weight: 600; }
+
+    .pm-price-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; }
+    .pm-price-cur { font-size: 1.8rem; font-weight: 900; color: #1a1a2e; line-height: 1; }
+    .pm-price-orig { font-size: 1rem; color: #c0bcca; text-decoration: line-through; }
+    .pm-price-save { font-size: 12px; font-weight: 700; color: #2cb67d; background: rgba(44,182,125,.1); padding: 3px 8px; border-radius: 4px; }
+
+    .pm-desc { font-size: 13px; color: #6b6878; line-height: 1.75; margin-bottom: 20px; border-bottom: 1px solid #e4e1db; padding-bottom: 20px; }
+
+    /* Option labels */
+    .pm-option-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: #1a1a2e; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+    }
+    .pm-option-label .sel-val { font-weight: 600; color: #6b6878; text-transform: none; letter-spacing: 0; }
+
+    /* Color selector */
+    .pm-colors { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+    .pm-color-btn {
+      width: 28px; height: 28px; border-radius: 50%;
+      border: 2.5px solid transparent; cursor: pointer;
+      transition: transform .15s, border-color .15s;
+      position: relative;
+    }
+    .pm-color-btn:hover { transform: scale(1.15); }
+    .pm-color-btn.active { border-color: #1a1a2e; }
+    .pm-color-btn.active::after {
+      content: '✓'; position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 900; color: rgba(255,255,255,.9);
+    }
+
+    /* Size selector */
+    .pm-sizes { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .pm-size-btn {
+      min-width: 44px; height: 44px; padding: 0 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+      border: 1.5px solid #e4e1db; border-radius: 6px;
+      cursor: pointer; transition: all .15s; background: #fff; color: #1a1a2e;
+    }
+    .pm-size-btn:hover { border-color: #1a1a2e; }
+    .pm-size-btn.active { background: #1a1a2e; border-color: #1a1a2e; color: #fff; }
+    .pm-size-btn.oos { opacity: .3; text-decoration: line-through; pointer-events: none; }
+
+    /* Delivery toggle */
+    .pm-delivery { display: flex; gap: 0; margin-bottom: 20px; border: 1.5px solid #e4e1db; border-radius: 8px; overflow: hidden; }
+    .pm-deliv-btn {
+      flex: 1; padding: 13px 10px;
+      font-size: 13px; font-weight: 600;
+      border: none; background: #fff; color: #6b6878;
+      cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px;
+      transition: background .15s, color .15s;
+      border-right: 1.5px solid #e4e1db;
+    }
+    .pm-deliv-btn:last-child { border-right: none; }
+    .pm-deliv-btn .di { font-size: 1.2rem; }
+    .pm-deliv-btn .dt { font-size: 11px; letter-spacing: .04em; }
+    .pm-deliv-btn.active { background: #1a1a2e; color: #fff; }
+
+    /* Quantity */
+    .pm-qty-row { display: flex; gap: 10px; margin-bottom: 18px; align-items: center; }
+    .pm-qty { display: flex; align-items: center; border: 1.5px solid #e4e1db; border-radius: 8px; overflow: hidden; }
+    .pm-qty button { width: 38px; height: 44px; border: none; background: none; font-size: 18px; cursor: pointer; color: #6b6878; transition: background .15s; }
+    .pm-qty button:hover { background: #f0eee9; }
+    .pm-qty input { width: 48px; height: 44px; border: none; border-inline: 1.5px solid #e4e1db; text-align: center; font-size: 15px; font-weight: 700; background: #fff; }
+
+    .pm-stock { font-size: 12px; color: #2cb67d; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+    .pm-stock::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #2cb67d; display: block; }
+    .pm-stock.low { color: #f59e0b; }
+    .pm-stock.low::before { background: #f59e0b; }
+
+    /* CTA buttons */
+    .pm-cta { display: flex; gap: 10px; margin-bottom: 18px; }
+    .pm-btn-cart {
+      flex: 1; padding: 15px; border-radius: 8px;
+      font-size: 14px; font-weight: 700; letter-spacing: .04em;
+      background: #1a1a2e; color: #fff; border: none; cursor: pointer;
+      transition: background .15s, box-shadow .15s;
+    }
+    .pm-btn-cart:hover { background: #e94560; box-shadow: 0 6px 24px rgba(233,69,96,.3); }
+    .pm-btn-wish {
+      width: 52px; border-radius: 8px;
+      font-size: 20px; background: #fff; color: #6b6878;
+      border: 1.5px solid #e4e1db; cursor: pointer;
+      transition: background .15s, color .15s, border-color .15s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pm-btn-wish:hover, .pm-btn-wish.active { background: #fdf1f3; color: #e94560; border-color: #e94560; }
+
+    .pm-order-btn {
+      width: 100%; padding: 15px; border-radius: 8px;
+      font-size: 15px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+      background: #e94560; color: #fff; border: none; cursor: pointer;
+      transition: background .15s, box-shadow .15s; margin-bottom: 14px;
+    }
+    .pm-order-btn:hover { background: #c73652; box-shadow: 0 6px 28px rgba(233,69,96,.4); }
+
+    /* Micro-trust row */
+    .pm-trust { display: flex; gap: 14px; flex-wrap: wrap; border-top: 1px solid #e4e1db; padding-top: 14px; }
+    .pm-trust-item { font-size: 11px; color: #a09dae; display: flex; align-items: center; gap: 5px; }
+    .pm-trust-item strong { color: #1a1a2e; }
+
+    /* Features mini-list */
+    .pm-features { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; border-bottom: 1px solid #e4e1db; padding-bottom: 16px; }
+    .pm-feature { font-size: 12px; color: #6b6878; display: flex; align-items: flex-start; gap: 7px; }
+    .pm-feature::before { content: '✓'; color: #2cb67d; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── TRUST STRIP ── */
+    .trust-strip-shop {
+      background: #f8f7f4; border-top: 1px solid #e4e1db;
+      padding: 32px 0;
+    }
+    .trust-strip-shop-inner {
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 0;
+    }
+    .ts-cell {
+      display: flex; align-items: center; gap: 14px;
+      padding: 0 24px; border-right: 1px solid #e4e1db; text-align: left;
+    }
+    .ts-cell:last-child { border-right: none; }
+    .ts-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .ts-title { font-size: 13px; font-weight: 700; color: #1a1a2e; }
+    .ts-sub { font-size: 11px; color: #a09dae; margin-top: 2px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) { .pgrid { grid-template-columns: repeat(4,1fr); } }
+    @media (max-width: 900px) {
+      .pgrid { grid-template-columns: repeat(3,1fr); }
+      .cat-banner { grid-template-columns: 1fr; }
+      .pm-modal { grid-template-columns: 1fr; max-width: 520px; }
+      .pm-gallery { border-radius: 16px 16px 0 0; }
+      .trust-strip-shop-inner { grid-template-columns: repeat(2,1fr); }
+      .ts-cell:nth-child(2) { border-right: none; }
+      .ts-cell { padding: 16px; border-bottom: 1px solid #e4e1db; }
+      .ts-cell:nth-child(3), .ts-cell:nth-child(4) { border-bottom: none; }
+    }
+    @media (max-width: 600px) {
+      .pgrid { grid-template-columns: repeat(2,1fr); gap: 10px; }
+      .pm-info { padding: 20px; }
+      .trust-strip-shop-inner { grid-template-columns: 1fr; }
+      .ts-cell { border-right: none; border-bottom: 1px solid #e4e1db; }
+      .ts-cell:last-child { border-bottom: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="announcement-bar">
+    🚚 Free shipping on orders over $75 — <a href="#">Shop Now</a> &nbsp;|&nbsp; Use code <strong>WELCOME15</strong> for 15% off
+  </div>
+
+  <header class="site-header" id="siteHeader">
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="site-logo">
+          <div class="logo-mark">✦</div>
+          <span class="logo-text">Luxe<span>Shop</span></span>
+        </a>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li class="nav-item">
+              <a href="shop.html" class="nav-link active">Shop <span style="font-size:0.7em">▾</span></a>
+              <div class="nav-dropdown">
+                <a href="#women">Women</a>
+                <a href="#men">Men</a>
+                <a href="#shoes">Shoes</a>
+                <a href="#watches">Watches</a>
+                <a href="#jewelry">Jewelry</a>
+                <a href="#chains">Chains</a>
+                <a href="#luggage">Luggage &amp; Bags</a>
+              </div>
+            </li>
+            <li><a href="about.html" class="nav-link">About</a></li>
+            <li><a href="contact.html" class="nav-link">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="header-search">
+          <span class="header-search-icon">⌕</span>
+          <input type="search" placeholder="Search products…" aria-label="Search" readonly onclick="openSearch()">
+        </div>
+        <div class="header-actions">
+          <button class="header-icon-btn" onclick="openSearch()">⌕</button>
+          <a href="account.html" class="header-icon-btn">◉</a>
+          <a href="wishlist.html" class="header-icon-btn">♡<span class="badge-count" id="wishlistCount">0</span></a>
+          <button class="header-icon-btn" id="cartToggle">⊡<span class="badge-count" id="cartCount">0</span></button>
+          <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Hero -->
+  <div class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current">All Products</span>
+      </nav>
+      <h1 class="page-hero-title">All Products</h1>
+      <p class="page-hero-desc">Every category, every essential — browse the full LuxeShop catalog.</p>
+    </div>
+  </div>
+
+  <!-- Sticky category jump-nav -->
+  <nav class="cat-jumpnav" aria-label="Category quick navigation">
+    <div class="container">
+      <div class="cat-jumpnav-inner">
+        <a href="#women"   class="cat-jumpnav-link">👗 Women</a>
+        <a href="#men"     class="cat-jumpnav-link">👔 Men</a>
+        <a href="#shoes"   class="cat-jumpnav-link">👟 Shoes</a>
+        <a href="#watches" class="cat-jumpnav-link">⌚ Watches</a>
+        <a href="#jewelry" class="cat-jumpnav-link">💍 Jewelry</a>
+        <a href="#chains"  class="cat-jumpnav-link">⛓️ Chains</a>
+        <a href="#luggage" class="cat-jumpnav-link">🧳 Luggage &amp; Bags</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ===== WOMEN ===== -->
+    <section class="cat-section" id="women">
+      <div class="container">
+        <div class="cat-banner">
+          <div class="cat-banner-img">
+            <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=900&h=563&fit=crop&q=80" alt="Women's dresses" loading="lazy">
+          </div>
+          <div>
+            <span class="cat-banner-tag">Women's Collection</span>
+            <h2 class="cat-banner-title">Dresses for every occasion</h2>
+            <p class="cat-banner-desc">From everyday midi dresses to evening gowns — elegant silhouettes in premium fabrics, crafted for the modern woman.</p>
+            <div class="cat-banner-stats">
+              <div class="cbs"><strong>120</strong><span>Items</span></div>
+              <div class="cbs"><strong>4.8★</strong><span>Avg. Rating</span></div>
+              <div class="cbs"><strong>22</strong><span>New This Week</span></div>
+            </div>
+            <button class="btn btn-primary" onclick="scrollTo({top:document.getElementById('women').offsetTop+350,behavior:'smooth'})">Browse Women's Dresses</button>
+          </div>
+        </div>
+        <div class="pgrid" id="women-grid">
+          <!-- cards injected by JS -->
+        </div>
+        <div class="cat-viewall"><button class="btn btn-outline" onclick="showToast('Loading more…')">View All Women\'s Dresses</button></div>
+      </div>
+    </section>
+
+    <!-- ===== MEN ===== -->
+    <section class="cat-section" id="men">
+      <div class="container">
+        <div class="cat-banner">
+          <div class="cat-banner-img">
+            <img src="https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=900&h=563&fit=crop&q=80&crop=top" alt="Men's shirts" loading="lazy">
+          </div>
+          <div>
+            <span class="cat-banner-tag">Men's Collection</span>
+            <h2 class="cat-banner-title">Sharp shirts, built to last</h2>
+            <p class="cat-banner-desc">Oxford, dress and casual shirts tailored for a clean, classic wardrobe. Premium fabrics, refined cuts.</p>
+            <div class="cat-banner-stats">
+              <div class="cbs"><strong>96</strong><span>Items</span></div>
+              <div class="cbs"><strong>4.7★</strong><span>Avg. Rating</span></div>
+              <div class="cbs"><strong>18</strong><span>New This Week</span></div>
+            </div>
+            <button class="btn btn-primary" onclick="scrollTo({top:document.getElementById('men').offsetTop+350,behavior:'smooth'})">Browse Men's Shirts</button>
+          </div>
+        </div>
+        <div class="pgrid" id="men-grid"></div>
+        <div class="cat-viewall"><button class="btn btn-outline" onclick="showToast('Loading more…')">View All Men\'s Shirts</button></div>
+      </div>
+    </section>
+
+    <!-- ===== SHOES ===== -->
+    <section class="cat-section" id="shoes">
+      <div class="container">
+        <div class="cat-banner">
+          <div class="cat-banner-img">
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900&h=563&fit=crop&q=80" alt="Shoes" loading="lazy">
+          </div>
+          <div>
+            <span class="cat-banner-tag">Shoes</span>
+            <h2 class="cat-banner-title">From the ground up</h2>
+            <p class="cat-banner-desc">Heels and flats for her, loafers and boots for him — every step covered in quality leather and suede.</p>
+            <div class="cat-banner-stats">
+              <div class="cbs"><strong>76</strong><span>Items</span></div>
+              <div class="cbs"><strong>4.7★</strong><span>Avg. Rating</span></div>
+              <div class="cbs"><strong>12</strong><span>New This Week</span></div>
+            </div>
+            <button class="btn btn-primary" onclick="scrollTo({top:document.getElementById('shoes').offsetTop+350,behavior:'smooth'})">Browse Shoes</button>
+          </div>
+        </div>
+        <div class="sub-head"><h3>Women's Shoes</h3><span>Heels &amp; flats</span></div>
+        <div class="pgrid" id="women-shoes-grid"></div>
+        <div class="sub-head"><h3>Men's Shoes</h3><span>Loafers, boots &amp; sneakers</span></div>
+        <div class="pgrid" id="men-shoes-grid"></div>
+        <div class="cat-viewall"><button class="btn btn-outline" onclick="showToast('Loading more…')">View All Shoes</button></div>
+      </div>
+    </section>
+
+    <!-- ===== WATCHES ===== -->
+    <section class="cat-section" id="watches">
+      <div class="container">
+        <div class="cat-banner">
+          <div class="cat-banner-img">
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=900&h=563&fit=crop&q=80" alt="Watches" loading="lazy">
+          </div>
+          <div>
+            <span class="cat-banner-tag">Watches — Men's</span>
+            <h2 class="cat-banner-title">Timeless, on your wrist</h2>
+            <p class="cat-banner-desc">Minimalist faces and classic mechanics, crafted for everyday elegance and weekend adventures alike.</p>
+            <div class="cat-banner-stats">
+              <div class="cbs"><strong>46</strong><span>Items</span></div>
+              <div class="cbs"><strong>4.8★</strong><span>Avg. Rating</span></div>
+              <div class="cbs"><strong>6</strong><span>New This Week</span></div>
+            </div>
+            <button class="btn btn-primary" onclick="scrollTo({top:document.getElementById('watches').offsetTop+350,behavior:'smooth'})">Browse Watches</button>
+          </div>
+        </div>
+        <div class="pgrid" id="watches-grid"></div>
+        <div class="cat-viewall"><button class="btn btn-outline" onclick="showToast('Loading more…')">View All Watches</button></div>
+      </div>
+    </section>
+
+    <!-- ===== JEWELRY ===== -->
+    <section class="cat-section" id="jewelry">
+      <div class="container">
+        <div class="cat-banner">
+          <div class="cat-banner-img">
+            <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=900&h=563&fit=crop&q=80" alt="Jewelry" loading="lazy">
+          </div>
+          <div>
+            <span class="cat-banner-tag">Jewelry</span>
+            <h2 class="cat-banner-title">Small details, big impact</h2>
+            <p class="cat-banner-desc">Rings, earrings and necklaces for her; rings and bracelets for him. Fine finishes, lasting quality.</p>
+            <div class="cat-banner-stats">
+              <div class="cbs"><strong>52</strong><span>Items</span></div>
+              <div class="cbs"><strong>4.9★</strong><span>Avg. Rating</span></div>
+              <div class="cbs"><strong>9</strong><span>New This Week</span></div>
+            </div>
+            <button class="btn btn-primary" onclick="scrollTo({top:document.getElementById('jewelry').offsetTop+350,behavior:'smooth'})">Browse Jewelry</button>
+          </div>
+        </div>
+        <div class="sub-head"><h3>Women's Jewelry</h3><span>Earrings, necklaces &amp; rings</span></div>
+        <div class="pgrid" id="women-jewelry-grid"></div>
+        <div class="sub-head"><h3>Men's Jewelry</h3><span>Rings &amp; bracelets</span></div>
+        <div class="pgrid" id="men-jewelry-grid"></div>
+        <div class="cat-viewall"><button class="btn btn-outline" onclick="showToast('Loading more…')">View All Jewelry</button></div>
+      </div>
+    </section>
+
+    <!-- ===== CHAINS ===== -->
+    <section class="cat-section" id="chains">
+      <div class="container">
+        <div class="cat-banner">
+          <div class="cat-banner-img">
+            <img src="https://images.unsplash.com/photo-1573408301185-9519f94816b5?w=900&h=563&fit=crop&q=80" alt="Chains" loading="lazy">
+          </div>
+          <div>
+            <span class="cat-banner-tag">Chains</span>
+            <h2 class="cat-banner-title">Layer it up</h2>
+            <p class="cat-banner-desc">Curb, figaro, Cuban link and box chains in gold and silver tones. Stack them, mix them, make them yours.</p>
+            <div class="cat-banner-stats">
+              <div class="cbs"><strong>37</strong><span>Items</span></div>
+              <div class="cbs"><strong>4.7★</strong><span>Avg. Rating</span></div>
+              <div class="cbs"><strong>8</strong><span>New This Week</span></div>
+            </div>
+            <button class="btn btn-primary" onclick="scrollTo({top:document.getElementById('chains').offsetTop+350,behavior:'smooth'})">Browse Chains</button>
+          </div>
+        </div>
+        <div class="pgrid" id="chains-grid"></div>
+        <div class="cat-viewall"><button class="btn btn-outline" onclick="showToast('Loading more…')">View All Chains</button></div>
+      </div>
+    </section>
+
+    <!-- ===== LUGGAGE ===== -->
+    <section class="cat-section" id="luggage">
+      <div class="container">
+        <div class="cat-banner">
+          <div class="cat-banner-img">
+            <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=900&h=563&fit=crop&q=80" alt="Luggage and bags" loading="lazy">
+          </div>
+          <div>
+            <span class="cat-banner-tag">Luggage &amp; Bags</span>
+            <h2 class="cat-banner-title">Travel and carry, done right</h2>
+            <p class="cat-banner-desc">Suitcases, weekenders, totes and everyday bags in leather and durable canvas. Built for the long haul.</p>
+            <div class="cat-banner-stats">
+              <div class="cbs"><strong>64</strong><span>Items</span></div>
+              <div class="cbs"><strong>4.7★</strong><span>Avg. Rating</span></div>
+              <div class="cbs"><strong>11</strong><span>New This Week</span></div>
+            </div>
+            <button class="btn btn-primary" onclick="scrollTo({top:document.getElementById('luggage').offsetTop+350,behavior:'smooth'})">Browse Luggage</button>
+          </div>
+        </div>
+        <div class="pgrid" id="luggage-grid"></div>
+        <div class="cat-viewall"><button class="btn btn-outline" onclick="showToast('Loading more…')">View All Luggage &amp; Bags</button></div>
+      </div>
+    </section>
+
+    <!-- TRUST STRIP -->
+    <div class="trust-strip-shop">
+      <div class="container">
+        <div class="trust-strip-shop-inner">
+          <div class="ts-cell"><div class="ts-icon">🚚</div><div><div class="ts-title">Free Shipping</div><div class="ts-sub">On orders over $75</div></div></div>
+          <div class="ts-cell"><div class="ts-icon">↩️</div><div><div class="ts-title">30-Day Returns</div><div class="ts-sub">No questions asked</div></div></div>
+          <div class="ts-cell"><div class="ts-icon">🔒</div><div><div class="ts-title">Secure Checkout</div><div class="ts-sub">256-bit SSL encryption</div></div></div>
+          <div class="ts-cell"><div class="ts-icon">💬</div><div><div class="ts-title">24/7 Support</div><div class="ts-sub">We're always here</div></div></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ======================================================
+       PRODUCT QUICK-VIEW MODAL
+  ====================================================== -->
+  <div class="pm-overlay" id="pmOverlay" role="dialog" aria-modal="true" aria-label="Product details">
+    <div class="pm-modal" id="pmModal">
+      <button class="pm-close" id="pmClose" aria-label="Close">✕</button>
+
+      <!-- Gallery -->
+      <div class="pm-gallery">
+        <div class="pm-main-img">
+          <img id="pmMainImg" src="" alt="">
+        </div>
+        <div class="pm-thumbs" id="pmThumbs"></div>
+      </div>
+
+      <!-- Info -->
+      <div class="pm-info">
+        <div class="pm-cat" id="pmCat"></div>
+        <h2 class="pm-name" id="pmName"></h2>
+
+        <div class="pm-rating-row">
+          <span class="pm-stars" id="pmStars"></span>
+          <span class="pm-rcount" id="pmRcount"></span>
+          <span class="pm-verified">✓ Verified Reviews</span>
+        </div>
+
+        <div class="pm-price-row">
+          <span class="pm-price-cur" id="pmPriceCur"></span>
+          <span class="pm-price-orig" id="pmPriceOrig"></span>
+          <span class="pm-price-save" id="pmPriceSave" style="display:none"></span>
+        </div>
+
+        <p class="pm-desc" id="pmDesc"></p>
+
+        <!-- Features -->
+        <div class="pm-features" id="pmFeatures"></div>
+
+        <!-- Color selector -->
+        <div id="pmColorSection">
+          <div class="pm-option-label">Color: <span class="sel-val" id="pmSelColor">—</span></div>
+          <div class="pm-colors" id="pmColors"></div>
+        </div>
+
+        <!-- Size selector -->
+        <div id="pmSizeSection">
+          <div class="pm-option-label" style="margin-top:14px">Size: <span class="sel-val" id="pmSelSize">Select a size</span></div>
+          <div class="pm-sizes" id="pmSizes"></div>
+        </div>
+
+        <!-- Delivery / Pickup -->
+        <div class="pm-option-label" style="margin-top:16px;margin-bottom:10px">Fulfillment</div>
+        <div class="pm-delivery">
+          <button class="pm-deliv-btn active" id="pdDelivery" onclick="selectDelivery('delivery')">
+            <span class="di">🚚</span>
+            <span class="dt">Home Delivery</span>
+          </button>
+          <button class="pm-deliv-btn" id="pdPickup" onclick="selectDelivery('pickup')">
+            <span class="di">🏪</span>
+            <span class="dt">Pick Up In Store</span>
+          </button>
+        </div>
+        <div id="pdDeliveryInfo" style="font-size:12px;color:#6b6878;margin-bottom:14px;padding:8px 12px;background:#f8f7f4;border-radius:6px">
+          🚚 <strong>Free standard shipping</strong> on this order · Est. delivery <strong id="pmEstDelivery">3–5 business days</strong>
+        </div>
+
+        <!-- Qty + stock -->
+        <div class="pm-qty-row">
+          <div class="pm-qty">
+            <button onclick="changeModalQty(-1)">−</button>
+            <input type="number" id="pmQty" value="1" min="1" max="10" readonly>
+            <button onclick="changeModalQty(1)">+</button>
+          </div>
+          <div class="pm-stock" id="pmStock">In Stock</div>
+        </div>
+
+        <!-- CTA -->
+        <div class="pm-cta">
+          <button class="pm-btn-cart" onclick="modalAddToCart()">🛒 Add to Cart</button>
+          <button class="pm-btn-wish" id="pmWishBtn" onclick="modalToggleWish()" aria-label="Save to wishlist">♡</button>
+        </div>
+        <button  class="pm-order-btn" ><a href="checkout.html" class="see-all-link">Order Now</a></button>
+
+        <!-- Trust -->
+        <div class="pm-trust">
+          <div class="pm-trust-item">🚚 <strong>Free</strong> shipping over $75</div>
+          <div class="pm-trust-item">↩️ <strong>30-day</strong> free returns</div>
+          <div class="pm-trust-item">🔒 <strong>Secure</strong> checkout</div>
+          <div class="pm-trust-item">📦 Ships within <strong>24h</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-main"><div class="container"><div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">✦ Luxe<span>Shop</span></a>
+        <p class="footer-desc">Curated fashion and lifestyle essentials.</p>
+        <div class="footer-social"><a href="#" class="social-link">◈</a><a href="#" class="social-link">◉</a><a href="#" class="social-link">◎</a></div>
+      </div>
+      <div><h4 class="footer-heading">Shop</h4><ul class="footer-links"><li><a href="#women">Women</a></li><li><a href="#men">Men</a></li><li><a href="#shoes">Shoes</a></li><li><a href="#luggage">Luggage</a></li></ul></div>
+      <div><h4 class="footer-heading">Help</h4><ul class="footer-links"><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li><li><a href="faq.html#returns">Returns</a></li></ul></div>
+      <div><h4 class="footer-heading">Company</h4><ul class="footer-links"><li><a href="about.html">About</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div>
+    </div></div></div>
+    <div class="container"><div class="footer-bottom"><span>© 2025 LuxeShop. All rights reserved.</span><div class="footer-payment-icons"><span class="payment-pill">💳 Visa</span><span class="payment-pill">💳 Mastercard</span><span class="payment-pill">📱 Apple Pay</span><span class="payment-pill">🅿️ PayPal</span></div></div></div>
+  </footer>
+
+  <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="drawer-header"><h2 class="drawer-title">Your Cart</h2><button class="drawer-close" onclick="closeCart()">✕</button></div>
+    <div class="drawer-body" id="drawerBody"></div>
+    <div class="drawer-footer"><div class="summary-row total"><span>Total</span><span id="drawerTotal">$0.00</span></div><a href="checkout.html" class="btn btn-primary" style="width:100%;margin-top:var(--sp-4)">Checkout</a><a href="cart.html" class="btn btn-outline" style="width:100%;margin-top:var(--sp-3)">View Cart</a></div>
+  </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header"><a href="index.html" class="site-logo"><div class="logo-mark">✦</div><span>Luxe<span>Shop</span></span></a><button onclick="closeMobileNav()">✕</button></div>
+    <div class="mobile-nav-body"><ul class="mobile-nav-list">
+      <li><a href="index.html" class="mobile-nav-link">Home</a></li>
+      <li><a href="shop.html" class="mobile-nav-link active">Shop All</a></li>
+      <li><a href="about.html" class="mobile-nav-link">About</a></li>
+      <li><a href="contact.html" class="mobile-nav-link">Contact</a></li>
+    </ul></div>
+  </nav>
+  <div class="search-modal" id="searchModal">
+    <div class="search-modal-inner">
+      <div class="search-modal-input-wrap"><span class="search-modal-icon">⌕</span><input type="search" id="searchInput" placeholder="Search…"><button onclick="closeSearch()">✕</button></div>
+      <div id="searchResults" style="padding:var(--sp-4);color:var(--clr-text-muted);font-size:var(--text-sm)">Start typing…</div>
+    </div>
+  </div>
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/main.js"></script>
+  <script>
+  /* ====================================================
+     PRODUCT DATA CATALOG
+  ==================================================== */
+  const CATALOG = {
+    women: [
+      { id:'w1', name:'Wrap Midi Dress', cat:'Women · Dresses', price:78, orig:98, rating:'★★★★★', rcount:142, badge:'new',
+        colors:['#2d2d2d','#c0392b','#1a5276','#f5cba7'], sizes:['XS','S','M','L','XL'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A beautifully draped wrap midi dress in fluid jersey fabric. The adjustable tie waist flatters every silhouette. Machine washable, wrinkle-resistant.',
+        features:['100% Jersey fabric, machine washable','Adjustable self-tie waist','Midi length, falls below the knee','Available in 4 colors'],
+        imgs:[
+          'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'w2', name:'Silk Evening Gown', cat:'Women · Dresses', price:165, orig:210, rating:'★★★★★', rcount:76, badge:'sale',
+        colors:['#1a1a2e','#8e44ad','#c0392b'], sizes:['XS','S','M','L','XL'],
+        stock:'Only 3 left', stockLevel:'low',
+        desc:'An elegant floor-length gown in 100% silk charmeuse. Features a V-neckline, open back and delicate spaghetti straps. Dry clean recommended.',
+        features:['100% Silk charmeuse','Floor length, open back','V-neckline with spaghetti straps','Dry clean only'],
+        imgs:[
+          'https://images.unsplash.com/photo-1583744946564-b52ac1c389c8?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'w3', name:'Floral Summer Dress', cat:'Women · Dresses', price:58, orig:null, rating:'★★★★☆', rcount:94, badge:null,
+        colors:['#f5b7b1','#a9cce3','#a9dfbf'], sizes:['XS','S','M','L','XL'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A light, breezy floral print dress in 100% cotton. Perfect for warm days — smocked bodice, flutter sleeves and a flowy skirt.',
+        features:['100% Cotton, breathable','Smocked bodice, flutter sleeves','Midi length','Hand wash cold'],
+        imgs:[
+          'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'w4', name:'Satin Slip Dress', cat:'Women · Dresses', price:68, orig:null, rating:'★★★★★', rcount:58, badge:'new',
+        colors:['#f8f7f4','#2d2d2d','#d4af8c'], sizes:['XS','S','M','L'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A sleek, minimalist slip dress in satin-finish fabric. Bias-cut for a flattering drape. Wear it solo or layered over a turtleneck.',
+        features:['Satin-finish fabric, bias-cut','Adjustable spaghetti straps','Midi length','Spot clean or dry clean'],
+        imgs:[
+          'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1583744946564-b52ac1c389c8?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'w5', name:'Velvet Maxi Dress', cat:'Women · Dresses', price:118, orig:null, rating:'★★★★★', rcount:39, badge:'new',
+        colors:['#512e5f','#1a1a2e','#c0392b'], sizes:['XS','S','M','L','XL'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A stunning floor-length velvet dress with long sleeves and a subtle split. The stretch velvet fabric moves with you all night.',
+        features:['Stretch velvet fabric','Floor-length with thigh split','Long sleeves, scoop neck','Dry clean only'],
+        imgs:[
+          'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=700&h=700&fit=crop&q=80',
+        ]},
+    ],
+    men: [
+      { id:'m1', name:'Classic Oxford Shirt', cat:'Men · Shirts', price:58, orig:null, rating:'★★★★★', rcount:112, badge:'new',
+        colors:['#f8f7f4','#1a5276','#2d2d2d','#d4ac0d'], sizes:['XS','S','M','L','XL'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'Our signature Oxford shirt in 100% combed cotton. Lightweight yet structured — transitions effortlessly from desk to dinner.',
+        features:['100% Combed cotton Oxford','Button-down collar','Machine washable','Slim and regular fit available'],
+        imgs:[
+          'https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=700&h=700&fit=crop&q=80&crop=top',
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&h=700&fit=crop&q=80&crop=top',
+          'https://images.unsplash.com/photo-1512374382149-233c42b6a83b?w=700&h=700&fit=crop&q=80&crop=top',
+        ]},
+      { id:'m2', name:'Tailored Dress Shirt', cat:'Men · Shirts', price:64, orig:80, rating:'★★★★☆', rcount:87, badge:'sale',
+        colors:['#f8f7f4','#2d2d2d','#85c1e9'], sizes:['S','M','L','XL'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A precision-cut dress shirt in 2-ply poplin. Structured collar, single-button cuffs, with a smooth finish that resists creasing.',
+        features:['2-ply cotton poplin','Structured spread collar','Crease-resistant finish','Machine washable at 30°C'],
+        imgs:[
+          'https://images.unsplash.com/photo-1512374382149-233c42b6a83b?w=700&h=700&fit=crop&q=80&crop=top',
+          'https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=700&h=700&fit=crop&q=80&crop=top',
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&h=700&fit=crop&q=80&crop=top',
+        ]},
+      { id:'m3', name:'Linen Button-Up', cat:'Men · Shirts', price:52, orig:null, rating:'★★★★★', rcount:64, badge:null,
+        colors:['#f5f0e8','#88a4b5','#d4af8c'], sizes:['XS','S','M','L','XL'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A relaxed-fit linen shirt for warm days. Breathable and lightweight, with a slightly rumpled look that only gets better with wear.',
+        features:['100% European linen','Relaxed fit, chest pocket','Garment-washed for softness','Machine washable'],
+        imgs:[
+          'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=700&h=700&fit=crop&q=80&crop=top',
+          'https://images.unsplash.com/photo-1512374382149-233c42b6a83b?w=700&h=700&fit=crop&q=80&crop=top',
+        ]},
+      { id:'m4', name:'Slim Fit Formal Shirt', cat:'Men · Shirts', price:48, orig:null, rating:'★★★★☆', rcount:73, badge:'new',
+        colors:['#f8f7f4','#2d2d2d','#1a1a2e'], sizes:['S','M','L','XL'],
+        stock:'Only 5 left', stockLevel:'low',
+        desc:'A slim-fit formal shirt with a non-iron finish. Perfect under a suit or blazer — stays sharp all day without a single crease.',
+        features:['Non-iron poplin fabric','Slim fit, spread collar','French tuck friendly','Machine washable'],
+        imgs:[
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=700&h=700&fit=crop&q=80&crop=top',
+          'https://images.unsplash.com/photo-1512374382149-233c42b6a83b?w=700&h=700&fit=crop&q=80&crop=top',
+          'https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=700&h=700&fit=crop&q=80&crop=top',
+        ]},
+      { id:'m5', name:'Striped Cotton Shirt', cat:'Men · Shirts', price:46, orig:60, rating:'★★★★★', rcount:58, badge:'sale',
+        colors:['#d6eaf8','#fadbd8','#d5f5e3'], sizes:['XS','S','M','L','XL'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A classic Bengal stripe shirt in soft combed cotton. Casual enough for weekends, sharp enough for smart-casual Friday.',
+        features:['Soft combed cotton','Classic Bengal stripes','Button-down collar','Machine washable'],
+        imgs:[
+          'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1617137984095-74e4e5e3613f?w=700&h=700&fit=crop&q=80&crop=top',
+        ]},
+    ],
+    womenShoes: [
+      { id:'ws1', name:'Block Heel Sandals', cat:'Women · Heels', price:56, orig:72, rating:'★★★★☆', rcount:47, badge:'sale',
+        colors:['#1a1a2e','#d4af8c','#c0392b'], sizes:['5','6','7','8','9','10'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'Block heel sandals in genuine leather with an adjustable ankle strap. A comfortable 3" heel that takes you from brunch to dinner.',
+        features:['Genuine leather upper','3" block heel, padded insole','Adjustable ankle buckle strap','True to size'],
+        imgs:[
+          'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1515347619252-60a4bf4fff4f?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'ws2', name:'Pointed Toe Pumps', cat:'Women · Heels', price:84, orig:null, rating:'★★★★★', rcount:61, badge:'new',
+        colors:['#1a1a2e','#f8f7f4','#c0392b'], sizes:['5','6','7','8','9'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'Classic pointed-toe pumps with a 3.5" stiletto heel in nappa leather. The padded insole makes them comfortable enough to wear all day.',
+        features:['Nappa leather upper and sole','3.5" stiletto heel','Pointed toe, padded insole','Half size up recommended'],
+        imgs:[
+          'https://images.unsplash.com/photo-1515347619252-60a4bf4fff4f?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'ws3', name:'Platform Sandals', cat:'Women · Heels', price:66, orig:null, rating:'★★★★★', rcount:29, badge:'new',
+        colors:['#1a1a2e','#d4af8c'], sizes:['5','6','7','8','9','10'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'Chunky platform sandals with a 1" platform and 4" heel. Strappy upper with adjustable buckles for a perfect fit.',
+        features:['4" heel, 1" platform','Adjustable strap buckles','Cushioned footbed','Runs true to size'],
+        imgs:[
+          'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1515347619252-60a4bf4fff4f?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'ws4', name:'Classic Ballet Flats', cat:'Women · Flats', price:54, orig:null, rating:'★★★★★', rcount:73, badge:null,
+        colors:['#1a1a2e','#f8f7f4','#d4af8c','#c0392b'], sizes:['5','6','7','8','9','10'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'The perfect ballet flat in buttery soft leather. A wardrobe essential — pairs with everything from jeans to midi dresses.',
+        features:['Soft nappa leather','Elastic gore for easy slip-on','Leather insole','Runs half a size small'],
+        imgs:[
+          'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1515347619252-60a4bf4fff4f?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'ws5', name:'Strappy Stiletto Heels', cat:'Women · Heels', price:92, orig:null, rating:'★★★★☆', rcount:38, badge:null,
+        colors:['#f8f7f4','#1a1a2e'], sizes:['5','6','7','8','9'],
+        stock:'Only 4 left', stockLevel:'low',
+        desc:'Strappy stiletto sandals with a barely-there feel. Thin straps across the toe and ankle, 4" pointed heel. For evenings made to remember.',
+        features:['4" pointed stiletto heel','Thin adjustable straps','Padded footbed','Size up half a size'],
+        imgs:[
+          'https://images.unsplash.com/photo-1515347619252-60a4bf4fff4f?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=700&h=700&fit=crop&q=80',
+        ]},
+    ],
+    menShoes: [
+      { id:'ms1', name:'Classic Leather Loafers', cat:'Men · Loafers', price:95, orig:null, rating:'★★★★☆', rcount:59, badge:null,
+        colors:['#4a2c0a','#1a1a2e','#a09dae'], sizes:['7','8','9','10','11','12'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'Hand-stitched penny loafers in full-grain calfskin leather. A versatile classic — equally at home with chinos or a slim suit.',
+        features:['Full-grain calfskin leather','Hand-stitched moccasin construction','Leather sole with rubber heel tap','True to size'],
+        imgs:[
+          'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'ms2', name:'Suede Chelsea Boots', cat:'Men · Boots', price:118, orig:null, rating:'★★★★★', rcount:88, badge:'new',
+        colors:['#5d4037','#1a1a2e','#78909c'], sizes:['7','8','9','10','11','12'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'Pull-on Chelsea boots in premium suede. Elastic side gussets for easy fit, Cuban heel and rubber sole for all-day comfort.',
+        features:['Premium suede upper','Elastic side gussets','2" Cuban heel, rubber sole','Size up half a size'],
+        imgs:[
+          'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'ms3', name:'Minimal Leather Sneakers', cat:'Men · Sneakers', price:92, orig:null, rating:'★★★★★', rcount:203, badge:null,
+        colors:['#f8f7f4','#1a1a2e','#e0e0e0'], sizes:['7','8','9','10','11','12'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'Clean, court-inspired sneakers in full-grain leather. A vulcanised sole, padded collar and ortholite insole for all-day comfort.',
+        features:['Full-grain leather upper','Ortholite padded insole','Vulcanised rubber sole','Runs true to size'],
+        imgs:[
+          'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'ms4', name:'Cap Toe Oxford Shoes', cat:'Men · Oxfords', price:128, orig:null, rating:'★★★★☆', rcount:44, badge:null,
+        colors:['#1a1a2e','#4a2c0a'], sizes:['7','8','9','10','11'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'Elegant cap-toe Oxford shoes in box-calf leather. Blake-stitched construction, leather sole, and a slim profile for formal occasions.',
+        features:['Box-calf leather upper','Blake-stitched construction','Leather sole, rubber heel tap','True to size'],
+        imgs:[
+          'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'ms5', name:'Lug Sole Combat Boots', cat:'Men · Boots', price:112, orig:null, rating:'★★★★★', rcount:77, badge:'sale',
+        colors:['#1a1a2e','#4a2c0a'], sizes:['7','8','9','10','11','12'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'Robust combat boots with a chunky lug sole. Lace-up with D-ring hardware, padded collar and waterproof leather upper.',
+        features:['Waterproof leather upper','D-ring lace hardware','Chunky lug rubber sole','Padded collar, cushioned insole'],
+        imgs:[
+          'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=700&h=700&fit=crop&q=80',
+        ]},
+    ],
+    watches: [
+      { id:'wt1', name:'Minimalist Steel Watch', cat:'Watches · Steel', price:145, orig:null, rating:'★★★★★', rcount:94, badge:'new',
+        colors:['#b0b0b0','#d4af37','#1a1a2e'], sizes:['One Size'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A clean, Bauhaus-inspired watch with a 40mm stainless steel case, sapphire crystal glass and a three-hand quartz movement.',
+        features:['40mm stainless steel case','Sapphire crystal glass','Japanese quartz movement','Water resistant 5ATM','Interchangeable strap'],
+        imgs:[
+          'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1508057198894-247b23fe5ade?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'wt2', name:'Classic Leather Strap Watch', cat:'Watches · Leather', price:128, orig:null, rating:'★★★★☆', rcount:61, badge:null,
+        colors:['#4a2c0a','#1a1a2e'], sizes:['One Size'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A heritage-inspired watch with a 38mm case and hand-stitched Italian leather strap. Simple two-hand movement, no distractions.',
+        features:['38mm brass case, gold PVD','Hand-stitched Italian leather strap','Swiss quartz 2-hand movement','Water resistant 3ATM'],
+        imgs:[
+          'https://images.unsplash.com/photo-1508057198894-247b23fe5ade?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'wt3', name:'Sports Chronograph', cat:'Watches · Sport', price:189, orig:null, rating:'★★★★☆', rcount:39, badge:'new',
+        colors:['#1a1a2e','#1a5276','#1a6b1a'], sizes:['One Size'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A 42mm sports chronograph with a tachymeter bezel, date display and luminous hands. Silicone strap, water resistant to 100m.',
+        features:['42mm stainless steel case','Tachymeter bezel, date display','Swiss quartz chronograph','100m water resistant','Silicone sport strap'],
+        imgs:[
+          'https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1508057198894-247b23fe5ade?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'wt4', name:'Gold-Tone Dress Watch', cat:'Watches · Dress', price:165, orig:210, rating:'★★★★★', rcount:52, badge:'sale',
+        colors:['#d4af37','#b0b0b0'], sizes:['One Size'],
+        stock:'Only 6 left', stockLevel:'low',
+        desc:'An ultra-slim dress watch with a 36mm gold-tone case and champagne dial. Crocodile-embossed leather strap.',
+        features:['36mm ultra-slim gold-tone case','Champagne sunray dial','Crocodile-embossed leather strap','Swiss quartz movement','Water resistant 3ATM'],
+        imgs:[
+          'https://images.unsplash.com/photo-1543252132-3e5e1e0c8ee9?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1508057198894-247b23fe5ade?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'wt5', name:'Canvas Strap Field Watch', cat:'Watches · Field', price:84, orig:null, rating:'★★★★★', rcount:45, badge:null,
+        colors:['#4a3728','#1a5276','#1a1a2e'], sizes:['One Size'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A rugged field watch with a 40mm matte case and military-style canvas strap. Anti-reflective mineral crystal, easy-to-read dial.',
+        features:['40mm matte stainless steel case','Anti-reflective mineral crystal','Military canvas strap','Japanese quartz movement','Water resistant 5ATM'],
+        imgs:[
+          'https://images.unsplash.com/photo-1508057198894-247b23fe5ade?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1434056886845-dac89ffe9b56?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=700&h=700&fit=crop&q=80',
+        ]},
+    ],
+    womenJewelry: [
+      { id:'wj1', name:'Gold Hoop Earrings', cat:'Jewelry · Earrings', price:32, orig:null, rating:'★★★★★', rcount:132, badge:'new',
+        colors:['#d4af37','#b0b0b0'], sizes:['One Size'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'Classic 14K gold-filled hoop earrings in three diameter options: 25mm, 35mm, and 50mm. Lightweight, hypoallergenic, and tarnish-resistant.',
+        features:['14K gold-filled','Hypoallergenic posts','Available in 25mm, 35mm, 50mm','Nickel-free, tarnish-resistant'],
+        imgs:[
+          'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'wj2', name:'Delicate Pendant Necklace', cat:'Jewelry · Necklaces', price:24, orig:34, rating:'★★★★★', rcount:87, badge:'sale',
+        colors:['#d4af37','#b0b0b0'], sizes:['16"','18"','20"'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A dainty pendant necklace on a box chain. The pendant features a diamond-cut finish for maximum sparkle. Lobster clasp closure.',
+        features:['14K gold-filled or sterling silver','Box chain, lobster clasp','Diamond-cut pendant','Available in 3 lengths'],
+        imgs:[
+          'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'wj3', name:'Freshwater Pearl Studs', cat:'Jewelry · Earrings', price:22, orig:null, rating:'★★★★☆', rcount:44, badge:null,
+        colors:['#f5f5f5','#f9e4b7','#e8d5e0'], sizes:['One Size'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'Classic freshwater pearl stud earrings, hand-selected for uniform shape and lustre. Set on gold-filled posts with butterfly backs.',
+        features:['AA-grade freshwater pearls','Gold-filled posts, butterfly backs','7–8mm pearl diameter','Hypoallergenic, nickel-free'],
+        imgs:[
+          'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'wj4', name:'Stacking Ring Set', cat:'Jewelry · Rings', price:28, orig:null, rating:'★★★★☆', rcount:58, badge:null,
+        colors:['#d4af37','#b0b0b0','#c0392b'], sizes:['5','6','7','8','9'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A set of 5 stackable rings in varied textures — hammered, twisted, smooth, beaded, and open-cut. Mix and match for your look.',
+        features:['Set of 5 rings','Mixed textures — hammered, twisted, smooth','14K gold-filled or sterling silver','Nickel-free, tarnish-resistant'],
+        imgs:[
+          'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'wj5', name:'Crystal Drop Earrings', cat:'Jewelry · Earrings', price:29, orig:40, rating:'★★★★☆', rcount:35, badge:'sale',
+        colors:['#d4af37','#b0b0b0','#e8d5e0'], sizes:['One Size'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'Faceted crystal teardrop earrings on gold-filled ear wires. Catches light beautifully — perfect for evenings out.',
+        features:['Austrian crystal teardrop','Gold-filled ear wires','1.5" drop length','Hypoallergenic'],
+        imgs:[
+          'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&h=700&fit=crop&q=80',
+        ]},
+    ],
+    menJewelry: [
+      { id:'mj1', name:'Engraved Signet Ring', cat:'Jewelry · Rings', price:36, orig:null, rating:'★★★★☆', rcount:21, badge:'new',
+        colors:['#d4af37','#b0b0b0','#1a1a2e'], sizes:['7','8','9','10','11','12'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A bold signet ring with a flat top plate for custom engraving. Heavy-gauge sterling silver or gold-filled. A statement piece.',
+        features:['Sterling silver or 14K gold-filled','Flat top plate, engravable','Polished or matte finish','Hallmarked, nickel-free'],
+        imgs:[
+          'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'mj2', name:'Minimalist Cuff Bracelet', cat:'Jewelry · Bracelets', price:26, orig:null, rating:'★★★★★', rcount:39, badge:null,
+        colors:['#b0b0b0','#d4af37','#1a1a2e'], sizes:['S','M','L'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A sleek open-end cuff bracelet in brushed sterling silver. Adjustable width for a perfect fit. Simple, modern, versatile.',
+        features:['Brushed sterling silver','Open-end adjustable cuff','6mm wide band','Hallmarked 925 silver'],
+        imgs:[
+          'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'mj3', name:'Sterling Silver Band Ring', cat:'Jewelry · Rings', price:42, orig:null, rating:'★★★★☆', rcount:27, badge:null,
+        colors:['#b0b0b0'], sizes:['7','8','9','10','11','12'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A wide-band sterling silver ring with a brushed matte finish. Minimal and masculine — pairs well with casual and formal looks alike.',
+        features:['Sterling silver 925','8mm wide band','Brushed matte finish','Hallmarked, comfort fit'],
+        imgs:[
+          'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'mj4', name:'Leather Beaded Bracelet', cat:'Jewelry · Bracelets', price:24, orig:null, rating:'★★★★★', rcount:33, badge:'new',
+        colors:['#1a1a2e','#4a2c0a','#1a5276'], sizes:['S','M','L','XL'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A woven leather bracelet with matte onyx bead accents and a stainless steel clasp. Rugged, layerable, adjustable.',
+        features:['Genuine leather cord','Matte onyx beads','Stainless steel lobster clasp','Adjustable length'],
+        imgs:[
+          'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=700&h=700&fit=crop&q=80',
+        ]},
+    ],
+    chains: [
+      { id:'ch1', name:'Gold Curb Chain', cat:'Chains · Necklace', price:48, orig:null, rating:'★★★★★', rcount:61, badge:'new',
+        colors:['#d4af37','#b0b0b0'], sizes:['16"','18"','20"','22"','24"'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A classic curb chain necklace in 14K gold-filled. 4mm link width, with a lobster clasp closure. Tarnish-resistant.',
+        features:['14K gold-filled, 4mm link','Lobster clasp closure','Tarnish and fade resistant','Available in 5 lengths'],
+        imgs:[
+          'https://images.unsplash.com/photo-1573408301185-9519f94816b5?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'ch2', name:'Cuban Link Chain', cat:'Chains · Necklace', price:64, orig:null, rating:'★★★★★', rcount:68, badge:null,
+        colors:['#d4af37','#b0b0b0'], sizes:['18"','20"','22"','24"'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A bold Cuban link chain with 6mm interlocking links. Heavyweight feel, high-polish finish. Wears alone or layered.',
+        features:['14K gold-filled or sterling silver','6mm Cuban link width','Box clasp with safety latch','High-polish finish'],
+        imgs:[
+          'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1573408301185-9519f94816b5?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'ch3', name:'Silver Figaro Chain', cat:'Chains · Necklace', price:36, orig:null, rating:'★★★★☆', rcount:29, badge:null,
+        colors:['#b0b0b0'], sizes:['16"','18"','20"','22"'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A timeless figaro chain — alternating 3 small round links with 1 elongated oval link. In sterling silver with lobster clasp.',
+        features:['925 sterling silver','Figaro pattern, 3mm width','Lobster clasp','Hallmarked, nickel-free'],
+        imgs:[
+          'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1573408301185-9519f94816b5?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'ch4', name:'Box Chain Bracelet', cat:'Chains · Bracelet', price:22, orig:32, rating:'★★★★★', rcount:44, badge:'sale',
+        colors:['#d4af37','#b0b0b0'], sizes:['6.5"','7"','7.5"','8"'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A sleek box chain bracelet in 14K gold-filled or sterling silver. 2mm link width, lobster clasp. Stacks beautifully.',
+        features:['14K gold-filled or sterling silver','2mm box chain','Lobster clasp','4 sizes available'],
+        imgs:[
+          'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1573408301185-9519f94816b5?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'ch5', name:'Rope Chain Necklace', cat:'Chains · Necklace', price:52, orig:null, rating:'★★★★☆', rcount:33, badge:null,
+        colors:['#d4af37','#b0b0b0'], sizes:['16"','18"','20"','22"','24"'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A twisted rope chain necklace with a 3mm width. The intertwined links catch light at every angle. Classic and versatile.',
+        features:['14K gold-filled or sterling silver','3mm rope chain','Lobster clasp closure','Tarnish resistant'],
+        imgs:[
+          'https://images.unsplash.com/photo-1573408301185-9519f94816b5?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1611085583191-a3b181a88401?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'ch6', name:'Snake Chain Necklace', cat:'Chains · Necklace', price:41, orig:55, rating:'★★★★☆', rcount:22, badge:'sale',
+        colors:['#d4af37','#b0b0b0'], sizes:['16"','18"','20"'],
+        stock:'Only 8 left', stockLevel:'low',
+        desc:'A smooth, sinuous snake chain with a fluid drape. 2mm width, bright gold or silver finish. Elegant on its own or with a pendant.',
+        features:['14K gold-filled or sterling silver','2mm smooth snake chain','Lobster clasp','Pendant-compatible'],
+        imgs:[
+          'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1573408301185-9519f94816b5?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=700&h=700&fit=crop&q=80',
+        ]},
+    ],
+    luggage: [
+      { id:'lg1', name:'Hardshell Carry-On', cat:'Luggage · Suitcases', price:165, orig:null, rating:'★★★★★', rcount:84, badge:'new',
+        colors:['#1a1a2e','#e4e1db','#c0392b','#1a5276'], sizes:['20" Carry-On'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A lightweight hardshell carry-on with 360° spinner wheels and TSA-approved combination lock. Fits in most overhead bins.',
+        features:['German polycarbonate shell','4 × 360° silent spinner wheels','TSA-approved combination lock','Expandable main compartment + divider'],
+        imgs:[
+          'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1521401830884-6c03c1c87ebb?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'lg2', name:'Leather Weekender Bag', cat:'Luggage · Travel Bags', price:165, orig:null, rating:'★★★★★', rcount:45, badge:null,
+        colors:['#4a2c0a','#1a1a2e','#a09dae'], sizes:['One Size'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A full-grain leather weekender with a main zip compartment, exterior pockets and a detachable shoulder strap. Ages beautifully.',
+        features:['Full-grain tan or black leather','Brass zip closure and hardware','Exterior zip pocket, interior slip pockets','Padded grab handles + shoulder strap'],
+        imgs:[
+          'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1521401830884-6c03c1c87ebb?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'lg3', name:'Structured Leather Tote', cat:'Luggage · Totes', price:145, orig:null, rating:'★★★★★', rcount:84, badge:null,
+        colors:['#4a2c0a','#1a1a2e','#e4e1db'], sizes:['One Size'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A structured tote in vegetable-tanned leather with a wide open top, interior zip pocket and key clip. Work-to-weekend essential.',
+        features:['Vegetable-tanned leather','Open top + interior zip pocket','Key clip, card slots inside','Bottom feet for protection'],
+        imgs:[
+          'https://images.unsplash.com/photo-1521401830884-6c03c1c87ebb?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'lg4', name:'Canvas Day Backpack', cat:'Luggage · Backpacks', price:58, orig:76, rating:'★★★★★', rcount:97, badge:'sale',
+        colors:['#1a1a2e','#4a3728','#556b2f'], sizes:['One Size'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A 20L waxed canvas backpack with a 15" laptop sleeve, water bottle pocket and roll-top closure. Water-resistant.',
+        features:['Waxed canvas, water-resistant','20L capacity, 15" laptop sleeve','Roll-top + dual zip closure','Padded shoulder straps'],
+        imgs:[
+          'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1521401830884-6c03c1c87ebb?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'lg5', name:'Expandable Check-In Luggage', cat:'Luggage · Suitcases', price:210, orig:null, rating:'★★★★☆', rcount:37, badge:'new',
+        colors:['#1a1a2e','#e4e1db','#c0392b'], sizes:['24" Check-In','28" Large'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A 24"/28" hardshell suitcase with 2" expansion zip, 4 spinner wheels and TSA lock. Interior organizer pockets included.',
+        features:['Polycarbonate/ABS blend shell','2" expansion zip','4 × 360° spinner wheels, TSA lock','Interior divider + compression straps'],
+        imgs:[
+          'https://images.unsplash.com/photo-1521401830884-6c03c1c87ebb?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=700&h=700&fit=crop&q=80',
+        ]},
+      { id:'lg6', name:'Slim Laptop Briefcase', cat:'Luggage · Work Bags', price:98, orig:null, rating:'★★★★★', rcount:71, badge:null,
+        colors:['#1a1a2e','#4a2c0a','#a09dae'], sizes:['One Size'],
+        stock:'In Stock', stockLevel:'ok',
+        desc:'A slim briefcase with a padded 15.6" laptop compartment, front organizer pocket and detachable shoulder strap. Polished.',
+        features:['Ballistic nylon or leather','15.6" laptop compartment, padded','Front organizer + slip pockets','Luggage pass-through sleeve'],
+        imgs:[
+          'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1521401830884-6c03c1c87ebb?w=700&h=700&fit=crop&q=80',
+          'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=700&h=700&fit=crop&q=80',
+        ]},
+    ],
+  };
+
+  /* ====================================================
+     RENDER PRODUCT CARDS
+  ==================================================== */
+  function renderCards(products, gridId) {
+    const grid = document.getElementById(gridId);
+    if (!grid) return;
+    grid.innerHTML = products.map(p => {
+      const save       = p.orig ? Math.round((1 - p.price / p.orig) * 100) : null;
+      const badgeHTML  = p.badge === 'new'
+                           ? '<span class="pcard-badge new">New</span>'
+                           : p.badge === 'sale'
+                             ? '<span class="pcard-badge sale">-' + save + '%</span>'
+                             : '';
+      const origHTML   = p.orig ? '<span class="orig">$' + p.orig + '</span>' : '';
+      const colorDots  = p.colors.map(c =>
+        '<div class="pcard-color" style="background:' + c + '"></div>'
+      ).join('');
+      const catLabel   = p.cat.indexOf('·') > -1 ? p.cat.split('·')[1].trim() : p.cat;
+
+      return '<div class="pcard" data-pid="' + p.id + '" tabindex="0" role="button" aria-label="View ' + p.name + '">'
+           +   '<div class="pcard-img">'
+           +     '<img src="' + p.imgs[0] + '" alt="' + p.name + '" loading="lazy">'
+           +     badgeHTML
+           +     '<button class="pcard-wish" data-pid="' + p.id + '" aria-label="Save to wishlist">♡</button>'
+           +     '<div class="pcard-quick">'
+           +       '<button class="pcard-quick-order" data-pid="' + p.id + '">Order Now →</button>'
+           +       '<button class="pcard-quick-view"  data-pid="' + p.id + '">View Details</button>'
+           +     '</div>'
+           +   '</div>'
+           +   '<div class="pcard-body">'
+           +     '<span class="pcard-cat">' + catLabel + '</span>'
+           +     '<h3 class="pcard-name">' + p.name + '</h3>'
+           +     '<span class="pcard-rating"><span class="stars">' + p.rating + '</span> (' + p.rcount + ')</span>'
+           +     '<div class="pcard-price"><span class="cur">$' + p.price + '</span>' + origHTML + '</div>'
+           +     '<div class="pcard-colors">' + colorDots + '</div>'
+           +   '</div>'
+           + '</div>';
+    }).join('');
+  }
+
+  // Render all grids
+  renderCards(CATALOG.women,        'women-grid');
+  renderCards(CATALOG.men,          'men-grid');
+  renderCards(CATALOG.womenShoes,   'women-shoes-grid');
+  renderCards(CATALOG.menShoes,     'men-shoes-grid');
+  renderCards(CATALOG.watches,      'watches-grid');
+  renderCards(CATALOG.womenJewelry, 'women-jewelry-grid');
+  renderCards(CATALOG.menJewelry,   'men-jewelry-grid');
+  renderCards(CATALOG.chains,       'chains-grid');
+  renderCards(CATALOG.luggage,      'luggage-grid');
+
+  /* ====================================================
+     MODAL STATE
+  ==================================================== */
+  let currentProduct = null;
+  let currentDelivery = 'delivery';
+  let modalWishlisted = false;
+
+  function getAllProducts() {
+    return Object.values(CATALOG).flat();
+  }
+
+  function openModal(id) {
+    const p = getAllProducts().find(x => x.id === id);
+    if (!p) return;
+    currentProduct = p;
+    modalWishlisted = false;
+
+    // Populate modal
+    document.getElementById('pmCat').textContent = p.cat;
+    document.getElementById('pmName').textContent = p.name;
+    document.getElementById('pmStars').textContent = p.rating;
+    document.getElementById('pmRcount').textContent = `(${p.rcount} reviews)`;
+
+    // Price
+    document.getElementById('pmPriceCur').textContent = `$${p.price}`;
+    const origEl = document.getElementById('pmPriceOrig');
+    const saveEl = document.getElementById('pmPriceSave');
+    if (p.orig) {
+      origEl.textContent = `$${p.orig}`; origEl.style.display = '';
+      const savePct = Math.round((1 - p.price/p.orig)*100);
+      saveEl.textContent = `Save ${savePct}%`; saveEl.style.display = '';
+    } else { origEl.style.display = 'none'; saveEl.style.display = 'none'; }
+
+    document.getElementById('pmDesc').textContent = p.desc;
+
+    // Features
+    document.getElementById('pmFeatures').innerHTML = p.features.map(f =>
+      `<div class="pm-feature">${f}</div>`).join('');
+
+    // Main image
+    document.getElementById('pmMainImg').src = p.imgs[0];
+    document.getElementById('pmMainImg').alt = p.name;
+
+    // Thumbs
+    const thumbsEl = document.getElementById('pmThumbs');
+    thumbsEl.innerHTML = p.imgs.map((img, i) =>
+      `<div class="pm-thumb ${i===0?'active':''}" onclick="switchModalImg('${img}',this)">
+        <img src="${img}" alt="${p.name} view ${i+1}" loading="lazy">
+      </div>`
+    ).join('');
+
+    // Colors
+    const colorsEl = document.getElementById('pmColors');
+    colorsEl.innerHTML = p.colors.map((c, i) =>
+      `<button class="pm-color-btn ${i===0?'active':''}" style="background:${c}"
+        onclick="selectColor(this,'${c}')" aria-label="Color ${i+1}"></button>`
+    ).join('');
+    document.getElementById('pmSelColor').textContent = 'Selected';
+
+    // Sizes
+    const sizesEl = document.getElementById('pmSizes');
+    sizesEl.innerHTML = p.sizes.map((s, i) =>
+      `<button class="pm-size-btn" onclick="selectSize(this,'${s}')">${s}</button>`
+    ).join('');
+    document.getElementById('pmSelSize').textContent = 'Select a size';
+
+    // Stock
+    const stockEl = document.getElementById('pmStock');
+    stockEl.textContent = p.stock;
+    stockEl.className = 'pm-stock' + (p.stockLevel === 'low' ? ' low' : '');
+
+    // Qty reset
+    document.getElementById('pmQty').value = 1;
+
+    // Delivery
+    selectDelivery('delivery');
+
+    // Wish btn reset
+    document.getElementById('pmWishBtn').textContent = '♡';
+    document.getElementById('pmWishBtn').classList.remove('active');
+
+    // Show overlay
+    document.getElementById('pmOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    document.getElementById('pmOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function switchModalImg(src, thumbEl) {
+    document.getElementById('pmMainImg').src = src;
+    document.querySelectorAll('.pm-thumb').forEach(t => t.classList.remove('active'));
+    thumbEl.classList.add('active');
+  }
+
+  function selectColor(btn, color) {
+    document.querySelectorAll('.pm-color-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('pmSelColor').textContent = color;
+  }
+
+  function selectSize(btn, size) {
+    document.querySelectorAll('.pm-size-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('pmSelSize').textContent = size;
+  }
+
+  function selectDelivery(type) {
+    currentDelivery = type;
+    document.getElementById('pdDelivery').classList.toggle('active', type === 'delivery');
+    document.getElementById('pdPickup').classList.toggle('active',  type === 'pickup');
+    const info = document.getElementById('pdDeliveryInfo');
+    if (type === 'delivery') {
+      // Estimate delivery date
+      const d = new Date(); d.setDate(d.getDate() + 4);
+      const opts = {weekday:'short', month:'short', day:'numeric'};
+      const d2 = new Date(); d2.setDate(d2.getDate() + 6);
+      info.innerHTML = `🚚 <strong>Free standard shipping</strong> · Est. delivery <strong>${d.toLocaleDateString('en-US',opts)} – ${d2.toLocaleDateString('en-US',opts)}</strong>`;
+    } else {
+      info.innerHTML = `🏪 <strong>Free in-store pickup</strong> · Ready for collection <strong>tomorrow</strong> at your nearest store`;
+    }
+  }
+
+  function changeModalQty(delta) {
+    const inp = document.getElementById('pmQty');
+    inp.value = Math.max(1, Math.min(10, parseInt(inp.value) + delta));
+  }
+
+  /* ── Build the selected variant label ── */
+  function getSelectedVariant() {
+    const color  = document.getElementById('pmSelColor').textContent;
+    const size   = document.getElementById('pmSelSize').textContent;
+    const parts  = [];
+    if (color && color !== '—' && color !== 'Selected') parts.push(color);
+    if (size  && size  !== 'Select a size')              parts.push(size);
+    return parts.join(' / ') || 'One Size';
+  }
+
+  /* ── Validate size selection ── */
+  function validateSize() {
+    const size = document.getElementById('pmSelSize').textContent;
+    if (size === 'Select a size' && currentProduct && currentProduct.sizes.length > 1) {
+      showToast('Please select a size first', 'warning');
+      // Pulse the size row to draw attention
+      const sizeSection = document.getElementById('pmSizeSection');
+      sizeSection.style.outline = '2px solid #e94560';
+      sizeSection.style.borderRadius = '6px';
+      setTimeout(() => { sizeSection.style.outline = ''; }, 1800);
+      return false;
+    }
+    return true;
+  }
+
+  /* ── Save item(s) to localStorage cart ── */
+  function saveToCart(product, qty, variant, addOnly) {
+    let cart = [];
+    try { cart = JSON.parse(localStorage.getItem('luxeCart') || '[]'); } catch(e) {}
+
+    // Check if same product + variant already in cart
+    const existing = cart.find(i => i.id === product.id && i.variant === variant);
+    if (existing) {
+      existing.qty = addOnly ? existing.qty + qty : qty;
+    } else {
+      cart.push({
+        id      : product.id,
+        name    : product.name,
+        cat     : product.cat,
+        price   : product.price,
+        orig    : product.orig || null,
+        image   : product.imgs[0],
+        variant : variant,
+        qty     : qty
+      });
+    }
+    localStorage.setItem('luxeCart', JSON.stringify(cart));
+    return cart;
+  }
+
+  /* ── Add to Cart ── */
+  function modalAddToCart() {
+    if (!validateSize()) return;
+
+    const qty     = parseInt(document.getElementById('pmQty').value) || 1;
+    const variant = getSelectedVariant();
+
+    saveToCart(currentProduct, qty, variant, true);
+
+    // Update cart badge
+    const cc = document.getElementById('cartCount');
+    cc.textContent = parseInt(cc.textContent || 0) + qty;
+
+    // Success feedback
+    showToast(`✓ ${currentProduct.name} added to cart!`, 'success');
+
+    // Animate the cart icon
+    const cartBtn = document.getElementById('cartToggle');
+    if (cartBtn) {
+      cartBtn.style.transform = 'scale(1.3)';
+      setTimeout(() => { cartBtn.style.transform = ''; }, 300);
+    }
+  }
+
+  /* ── Toggle Wishlist ── */
+  function modalToggleWish() {
+    modalWishlisted = !modalWishlisted;
+    const btn = document.getElementById('pmWishBtn');
+    btn.textContent = modalWishlisted ? '♥' : '♡';
+    btn.classList.toggle('active', modalWishlisted);
+    showToast(modalWishlisted ? `${currentProduct.name} saved to wishlist ♡` : 'Removed from wishlist');
+  }
+
+  /* ── Order Now → save to cart then go straight to checkout ── */
+  function modalOrderNow() {
+    if (!validateSize()) return;
+
+    const qty     = parseInt(document.getElementById('pmQty').value) || 1;
+    const variant = getSelectedVariant();
+
+    // Replace cart with just this item for a "buy now" flow
+    // (keeps any existing cart items and adds this one)
+    saveToCart(currentProduct, qty, variant, true);
+
+    // Visual feedback then redirect
+    const btn = document.querySelector('.pm-order-btn');
+    if (btn) {
+      btn.textContent = 'Taking you to checkout…';
+      btn.style.background = '#2cb67d';
+    }
+
+    showToast('Taking you to checkout…', 'success');
+    setTimeout(() => { window.location.href = 'checkout.html'; }, 700);
+  }
+
+  function toggleWish(btn) {
+    const isWished = btn.classList.toggle('wishlisted');
+    btn.textContent = isWished ? '♥' : '♡';
+    showToast(isWished ? 'Saved to wishlist ♡' : 'Removed from wishlist');
+    const wc = document.getElementById('wishlistCount');
+    wc.textContent = Math.max(0, parseInt(wc.textContent || 0) + (isWished ? 1 : -1));
+  }
+
+  /* ── Quick Order Now from card (no modal needed) ── */
+  function quickOrderNow(id) {
+    const p = getAllProducts().find(x => x.id === id);
+    if (!p) return;
+
+    // Save to cart with default variant (first size/color)
+    const variant = p.sizes[0] !== 'One Size' ? p.sizes[0] : '';
+    saveToCart(p, 1, variant, true);
+
+    showToast(`${p.name} — taking you to checkout…`, 'success');
+    setTimeout(() => { window.location.href = 'checkout.html'; }, 700);
+  }
+
+  /* ====================================================
+     EVENT DELEGATION — all card clicks handled here
+     No inline onclick needed on generated HTML
+  ==================================================== */
+  document.addEventListener('click', function(e) {
+
+    /* --- Order Now button on card hover overlay --- */
+    const orderBtn = e.target.closest('.pcard-quick-order');
+    if (orderBtn) {
+      e.stopPropagation();
+      const pid = orderBtn.dataset.pid;
+      quickOrderNow(pid);
+      return;
+    }
+
+    /* --- View Details button on card hover overlay --- */
+    const viewBtn = e.target.closest('.pcard-quick-view');
+    if (viewBtn) {
+      e.stopPropagation();
+      const pid = viewBtn.dataset.pid;
+      openModal(pid);
+      return;
+    }
+
+    /* --- Wishlist heart button on card --- */
+    const wishBtn = e.target.closest('.pcard-wish');
+    if (wishBtn) {
+      e.stopPropagation();
+      toggleWish(wishBtn);
+      return;
+    }
+
+    /* --- Clicking the card itself → open modal --- */
+    const card = e.target.closest('.pcard');
+    if (card && !e.target.closest('.pcard-quick') && !e.target.closest('.pcard-wish')) {
+      const pid = card.dataset.pid;
+      if (pid) openModal(pid);
+      return;
+    }
+
+    /* --- Click overlay backdrop → close modal --- */
+    if (e.target === document.getElementById('pmOverlay')) {
+      closeModal();
+    }
+  });
+
+  /* Close button on modal */
+  document.getElementById('pmClose').addEventListener('click', closeModal);
+
+  /* Enter key on card → open modal */
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && e.target.classList.contains('pcard')) {
+      const pid = e.target.dataset.pid;
+      if (pid) openModal(pid);
+    }
+    if (e.key === 'Escape') closeModal();
+  });
+
+  /* ====================================================
+     STICKY JUMP-NAV ACTIVE STATE
+  ==================================================== */
+  (function() {
+    const links = document.querySelectorAll('.cat-jumpnav-link');
+    const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href')));
+    function onScroll() {
+      let current = sections[0];
+      sections.forEach(sec => {
+        if (sec && sec.getBoundingClientRect().top - 160 <= 0) current = sec;
+      });
+      links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + (current && current.id)));
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+
+  // Sticky header scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('siteHeader').classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive:true });
+  </script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — LuxeShop</title>
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+</head>
+<body>
+
+  <div class="auth-layout">
+    <div class="auth-panel">
+      <a href="index.html" class="auth-logo"><div class="logo-mark">✦</div>Luxe<span>Shop</span></a>
+
+      <h1 class="auth-title">Create account</h1>
+      <p class="auth-subtitle">Join LuxeShop and get 15% off your first order.</p>
+
+      <div class="social-auth">
+        <button class="social-btn" onclick="showToast('Google signup coming soon')"><span>G</span> Sign up with Google</button>
+        <button class="social-btn" onclick="showToast('Apple signup coming soon')"><span>🍎</span> Sign up with Apple</button>
+      </div>
+
+      <div class="auth-divider"><span>or sign up with email</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:var(--sp-4)">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label" for="regFirst">First Name</label><input type="text" id="regFirst" class="form-control" placeholder="Jane" autocomplete="given-name"></div>
+          <div class="form-group"><label class="form-label" for="regLast">Last Name</label><input type="text" id="regLast" class="form-control" placeholder="Smith" autocomplete="family-name"></div>
+        </div>
+        <div class="form-group"><label class="form-label" for="regEmail">Email Address</label><input type="email" id="regEmail" class="form-control" placeholder="you@example.com" autocomplete="email"></div>
+        <div class="form-group">
+          <label class="form-label" for="regPw">Password</label>
+          <div style="position:relative">
+            <input type="password" id="regPw" class="form-control" placeholder="At least 8 characters" autocomplete="new-password" oninput="checkPasswordStrength(this.value)">
+            <button type="button" onclick="togglePw('regPw',this)" style="position:absolute;right:1em;top:50%;translate:0 -50%;color:var(--clr-text-light);font-size:0.9rem">👁</button>
+          </div>
+          <!-- Strength bar -->
+          <div style="margin-top:var(--sp-2)">
+            <div style="height:4px;background:var(--clr-border);border-radius:9999px;overflow:hidden">
+              <div id="strengthBar" style="height:100%;width:0%;border-radius:9999px;transition:width 0.3s,background 0.3s"></div>
+            </div>
+            <p id="strengthLabel" style="font-size:var(--text-xs);color:var(--clr-text-light);margin-top:4px"></p>
+          </div>
+        </div>
+        <div class="form-group"><label class="form-label" for="regConfirm">Confirm Password</label><input type="password" id="regConfirm" class="form-control" placeholder="••••••••" autocomplete="new-password"></div>
+
+        <div style="display:flex;flex-direction:column;gap:var(--sp-3)">
+          <div style="display:flex;align-items:flex-start;gap:var(--sp-3)">
+            <input type="checkbox" id="agreeTerms" style="accent-color:var(--clr-accent);width:16px;height:16px;margin-top:2px;flex-shrink:0">
+            <label for="agreeTerms" style="font-size:var(--text-sm);color:var(--clr-text-muted)">I agree to the <a href="terms.html" style="color:var(--clr-accent)">Terms of Service</a> and <a href="privacy.html" style="color:var(--clr-accent)">Privacy Policy</a></label>
+          </div>
+          <div style="display:flex;align-items:center;gap:var(--sp-3)">
+            <input type="checkbox" id="emailUpdates" checked style="accent-color:var(--clr-accent);width:16px;height:16px">
+            <label for="emailUpdates" style="font-size:var(--text-sm);color:var(--clr-text-muted)">Send me exclusive offers and new arrival alerts</label>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;padding:0.9em;font-size:var(--text-base)" onclick="handleRegister()">Create Account</button>
+      </div>
+
+      <p style="text-align:center;font-size:var(--text-sm);color:var(--clr-text-muted);margin-top:var(--sp-6)">
+        Already have an account? <a href="login.html" style="color:var(--clr-accent);font-weight:var(--weight-semibold)">Sign in →</a>
+      </p>
+
+      <!-- Benefits -->
+      <div style="margin-top:var(--sp-8);padding:var(--sp-5);background:var(--clr-bg-alt);border-radius:var(--radius-lg)">
+        <p style="font-size:var(--text-xs);font-weight:var(--weight-semibold);text-transform:uppercase;letter-spacing:0.05em;color:var(--clr-text-muted);margin-bottom:var(--sp-3)">Member benefits</p>
+        <ul style="display:flex;flex-direction:column;gap:var(--sp-2)">
+          <li style="display:flex;align-items:center;gap:var(--sp-2);font-size:var(--text-sm);color:var(--clr-text-muted)"><span style="color:var(--clr-accent)">✓</span> 15% off your first order</li>
+          <li style="display:flex;align-items:center;gap:var(--sp-2);font-size:var(--text-sm);color:var(--clr-text-muted)"><span style="color:var(--clr-accent)">✓</span> Early access to sales and new arrivals</li>
+          <li style="display:flex;align-items:center;gap:var(--sp-2);font-size:var(--text-sm);color:var(--clr-text-muted)"><span style="color:var(--clr-accent)">✓</span> Easy order tracking and returns</li>
+          <li style="display:flex;align-items:center;gap:var(--sp-2);font-size:var(--text-sm);color:var(--clr-text-muted)"><span style="color:var(--clr-accent)">✓</span> Saved wishlist and payment methods</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="auth-visual">
+      <img src="assets/images/banners/auth-bg.jpg" alt="">
+      <div class="auth-visual-overlay">
+        <blockquote style="color:white;font-family:var(--font-display);font-size:var(--text-2xl);font-weight:700;line-height:1.2;margin-bottom:var(--sp-4)">
+          "Style is a way to say who you are without having to speak."
+        </blockquote>
+        <p style="font-size:var(--text-sm);color:rgba(255,255,255,0.5)">— Rachel Zoe</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+  <script src="assets/js/main.js"></script>
+  <script>
+    function checkPasswordStrength(pw) {
+      const bar = document.getElementById('strengthBar');
+      const label = document.getElementById('strengthLabel');
+      let strength = 0;
+      if (pw.length >= 8) strength++;
+      if (/[A-Z]/.test(pw)) strength++;
+      if (/[0-9]/.test(pw)) strength++;
+      if (/[^A-Za-z0-9]/.test(pw)) strength++;
+      const levels = [
+        { w:'0%', c:'transparent', t:'' },
+        { w:'25%', c:'var(--clr-error)', t:'Weak' },
+        { w:'50%', c:'var(--clr-warning)', t:'Fair' },
+        { w:'75%', c:'var(--clr-info)', t:'Good' },
+        { w:'100%', c:'var(--clr-success)', t:'Strong' }
+      ];
+      const lvl = levels[strength];
+      bar.style.width = lvl.w;
+      bar.style.background = lvl.c;
+      label.textContent = lvl.t;
+    }
+    function togglePw(id, btn) {
+      const input = document.getElementById(id);
+      if (input.type === 'password') { input.type = 'text'; btn.textContent = '🙈'; }
+      else { input.type = 'password'; btn.textContent = '👁'; }
+    }
+    function handleRegister() {
+      const first = document.getElementById('regFirst').value;
+      const email = document.getElementById('regEmail').value;
+      const pw = document.getElementById('regPw').value;
+      const confirm = document.getElementById('regConfirm').value;
+      const terms = document.getElementById('agreeTerms').checked;
+      if (!first || !email || !pw) { showToast('Please fill in all required fields', 'warning'); return; }
+      if (pw !== confirm) { showToast('Passwords do not match', 'warning'); return; }
+      if (!terms) { showToast('Please agree to the Terms of Service', 'warning'); return; }
+      showToast('Account created! Welcome to LuxeShop 🎉', 'success');
+      setTimeout(() => window.location.href = 'account.html', 1500);
+    }
+  </script>
+</body>
+</html>

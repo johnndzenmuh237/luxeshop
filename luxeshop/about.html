@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — LuxeShop</title>
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <style>
+    /* ============================================================
+       ABOUT PAGE — fully self-contained styles.
+       Every value below is a fixed unit or locally-defined variable.
+       Nothing here reads from variables.css / style.css tokens,
+       so it can never silently break if those files change.
+       All classes are prefixed "abt-" so they can't collide with
+       or be overridden by rules elsewhere on the site.
+       ============================================================ */
+
+    .abt-page{
+      --gap-lg: 2rem;
+      --gap-md: 1.25rem;
+      --gap-sm: 0.75rem;
+      --pad-section: 3rem;
+      --radius: 16px;
+      --ink: #1a1a2e;
+      --ink-muted: #6b6b80;
+      --line: #e6e6ec;
+      --panel: #ffffff;
+      --panel-alt: #f6f6f9;
+      --accent: #e94560;
+      color: var(--ink);
+    }
+
+    .abt-page *{ box-sizing: border-box; }
+
+    .abt-wrap{
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-inline: 1.25rem;
+    }
+
+    /* ---- Hero ---- */
+    .abt-hero{
+      position: relative;
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      padding-block: var(--pad-section);
+    }
+    .abt-hero-bg{
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .abt-hero-bg img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.35;
+      display: block;
+    }
+    .abt-hero-bg::after{
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #1a1a2e;
+      opacity: 0.55;
+    }
+    .abt-hero-content{
+      position: relative;
+      z-index: 1;
+      max-width: 620px;
+    }
+    .abt-eyebrow{
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(233,69,96,0.12);
+      border: 1px solid rgba(233,69,96,0.3);
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+    .abt-hero h1{
+      font-size: clamp(1.75rem, 5vw, 3rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: #ffffff;
+      margin-bottom: 0.75rem;
+    }
+    .abt-hero h1 em{
+      font-style: italic;
+      color: var(--accent);
+    }
+    .abt-hero p{
+      font-size: 1rem;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.8);
+      max-width: 46ch;
+    }
+
+    /* ---- Generic section ---- */
+    .abt-section{
+      padding-block: var(--pad-section);
+    }
+    .abt-section--alt{ background: var(--panel-alt); }
+    .abt-section--dark{ background: var(--ink); color: #ffffff; }
+
+    .abt-section-head{
+      text-align: center;
+      margin-bottom: var(--gap-lg);
+    }
+    .abt-label{
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .abt-title{
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    /* ---- Mission ---- */
+    .abt-mission{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap-lg);
+      align-items: center;
+    }
+    .abt-mission h2{
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: var(--gap-sm);
+    }
+    .abt-mission p{
+      color: var(--ink-muted);
+      line-height: 1.7;
+      margin-bottom: var(--gap-sm);
+      font-size: 0.95rem;
+    }
+    .abt-mission-img{
+      aspect-ratio: 4 / 5;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: var(--panel-alt);
+    }
+    .abt-mission-img img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .abt-btn{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.7em 1.6em;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #fff;
+      background: var(--accent);
+      border-radius: 999px;
+      text-decoration: none;
+      margin-top: 0.5rem;
+    }
+
+    /* ---- Values ---- */
+    .abt-values{
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--gap-md);
+    }
+    .abt-value-card{
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 1.5rem 1.25rem;
+      text-align: center;
+    }
+    .abt-value-card .icon{ font-size: 2rem; margin-bottom: 0.6rem; }
+    .abt-value-card h3{ font-size: 1rem; margin-bottom: 0.4rem; }
+    .abt-value-card p{ font-size: 0.85rem; color: var(--ink-muted); line-height: 1.6; }
+
+    /* ---- Stats ---- */
+    .abt-stats{
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--gap-md);
+      text-align: center;
+    }
+    .abt-stat-num{
+      font-size: clamp(1.6rem, 4vw, 2.25rem);
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1;
+    }
+    .abt-stat-label{
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.55);
+      margin-top: 0.4rem;
+    }
+
+    /* ---- Team ---- */
+    .abt-team{
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--gap-md);
+    }
+    .abt-team-card{ text-align: center; }
+    .abt-team-avatar{
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 0.6rem;
+      border: 3px solid var(--line);
+      background: var(--panel-alt);
+    }
+    .abt-team-avatar img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+    .abt-team-card .name{ font-weight: 600; font-size: 0.95rem; }
+    .abt-team-card .role{ font-size: 0.8rem; color: var(--accent); margin-top: 0.15rem; }
+    .abt-team-card .bio{ font-size: 0.75rem; color: var(--ink-muted); margin-top: 0.4rem; line-height: 1.5; }
+
+    /* ---- CTA ---- */
+    .abt-cta{
+      background: var(--ink);
+      border-radius: 20px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+    }
+    .abt-cta h2{ color: #fff; font-size: clamp(1.3rem, 3vw, 2rem); margin-bottom: 0.6rem; }
+    .abt-cta p{ color: rgba(255,255,255,0.6); max-width: 42ch; margin: 0 auto 1.25rem; font-size: 0.95rem; }
+    .abt-cta-actions{ display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+    .abt-btn-ghost{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.7em 1.6em;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.85);
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 999px;
+      text-decoration: none;
+    }
+
+    /* ================= RESPONSIVE ================= */
+
+    /* Tablet: 900px and below */
+    @media (max-width: 900px){
+      .abt-page{ --pad-section: 2.25rem; --gap-lg: 1.5rem; }
+      .abt-hero{ min-height: 260px; }
+      .abt-mission{ grid-template-columns: 1fr; }
+      .abt-mission-img{ order: -1; aspect-ratio: 16/9; }
+      .abt-values{ grid-template-columns: repeat(2, 1fr); }
+      .abt-stats{ grid-template-columns: repeat(2, 1fr); row-gap: 1.5rem; }
+      .abt-team{ grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Mobile: 600px and below */
+    @media (max-width: 600px){
+      .abt-page{ --pad-section: 1.75rem; --gap-md: 0.9rem; --gap-sm: 0.6rem; }
+      .abt-hero{ min-height: 220px; }
+      .abt-wrap{ padding-inline: 1rem; }
+      .abt-values{ grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+      .abt-stats{ grid-template-columns: repeat(2, 1fr); gap: 0.9rem; row-gap: 1.25rem; }
+      .abt-team{ grid-template-columns: repeat(2, 1fr); gap: 0.9rem; }
+      .abt-cta{ padding: 1.75rem 1.25rem; border-radius: 16px; }
+      .abt-cta-actions{ flex-direction: column; }
+      .abt-cta-actions .abt-btn,
+      .abt-cta-actions .abt-btn-ghost{ width: 100%; }
+    }
+
+    /* Small phones: 400px and below */
+    @media (max-width: 400px){
+      .abt-values{ grid-template-columns: 1fr; }
+      .abt-team{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="announcement-bar">🚚 Free shipping on orders over $75 — <a href="shop.html">Shop Now</a></div>
+  <header class="site-header" id="siteHeader">
+    <div class="container"><div class="header-inner">
+      <a href="index.html" class="site-logo"><div class="logo-mark">✦</div><span class="logo-text">Luxe<span>Shop</span></span></a>
+      <nav class="main-nav"><ul class="nav-list">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="shop.html" class="nav-link">Shop <span style="font-size:0.7em">▾</span></a>
+          <div class="nav-dropdown"><a href="shop.html?cat=new">New Arrivals</a><a href="shop.html?cat=women">Women</a><a href="shop.html?cat=men">Men</a><a href="shop.html?cat=sale">Sale</a></div>
+        </li>
+        <li><a href="about.html" class="nav-link active">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul></nav>
+      <div class="header-actions">
+        <button class="header-icon-btn" onclick="openSearch()">⌕</button>
+        <a href="account.html" class="header-icon-btn">◉</a>
+        <a href="wishlist.html" class="header-icon-btn">♡<span class="badge-count" id="wishlistCount">0</span></a>
+        <button class="header-icon-btn" id="cartToggle">⊡<span class="badge-count" id="cartCount">0</span></button>
+        <button class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></button>
+      </div>
+    </div></div>
+  </header>
+
+  <main class="abt-page">
+
+    <!-- Hero -->
+    <section class="abt-hero">
+      <div class="abt-hero-bg"><img src="https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?auto=format&fit=crop&w=1600&q=80" alt="Racks of curated clothing in a minimalist boutique" loading="eager"></div>
+      <div class="abt-wrap">
+        <div class="abt-hero-content">
+          <span class="abt-eyebrow">Our Story</span>
+          <h1>We believe style should feel <em>effortless</em></h1>
+          <p>LuxeShop was built for people who value quality over quantity — carefully sourced pieces that become the foundation of a considered wardrobe.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission -->
+    <section class="abt-section">
+      <div class="abt-wrap">
+        <div class="abt-mission">
+          <div>
+            <span class="abt-label">Our Mission</span>
+            <h2>Curated with purpose. Delivered with care.</h2>
+            <p>We founded LuxeShop in 2019 with a simple conviction: that shopping for quality clothing shouldn't require hours of searching through noise. Every product in our catalog is personally evaluated for craftsmanship, fit, and longevity.</p>
+            <p>We partner with independent designers and established houses alike, connecting our customers with pieces that will outlast any trend cycle.</p>
+            <a href="shop.html" class="abt-btn">Shop the Collection</a>
+          </div>
+          <div class="abt-mission-img">
+            <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80" alt="Our team reviewing fabric samples and designs together" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Values -->
+    <section class="abt-section abt-section--alt">
+      <div class="abt-wrap">
+        <div class="abt-section-head">
+          <span class="abt-label">What We Stand For</span>
+          <h2 class="abt-title">Our Values</h2>
+        </div>
+        <div class="abt-values">
+          <div class="abt-value-card">
+            <div class="icon">🌿</div>
+            <h3>Sustainability</h3>
+            <p>We partner exclusively with suppliers who meet our environmental and ethical production standards.</p>
+          </div>
+          <div class="abt-value-card">
+            <div class="icon">🔍</div>
+            <h3>Curation</h3>
+            <p>Every product is hand-selected and tested by our in-house team. We reject more products than we accept.</p>
+          </div>
+          <div class="abt-value-card">
+            <div class="icon">💎</div>
+            <h3>Quality</h3>
+            <p>We believe in buying less but better. Our products are built to last, not planned for obsolescence.</p>
+          </div>
+          <div class="abt-value-card">
+            <div class="icon">🤝</div>
+            <h3>Transparency</h3>
+            <p>No hidden fees, no inflated "original" prices. We price honestly and stand behind everything we sell.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="abt-section abt-section--dark">
+      <div class="abt-wrap">
+        <div class="abt-stats">
+          <div><div class="abt-stat-num">12K+</div><div class="abt-stat-label">Happy customers</div></div>
+          <div><div class="abt-stat-num">800+</div><div class="abt-stat-label">Curated products</div></div>
+          <div><div class="abt-stat-num">4.9★</div><div class="abt-stat-label">Average rating</div></div>
+          <div><div class="abt-stat-num">60+</div><div class="abt-stat-label">Brand partners</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team -->
+    <section class="abt-section">
+      <div class="abt-wrap">
+        <div class="abt-section-head">
+          <span class="abt-label">The People Behind LuxeShop</span>
+          <h2 class="abt-title">Meet the Team</h2>
+        </div>
+        <div class="abt-team">
+          <div class="abt-team-card">
+            <div class="abt-team-avatar"><img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80" alt="Sophie Chen" loading="lazy"></div>
+            <p class="name">Sophie Chen</p>
+            <p class="role">Founder & CEO</p>
+            <p class="bio">Former buyer at Net-A-Porter. 12 years in luxury fashion.</p>
+          </div>
+          <div class="abt-team-card">
+            <div class="abt-team-avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" alt="Marcus Reid" loading="lazy"></div>
+            <p class="name">Marcus Reid</p>
+            <p class="role">Head of Curation</p>
+            <p class="bio">Stylist and fashion editor. Based between London and Milan.</p>
+          </div>
+          <div class="abt-team-card">
+            <div class="abt-team-avatar"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80" alt="Priya Nair" loading="lazy"></div>
+            <p class="name">Priya Nair</p>
+            <p class="role">Head of Sustainability</p>
+            <p class="bio">Leads our supplier ethics program and environmental initiatives.</p>
+          </div>
+          <div class="abt-team-card">
+            <div class="abt-team-avatar"><img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80" alt="James Torres" loading="lazy"></div>
+            <p class="name">James Torres</p>
+            <p class="role">Customer Experience</p>
+            <p class="bio">Makes sure every customer interaction exceeds expectations.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="abt-section abt-section--alt">
+      <div class="abt-wrap">
+        <div class="abt-cta">
+          <span class="abt-label">Ready to Shop?</span>
+          <h2>Discover Your Next Favourite Piece</h2>
+          <p>Browse our curated collection of over 800 products — or get in touch if you need styling advice.</p>
+          <div class="abt-cta-actions">
+            <a href="shop.html" class="abt-btn">Shop Now</a>
+            <a href="contact.html" class="abt-btn-ghost">Contact Us →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-main"><div class="container"><div class="footer-grid">
+      <div class="footer-brand"><a href="index.html" class="footer-logo">✦ Luxe<span>Shop</span></a><p class="footer-desc">Curated fashion and lifestyle essentials.</p><div class="footer-social"><a href="#" class="social-link">◈</a><a href="#" class="social-link">◉</a><a href="#" class="social-link">◎</a></div></div>
+      <div><h4 class="footer-heading">Shop</h4><ul class="footer-links"><li><a href="shop.html?cat=new">New Arrivals</a></li><li><a href="shop.html?cat=women">Women</a></li><li><a href="shop.html?cat=men">Men</a></li><li><a href="shop.html?cat=sale">Sale</a></li></ul></div>
+      <div><h4 class="footer-heading">Help</h4><ul class="footer-links"><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li><li><a href="faq.html#returns">Returns</a></li></ul></div>
+      <div><h4 class="footer-heading">Company</h4><ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="terms.html">Terms</a></li></ul></div>
+    </div></div></div>
+    <div class="container"><div class="footer-bottom"><span>© 2025 LuxeShop. All rights reserved.</span><div class="footer-payment-icons"><span class="payment-pill">💳 Visa</span><span class="payment-pill">💳 Mastercard</span><span class="payment-pill">📱 Apple Pay</span></div></div></div>
+  </footer>
+
+  <div class="cart-drawer-overlay" id="cartOverlay" onclick="closeCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="drawer-header"><h2 class="drawer-title">Your Cart</h2><button class="drawer-close" onclick="closeCart()">✕</button></div>
+    <div class="drawer-body" id="drawerBody"></div>
+    <div class="drawer-footer"><div class="summary-row total"><span>Total</span><span id="drawerTotal">$0.00</span></div><a href="checkout.html" class="btn btn-primary" style="width:100%;margin-top:1rem">Checkout</a></div>
+  </div>
+  <nav class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-header"><a href="index.html" class="site-logo"><div class="logo-mark">✦</div><span>Luxe<span>Shop</span></span></a><button onclick="closeMobileNav()">✕</button></div>
+    <div class="mobile-nav-body"><ul class="mobile-nav-list"><li><a href="index.html" class="mobile-nav-link">Home</a></li><li><a href="shop.html" class="mobile-nav-link">Shop</a></li><li><a href="about.html" class="mobile-nav-link active">About</a></li><li><a href="contact.html" class="mobile-nav-link">Contact</a></li></ul></div>
+  </nav>
+  <div class="search-modal" id="searchModal">
+    <div class="search-modal-inner">
+      <div class="search-modal-input-wrap"><span class="search-modal-icon">⌕</span><input type="search" id="searchInput" placeholder="Search…"><button onclick="closeSearch()">✕</button></div>
+      <div id="searchResults" style="padding:1rem;color:#6b6b80;font-size:0.9rem">Start typing…</div>
+    </div>
+  </div>
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+  <script src="assets/js/products.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
